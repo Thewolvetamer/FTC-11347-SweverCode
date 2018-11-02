@@ -533,6 +533,12 @@ public class SwerveDrive {
         moveX = FastMath.sin( mAngle ) * autoDistance;
         moveY = FastMath.cos( mAngle ) * autoDistance;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 213ef38929df76ac7974be601d2eb2d44bd32240
 =======
 
 
