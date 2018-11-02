@@ -54,7 +54,8 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_TO_PIT,
         SWERVE_LAST_MOVE,
         SWERVE_TEST_TURN_ROBOT,
-        SWERVE_TEST_MOVE_ROBOT
+        SWERVE_TEST_MOVE_ROBOT,
+        SWERVE_TEST_BREAK_ROBOT
     }
 
     private autoStates revTankState;
@@ -442,12 +443,20 @@ public class SwerveAuto extends SwerveCore {
 
             // test moving the robot 60cm (one mat tile, roughly) at 45 degrees
             case SWERVE_TEST_MOVE_ROBOT:
+                brakeOn();
                 ourSwerve.autoDrive( 0.8, 45.0, 0.0, 60.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
-                setState(autoStates.SWERVE_DONE, 3000);
-                break;
+
+                setState(autoStates.SWERVE_DONE, 4000);
+
+//            case SWERVE_TEST_BREAK_ROBOT:
+//                ourSwerve.autoBreak(-0.8);
+//
+//
+//                setState(autoStates.SWERVE_DONE, 300);
+//                break;
 
 
             default:
@@ -617,6 +626,20 @@ public class SwerveAuto extends SwerveCore {
         ourSwerve.stopRobot();
 
         return (Boolean.TRUE);
+    }
+
+    void brakeOn(){
+        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
+    void brakeOff(){
+        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
 }

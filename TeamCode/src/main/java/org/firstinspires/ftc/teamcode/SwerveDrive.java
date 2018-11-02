@@ -99,6 +99,9 @@ public class SwerveDrive {
     private double autoWheelMove[];
     private double autoWheelLast[];
 
+    //Breaking test
+    private double decrementSpeed;
+
     // distance is in cm, we have 288 encoder ticks per rotation and a 6 inch wheel diameter
     // encoder ticks per cm of lateral distance
     private double wheelcm2encoder = ( 144 / ( 6 * 2.54 * Math.PI ) );
@@ -527,8 +530,14 @@ public class SwerveDrive {
         mAngle = autoAngle + ( curHeading + baseOrientationAngle );
         // - normalize and convert to radians
         mAngle = normalizeGyroAngle( mAngle ) * DEG2BASE;
-        moveX = FastMath.sin( mAngle ) * autoSpeed;
-        moveY = FastMath.cos( mAngle ) * autoSpeed;
+        moveX = FastMath.sin( mAngle ) * autoDistance;
+        moveY = FastMath.cos( mAngle ) * autoDistance;
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 213ef38929df76ac7974be601d2eb2d44bd32240
 
 
 
@@ -539,10 +548,26 @@ public class SwerveDrive {
 
 
         // move the robot
+        brakeOn();
         driveRobot( moveX, moveY, 0.0, 0.0);
+        brakeOff();
 
         return( Boolean.FALSE );
     }
+
+
+    //Simply hypothetical concept for "breaking" code created *11/01/2018 08:45*
+ //   void autoBreak( double decSpeed ) {
+
+ //      decrementSpeed = decSpeed;
+//
+//    for(int autoS > decrementSpeed; autoSpeed = 0; autoSpeed--){
+//
+//        }
+//
+//
+//    }
+
 
     // ***********************************************************************
     // swerveRadAngle - read robot to field angle from save file
@@ -594,4 +619,19 @@ public class SwerveDrive {
 
         return 0;
     }
+
+    void brakeOn() {
+        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+    void brakeOff() {
+        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    }
+
+
 }
