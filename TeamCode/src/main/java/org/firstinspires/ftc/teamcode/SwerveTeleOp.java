@@ -181,8 +181,8 @@ public class SwerveTeleOp extends SwerveCore {
         //loads sliver balls into the magusinz
 
         //Right bumper to load
-        if (gamepad2.right_stick_y >=.5) {
-
+        if (gamepad2.right_trigger >=.08) {
+            .setPower(gamepad1.right_trigger);
         }
 
     }

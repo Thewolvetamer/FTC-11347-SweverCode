@@ -45,6 +45,8 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_START,
         SWERVE_DROP,
         SWERVE_SLIDE,
+        SWERVE_PRESCAN,
+        SWERVE_SCAN,
         SWERVE_TO_PARTICLES,
         SWERVE_TO_WALL,
         SWERVE_WALL_PAUSE,
@@ -86,7 +88,7 @@ public class SwerveAuto extends SwerveCore {
     private float robotPosition[];
 
     // for Vuforia detection
-    private SamplingOrderDetector detector;
+    private GoldAlignDetector detector;
 
     // variables for auto actions
     private int moveTimePushoff;
@@ -179,7 +181,7 @@ public class SwerveAuto extends SwerveCore {
         swerveDebug(500, "SwerveAuto::init", "Back from super.init");
 
         //DogeCV Initialization
-        detector = new SamplingOrderDetector();
+        detector = new GoldAlignDetector();
         // CameraIndex: 0 is back, 1 is front
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance(),1,Boolean.FALSE);
         detector.useDefaults();
@@ -335,15 +337,24 @@ public class SwerveAuto extends SwerveCore {
                 ourSwerve.driveRobot(0.7, 0, 0, 0);
 
                 // turn for the planned time
-                setState(autoStates.SWERVE_TO_PARTICLES, 500);
+                setState(autoStates.SWERVE_PRESCAN, 500);
                 break;
+            case SWERVE_PRESCAN:
+                ourSwerve.driveRobot(0,0,-.6,0);
+                setState(autoStates.SWERVE_SCAN,0);
 
+            case SWERVE_SCAN:
+                while(detector.getAligned()==false) {
+                    ourSwerve.driveRobot(0,0,.6,0);
+                }
+                setState(autoStates.SWERVE_TO_PARTICLES,0);
             // Move to the particles
+
             case SWERVE_TO_PARTICLES:
-                ourSwerve.driveRobot(-0.6, 0.4, 0, 0);
+                ourSwerve.driveRobot(-0.6, 0.6, 0, 0);
 
                 // turn for the planned time
-                setState(autoStates.SWERVE_TO_WALL, 1300);
+                setState(autoStates.SWERVE_TO_WALL, 750);
                 break;
 
             // Move to the wall
