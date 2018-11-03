@@ -133,7 +133,7 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_TO_DEPOT:
                 return "Head for the depot";
             case SWERVE_PLACE_MARKER:
-                return "Place the teram marker";
+                return "Place the team marker";
             case SWERVE_TO_PIT:
                 return "Move into the pit";
             case SWERVE_LAST_MOVE:
@@ -311,7 +311,7 @@ public class SwerveAuto extends SwerveCore {
                     setState(debugStartState, 0);
                 } else {
                     // start the drop
-                    setState(autoStates.SWERVE_DROP, 0);
+                    setState(autoStates.SWERVE_SLIDE, 0);
                 }
                 break;
 
