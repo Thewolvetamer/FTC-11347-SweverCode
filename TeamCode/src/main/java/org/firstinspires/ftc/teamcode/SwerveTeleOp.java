@@ -110,7 +110,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         ballShooter();
 
-        //sliverLoader();
+        sliverLoader();
 
 
         // Any loop background updates happen now....
@@ -175,20 +175,20 @@ public class SwerveTeleOp extends SwerveCore {
             fickerShooter.setPower(0);
         }
     }
-}
 
-   /* void sliverLoader() {
+
+    void sliverLoader() {
         //loads sliver balls into the magusinz
 
         //Right bumper to load
-        if (gamepad2.right_stick_x) {
-            silverLoad.getDirection();
+        if (gamepad2.right_stick_y >=.5) {
+
         }
 
     }
 }
 
-        void strafeR(){
+       /* void strafeR(){
 
             if (gamepad1.dpad_right){
                 swerveLeftFront.updateWheel(1, -0.50);
@@ -222,6 +222,6 @@ public class SwerveTeleOp extends SwerveCore {
 
 
 
-            //telemetry.update()
+//telemetry.update()
 
 
