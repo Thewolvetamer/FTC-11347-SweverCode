@@ -108,9 +108,11 @@ public class SwerveTeleOp extends SwerveCore {
 
         liftRobot();
 
-        ballShooter();
+//        ballShooter();
 
-        sliverLoader();
+        intake();
+
+        load();
 
 
         // Any loop background updates happen now....
@@ -165,26 +167,31 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-    void ballShooter() {
-        //ficker Shooter control
+//    void ballShooter() {
+//        //ficker Shooter control
+//
+//        //Right triger too fire
+//        if (gamepad2.right_bumper) {
+//            fickerShooter.setPower(1);
+//        } else {
+//            fickerShooter.setPower(0);
+//        }
+//    }
 
-        //Right triger too fire
-        if (gamepad2.right_bumper) {
-            fickerShooter.setPower(1);
-        } else {
-            fickerShooter.setPower(0);
-        }
+
+    void intake() {
+        //loads sliver balls into the magusinz
+//
+        //Right trigger to load
+            intake.setPower(gamepad2.left_stick_y);
     }
 
 
-    void sliverLoader() {
-        //loads sliver balls into the magusinz
-
+    void load() {
+        //loads into the magusinz
+//                       ^^^^lol xd
         //Right bumper to load
-        if (gamepad2.right_trigger >=.08) {
-            .setPower(gamepad1.right_trigger);
-        }
-
+        loader.setPower(gamepad2.right_stick_y);
     }
 }
 

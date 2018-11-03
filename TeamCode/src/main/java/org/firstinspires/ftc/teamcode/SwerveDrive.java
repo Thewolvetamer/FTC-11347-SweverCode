@@ -532,18 +532,18 @@ public class SwerveDrive {
         mAngle = normalizeGyroAngle( mAngle ) * DEG2BASE;
         moveX = FastMath.sin( mAngle ) * autoDistance;
         moveY = FastMath.cos( mAngle ) * autoDistance;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 213ef38929df76ac7974be601d2eb2d44bd32240
-=======
-
-
-
->>>>>>> 213ef38929df76ac7974be601d2eb2d44bd32240
+//<<<<<<< HEAD
+//<<<<<<< HEAD
+//=======
+//
+//
+//
+//>>>>>>> 213ef38929df76ac7974be601d2eb2d44bd32240
+//=======
+//
+//
+//
+//>>>>>>> 213ef38929df76ac7974be601d2eb2d44bd32240
 
 
 
@@ -554,9 +554,7 @@ public class SwerveDrive {
 
 
         // move the robot
-        brakeOn();
         driveRobot( moveX, moveY, 0.0, 0.0);
-        brakeOff();
 
         return( Boolean.FALSE );
     }
@@ -625,19 +623,5 @@ public class SwerveDrive {
 
         return 0;
     }
-
-    void brakeOn() {
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    }
-    void brakeOff() {
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-    }
-
 
 }

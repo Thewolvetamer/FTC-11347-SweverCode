@@ -86,7 +86,7 @@ public class SwerveAuto extends SwerveCore {
     private float robotOrientation[];
     private float robotSpeed[];
     private float robotPosition[];
-
+    private int count100;
     // for Vuforia detection
     private GoldAlignDetector detector;
 
@@ -301,6 +301,7 @@ public class SwerveAuto extends SwerveCore {
                 // INIT is only used to have some state before we set START in start()
                 swerveDebug(1, "SwerveAuto::loop *ERROR*", "== loop with INIT state");
                 setState(autoStates.SWERVE_START, 0);
+                count100=0;
                 break;
 
             // First state - wait for autoDelay to complete before moving
@@ -337,24 +338,26 @@ public class SwerveAuto extends SwerveCore {
                 ourSwerve.driveRobot(0.7, 0, 0, 0);
 
                 // turn for the planned time
-                setState(autoStates.SWERVE_PRESCAN, 500);
+                setState(autoStates.SWERVE_TO_PARTICLES, 500);
                 break;
-            case SWERVE_PRESCAN:
-                ourSwerve.driveRobot(0,0,-.6,0);
-                setState(autoStates.SWERVE_SCAN,0);
-
-            case SWERVE_SCAN:
-                while(detector.getAligned()==false) {
-                    ourSwerve.driveRobot(0,0,.6,0);
-                }
-                setState(autoStates.SWERVE_TO_PARTICLES,0);
-            // Move to the particles
+//            case SWERVE_PRESCAN:
+//                ourSwerve.driveRobot(0,0,-.6,0);
+//                setState(autoStates.SWERVE_SCAN,500);
+//
+//            case SWERVE_SCAN:
+//                while(!detector.getAligned()) {
+//                    ourSwerve.driveRobot(0,0,.5,0);
+//                    count100=100+count100;
+//                }
+//                setState(autoStates.SWERVE_TO_PARTICLES,0);
+// Move to the particles
 
             case SWERVE_TO_PARTICLES:
-                ourSwerve.driveRobot(-0.6, 0.6, 0, 0);
+                ourSwerve.driveRobot(-.6, 0.6, 0, 0);
+
 
                 // turn for the planned time
-                setState(autoStates.SWERVE_TO_WALL, 750);
+                setState(autoStates.SWERVE_TO_WALL, 1000);
                 break;
 
             // Move to the wall
@@ -386,7 +389,7 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
 
-            // Move to the particles
+            // orient to wall
             case SWERVE_WALL_PAUSE:
                 // stop the robot
                 ourSwerve.stopRobot();
@@ -395,19 +398,19 @@ public class SwerveAuto extends SwerveCore {
                 setState(autoStates.SWERVE_TO_DEPOT, autoDelay * 1000);
                 break;
 
-            // Move to the particles
+            // Move to the depot
             case SWERVE_TO_DEPOT:
                 ourSwerve.driveRobot(0, -0.8, 0, 0);
 
                 // drive to the depot
                 if (targetSilver) {
-                    setState(autoStates.SWERVE_PLACE_MARKER, 1600);
+                    setState(autoStates.SWERVE_PLACE_MARKER, 1800);
                 } else {
                     setState(autoStates.SWERVE_PLACE_MARKER, 2300);
                 }
                 break;
 
-            // Move to the particles
+            // place marker
             case SWERVE_PLACE_MARKER:
                 // stop robot
                 ourSwerve.stopRobot();
@@ -422,7 +425,7 @@ public class SwerveAuto extends SwerveCore {
             // Move to the pit
             case SWERVE_TO_PIT:
                 ourSwerve.driveRobot(0, 0.8, 0, 0);
-
+//turnX +left -right moveY +forward -backwards
                 // turn for the planned time
                 setState(autoStates.SWERVE_LAST_MOVE, 4000);
                 break;
@@ -458,9 +461,10 @@ public class SwerveAuto extends SwerveCore {
                 ourSwerve.autoDrive( 0.8, 45.0, 0.0, 60.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
-
+                brakeOff();
 
                 setState(autoStates.SWERVE_DONE, 4000);
+                break;
 
 //            case SWERVE_TEST_BREAK_ROBOT:
 //                ourSwerve.autoBreak(-0.8);

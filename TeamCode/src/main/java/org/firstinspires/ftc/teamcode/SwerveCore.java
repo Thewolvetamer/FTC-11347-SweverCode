@@ -62,6 +62,8 @@ public class SwerveCore extends OpMode {
     DcMotor motorLeftRear;
     DcMotor lineSlideArm;
     DcMotor fickerShooter;
+    DcMotor intake;
+    DcMotor loader;
     Servo   servoRightFront;
     Servo   servoLeftFront;
     Servo   servoRightRear;
@@ -190,6 +192,11 @@ public class SwerveCore extends OpMode {
         motorRightRear.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "Right Rear Motor", motorRightRear);
 
+        intake = hardwareMap.dcMotor.get("intake");
+        swerveDebugDevice(500, "Right Rear Motor", intake);
+        loader = hardwareMap.dcMotor.get("loader");
+        swerveDebugDevice(500, "Right Rear Motor", loader);
+
         swerveDebug(500, "SwerveCore::init", "MOTORS connected");
 
         // Servos for the wheels
@@ -215,7 +222,7 @@ public class SwerveCore extends OpMode {
         lineSlideArm = hardwareMap.dcMotor.get("SlideArm");
 
         //Ficker Shooter Silver DC motor Port 2 Hub 2
-        fickerShooter = hardwareMap.dcMotor.get("SilverShooter");
+//        fickerShooter = hardwareMap.dcMotor.get("SilverShooter");
 
         //Silver ball loader Servo
         //silverLoad = hardwareMap.servo.get("SilverLoader");
