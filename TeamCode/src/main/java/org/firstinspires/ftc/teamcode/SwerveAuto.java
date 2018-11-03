@@ -57,7 +57,10 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_LAST_MOVE,
         SWERVE_TEST_TURN_ROBOT,
         SWERVE_TEST_MOVE_ROBOT,
-        SWERVE_TEST_BREAK_ROBOT
+        SWERVE_TEST_MOVE1_ROBOT,
+        SWERVE_TEST_MOVE2_ROBOT,
+        SWERVE_TEST_BREAK_ROBOT,
+        SWERVE_DELAY
     }
 
     private autoStates revTankState;
@@ -147,6 +150,8 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_TEST_MOVE1_ROBOT:
                 return "TEST - move robot";
             case SWERVE_TEST_MOVE2_ROBOT:
+                return "TEST - move robot";
+            case SWERVE_DELAY:
                 return "TEST - move robot";
             default:
                 return "UNKNOWN! ID = " + revTankState;
@@ -315,7 +320,7 @@ public class SwerveAuto extends SwerveCore {
                     setState(debugStartState, 0);
                 } else {
                     // start the drop
-                    setState(autoStates.SWERVE_SLIDE, 0);
+                    setState(autoStates.SWERVE_DELAY, 0);
                 }
                 break;
 
@@ -443,6 +448,12 @@ public class SwerveAuto extends SwerveCore {
                 setState(autoStates.SWERVE_DONE, 10);
                 break;
 
+            // running into people so we added a delay for when we need it
+            case SWERVE_DELAY:
+                // delay
+                setState(autoStates.SWERVE_SLIDE, 12000);
+                break;
+
             // All moves are done
             case SWERVE_DONE:
                 // stop any movement
@@ -463,7 +474,7 @@ public class SwerveAuto extends SwerveCore {
 
             // test moving the robot 60cm (one mat tile, roughly) at 0 degrees
             case SWERVE_TEST_MOVE_ROBOT:
-                ourSwerve.autoDrive( 0.4, 90.0, 0.0, 0.0 );
+                ourSwerve.autoDrive( 0.4, 0.0, 0.0, 60.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
@@ -471,7 +482,7 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             case SWERVE_TEST_MOVE1_ROBOT:
-                ourSwerve.autoDrive( 0.4, 90.0, 0.0, 90.0 );
+                ourSwerve.autoDrive( 0.4, 90.0, 0.0, 60.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
@@ -479,7 +490,7 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             case SWERVE_TEST_MOVE2_ROBOT:
-                ourSwerve.autoDrive( 0.4, 90.0, 0.0, 180.0 );
+                ourSwerve.autoDrive( 0.4, 180.0, 0.0, 60.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
