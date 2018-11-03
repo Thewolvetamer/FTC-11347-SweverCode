@@ -144,6 +144,10 @@ public class SwerveAuto extends SwerveCore {
                 return "TEST - turn robot";
             case SWERVE_TEST_MOVE_ROBOT:
                 return "TEST - move robot";
+            case SWERVE_TEST_MOVE1_ROBOT:
+                return "TEST - move robot";
+            case SWERVE_TEST_MOVE2_ROBOT:
+                return "TEST - move robot";
             default:
                 return "UNKNOWN! ID = " + revTankState;
         }
@@ -451,17 +455,33 @@ public class SwerveAuto extends SwerveCore {
             // **** TEST cases **** //
             // test turning robot to face 90 degrees
             case SWERVE_TEST_TURN_ROBOT:
+                brakeOn();
                 orientRobot(90.0);
+                brakeOff();
                 setState(autoStates.SWERVE_DONE, 0);
                 break;
 
-            // test moving the robot 60cm (one mat tile, roughly) at 45 degrees
+            // test moving the robot 60cm (one mat tile, roughly) at 0 degrees
             case SWERVE_TEST_MOVE_ROBOT:
-                brakeOn();
-                ourSwerve.autoDrive( 0.8, 45.0, 0.0, 60.0 );
+                ourSwerve.autoDrive( 0.4, 90.0, 0.0, 0.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
-                brakeOff();
+
+                setState(autoStates.SWERVE_TEST_MOVE1_ROBOT, 4000);
+                break;
+
+            case SWERVE_TEST_MOVE1_ROBOT:
+                ourSwerve.autoDrive( 0.4, 90.0, 0.0, 90.0 );
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
+
+                setState(autoStates.SWERVE_TEST_MOVE2_ROBOT, 4000);
+                break;
+
+            case SWERVE_TEST_MOVE2_ROBOT:
+                ourSwerve.autoDrive( 0.4, 90.0, 0.0, 180.0 );
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
 
                 setState(autoStates.SWERVE_DONE, 4000);
                 break;
