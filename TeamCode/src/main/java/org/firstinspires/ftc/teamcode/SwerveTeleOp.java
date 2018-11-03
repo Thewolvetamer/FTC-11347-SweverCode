@@ -183,7 +183,7 @@ public class SwerveTeleOp extends SwerveCore {
         //loads sliver balls into the magusinz
 //
         //Right trigger to load
-            intake.setPower(gamepad2.left_stick_y);
+            intake.setPower(-gamepad2.left_stick_y);
     }
 
 
@@ -191,7 +191,7 @@ public class SwerveTeleOp extends SwerveCore {
         //loads into the magusinz
 //                       ^^^^lol xd
         //Right bumper to load
-        loader.setPower(gamepad2.right_stick_y);
+        loader.setPower(-gamepad2.right_stick_y);
     }
 }
 
