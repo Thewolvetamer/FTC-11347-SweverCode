@@ -146,7 +146,7 @@ public class SwerveDrive {
     // ***** TODO **** testing at 1:1 scale for now
 //    private double SWERVE_SCALE = ( 0.66667 / Math.PI );
     private double SWERVE_SCALE = ( 1.0 / Math.PI );
-    private double DEG2BASE = ( 1.0 / 180 );
+    public double DEG2BASE = ( Math.PI / 180 );
 
 
 
@@ -190,8 +190,8 @@ public class SwerveDrive {
         swerveTime.reset();
         // any movement needs to reorient
         nextOrientationTime = 0;
-        // wait at least 50 milliseconds before adjusting settings
-        minOrientationWait = 50;
+        // wait at least 30 milliseconds before adjusting settings
+        minOrientationWait = 30;
 
         // Read the saved robot to field orientation value
         swerveReadAngle();
@@ -211,7 +211,7 @@ public class SwerveDrive {
         moveAdjustLog = "(none)";
         speedLog = "(none)";
         angleLog = "(none)";
-        orientationLog = "(none");
+        orientationLog = "(none)";
         autoDriveLog = "(none)";
 
 
@@ -393,7 +393,7 @@ public class SwerveDrive {
         // read the orientation of the robot
         angles = this.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         // and save the heading
-        curHeading = angles.firstAngle - baseOrientationAngle;
+        curHeading = - ( angles.firstAngle - baseOrientationAngle );
 
         // log the orientation
         orientationLog = "Orient: "
@@ -504,6 +504,7 @@ public class SwerveDrive {
         double rDist;
         double tAngle;
         double mAngle;
+        double turnSpd;
         double moveX;
         double moveY;
 
@@ -544,6 +545,7 @@ public class SwerveDrive {
         tAngle = autoAngle - curHeading + baseOrientationAngle;
         // - normalize and convert to radians
         mAngle = normalizeGyroAngle( tAngle ) * DEG2BASE;
+
         moveX = FastMath.sin( mAngle ) * autoDistance;
         moveY = FastMath.cos( mAngle ) * autoDistance;
 
@@ -551,16 +553,18 @@ public class SwerveDrive {
                 + String.format( dblFormat, autoAngle) + " ), radians "
                 + String.format( dblFormat, mAngle);
 
-
-
-
-        // TODO: add code to handle the orientation
-
-
-
+        // adjust heading based on orientation target
+        if (Math.abs(autoOrient - curHeading) > 60.0) {
+            turnSpd = 0.4;
+        } else {
+            turnSpd = 0.15;
+        }
+        if (autoOrient > curHeading) {
+            turnSpd = -turnSpd;
+        }
 
         // move the robot
-        driveRobot( moveX, moveY, 0.0, 0.0);
+        driveRobot( moveX, moveY, turnSpd, 0.0);
 
         return( Boolean.FALSE );
     }

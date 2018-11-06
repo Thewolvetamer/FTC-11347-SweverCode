@@ -91,7 +91,7 @@ public class SwerveAuto extends SwerveCore {
     private float robotPosition[];
     private int delaycount;
     // for Vuforia detection
-    private GoldAlignDetector detector;
+    private SamplingOrderDetector detector;
 
     // variables for auto actions
     private int moveTimePushoff;
@@ -190,7 +190,7 @@ public class SwerveAuto extends SwerveCore {
         swerveDebug(500, "SwerveAuto::init", "Back from super.init");
 
         //DogeCV Initialization
-        detector = new GoldAlignDetector();
+        detector = new SamplingOrderDetector();
         // CameraIndex: 0 is back, 1 is front
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance(),1,Boolean.FALSE);
         detector.useDefaults();
@@ -355,19 +355,9 @@ public class SwerveAuto extends SwerveCore {
 
 
                 // turn for the planned time
-                setState(autoStates.SWERVE_PRESCAN, 500);
+                setState(autoStates.SWERVE_TO_PARTICLES, 500);
                 break;
-            case SWERVE_PRESCAN:
-                ourSwerve.driveRobot(0,0,-.6,0);
-                setState(autoStates.SWERVE_SCAN,500);
 
-            case SWERVE_SCAN:
-                while(!detector.getAligned()) {
-                    ourSwerve.driveRobot(0,0,.5,0);
-                    
-                    delaycount=100+delaycount;
-                }
-                setState(autoStates.SWERVE_TO_PARTICLES,0);
 // Move to the particles
 
             case SWERVE_TO_PARTICLES:
@@ -471,15 +461,14 @@ public class SwerveAuto extends SwerveCore {
             // **** TEST cases **** //
             // test turning robot to face 90 degrees
             case SWERVE_TEST_TURN_ROBOT:
-                brakeOn();
                 orientRobot(90.0);
-                brakeOff();
+                orientRobot(90.0);
                 setState(autoStates.SWERVE_DONE, 0);
                 break;
 
-            // test moving the robot 60cm (one mat tile, roughly) at 0 degrees
+            // test moving the robot 60cm (one mat tile, roughly) at 20 degrees
             case SWERVE_TEST_MOVE_ROBOT:
-                ourSwerve.autoDrive( 0.4, 0.0, 0.0, 60.0 );
+                ourSwerve.autoDrive( 0.4, 90.0, 20.0, 120.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
@@ -639,7 +628,7 @@ public class SwerveAuto extends SwerveCore {
     // turn the robot to a specific orientation
     private Boolean orientRobot(double newOrientationDegrees) {
 
-        double newOrienation = newOrientationDegrees / 180 * Math.PI;
+        double newOrienation = newOrientationDegrees;
         double turnSpeed;
 
         // be sure we are not using automation
@@ -648,11 +637,11 @@ public class SwerveAuto extends SwerveCore {
         // check robot orientation
         ourSwerve.checkOrientation();
 
-        // turn until within 0.2 radians / ~10 degrees
-        while (Math.abs(newOrienation - ourSwerve.curHeading) > 0.2) {
+        // turn until within ~10 degrees
+        while (Math.abs(newOrienation - ourSwerve.curHeading) > 5.0) {
 
             // never take longer than 1.5 seconds
-            if (checkStateElapsed(1500)) {
+            if (checkStateElapsed(2500)) {
                 // stop the robot
                 ourSwerve.stopRobot();
 
@@ -660,10 +649,10 @@ public class SwerveAuto extends SwerveCore {
             }
 
             // turn faster if we need to turn more
-            if (Math.abs(newOrienation - ourSwerve.curHeading) > 0.5) {
-                turnSpeed = 0.3;
+            if (Math.abs(newOrienation - ourSwerve.curHeading) > 90.0) {
+                turnSpeed = 0.20;
             } else {
-                turnSpeed = 0.15;
+                turnSpeed = 0.10;
             }
             if (newOrienation > ourSwerve.curHeading) {
                 turnSpeed = -turnSpeed;
