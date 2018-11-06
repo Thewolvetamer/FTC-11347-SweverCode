@@ -194,7 +194,7 @@ public class SwerveAuto extends SwerveCore {
         // CameraIndex: 0 is back, 1 is front
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance(),1,Boolean.FALSE);
         detector.useDefaults();
-        detector.downscale= 0.8;
+        detector.downscale= 0.4;
         detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
         // 2 different types of scoring
         //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
@@ -320,7 +320,7 @@ public class SwerveAuto extends SwerveCore {
                     setState(debugStartState, 0);
                 } else {
                     // start the drop
-                    setState(autoStates.SWERVE_DELAY, 0);
+                    setState(autoStates.SWERVE_SLIDE, 0);
                 }
                 break;
 
@@ -343,22 +343,28 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             // Slide sideways
+            // running into people so we added a delay for when we need it
+            case SWERVE_DELAY:
+                // delay
+                setState(autoStates.SWERVE_SLIDE, 0);
+                break;
             case SWERVE_SLIDE:
                 ourSwerve.driveRobot(0.7, 0, 0, 0);
 
+
                 // turn for the planned time
-                setState(autoStates.SWERVE_TO_PARTICLES, 500);
+                setState(autoStates.SWERVE_PRESCAN, 500);
                 break;
-//            case SWERVE_PRESCAN:
-//                ourSwerve.driveRobot(0,0,-.6,0);
-//                setState(autoStates.SWERVE_SCAN,500);
-//
-//            case SWERVE_SCAN:
-//                while(!detector.getAligned()) {
-//                    ourSwerve.driveRobot(0,0,.5,0);
-//                    count100=100+count100;
-//                }
-//                setState(autoStates.SWERVE_TO_PARTICLES,0);
+            case SWERVE_PRESCAN:
+                ourSwerve.driveRobot(0,0,-.6,0);
+                setState(autoStates.SWERVE_SCAN,500);
+
+            case SWERVE_SCAN:
+                while(!detector.getAligned()) {
+                    ourSwerve.driveRobot(0,0,.5,0);
+                    count100=100+count100;
+                }
+                setState(autoStates.SWERVE_TO_PARTICLES,0);
 // Move to the particles
 
             case SWERVE_TO_PARTICLES:
@@ -448,11 +454,7 @@ public class SwerveAuto extends SwerveCore {
                 setState(autoStates.SWERVE_DONE, 10);
                 break;
 
-            // running into people so we added a delay for when we need it
-            case SWERVE_DELAY:
-                // delay
-                setState(autoStates.SWERVE_SLIDE, 12000);
-                break;
+
 
             // All moves are done
             case SWERVE_DONE:
