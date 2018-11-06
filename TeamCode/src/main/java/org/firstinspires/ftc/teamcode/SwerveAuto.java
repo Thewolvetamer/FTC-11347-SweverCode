@@ -119,6 +119,8 @@ public class SwerveAuto extends SwerveCore {
         switch (myState) {
             case SWERVE_INIT:
                 return "INITIALIZING";
+
+//          time based auto
             case SWERVE_START:
                 return "START";
             case SWERVE_DROP:
@@ -143,13 +145,14 @@ public class SwerveAuto extends SwerveCore {
                 return "Waiting for last move to complete";
             case SWERVE_DONE:
                 return "All done - robot waits while stopped";
+
+//          encoder based auto
+
+
+//          Testing cases
             case SWERVE_TEST_TURN_ROBOT:
                 return "TEST - turn robot";
             case SWERVE_TEST_MOVE_ROBOT:
-                return "TEST - move robot";
-            case SWERVE_TEST_MOVE1_ROBOT:
-                return "TEST - move robot";
-            case SWERVE_TEST_MOVE2_ROBOT:
                 return "TEST - move robot";
             case SWERVE_DELAY:
                 return "TEST - move robot";

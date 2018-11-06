@@ -206,6 +206,7 @@ public class SwerveDrive {
 
 
         // default reporting is none
+
         modeLog = "(none)";
         moveLog = "(none)";
         moveAdjustLog = "(none)";
