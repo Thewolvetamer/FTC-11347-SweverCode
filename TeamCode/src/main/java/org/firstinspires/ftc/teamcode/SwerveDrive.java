@@ -502,6 +502,7 @@ public class SwerveDrive {
         int w;
         double wNext;
         double rDist;
+        double tAngle;
         double mAngle;
         double moveX;
         double moveY;
@@ -540,11 +541,15 @@ public class SwerveDrive {
 
         // move based on angles
         // - get wheel target in degrees
-        mAngle = autoAngle + ( curHeading + baseOrientationAngle );
+        tAngle = autoAngle - curHeading + baseOrientationAngle;
         // - normalize and convert to radians
-        mAngle = normalizeGyroAngle( mAngle ) * DEG2BASE;
+        mAngle = normalizeGyroAngle( tAngle ) * DEG2BASE;
         moveX = FastMath.sin( mAngle ) * autoDistance;
         moveY = FastMath.cos( mAngle ) * autoDistance;
+
+        autoDriveLog = "target " + String.format( dblFormat, tAngle) + " ( "
+                + String.format( dblFormat, autoAngle) + " ), radians "
+                + String.format( dblFormat, mAngle);
 
 
 
