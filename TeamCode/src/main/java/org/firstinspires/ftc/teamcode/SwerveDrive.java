@@ -212,7 +212,7 @@ public class SwerveDrive {
         moveAdjustLog = "(none)";
         speedLog = "(none)";
         angleLog = "(none)";
-        orientationLog = "(none");
+        orientationLog = "(none)";
         autoDriveLog = "(none)";
 
 
