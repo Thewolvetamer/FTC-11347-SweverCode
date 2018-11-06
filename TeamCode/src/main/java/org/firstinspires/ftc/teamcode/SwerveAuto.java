@@ -300,6 +300,8 @@ public class SwerveAuto extends SwerveCore {
         if (!checkStateReady()) {
             swerveDebug(500, "SwerveAuto::loop", "Waiting for steady state (" +
                     checkReport + ")");
+
+            loopEndReporting();
             return;
         }
 
