@@ -480,7 +480,7 @@ public class SwerveAuto extends SwerveCore {
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
-                setState(autoStates.SWERVE_TEST_MOVE1_ROBOT, 4000);
+                setState(autoStates.SWERVE_DONE, 4000);
                 break;
 
             case SWERVE_TEST_MOVE1_ROBOT:
