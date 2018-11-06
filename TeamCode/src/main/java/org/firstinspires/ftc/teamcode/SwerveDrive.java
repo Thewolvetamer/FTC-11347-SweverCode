@@ -547,8 +547,8 @@ public class SwerveDrive {
         // - normalize and convert to radians
         mAngle = normalizeGyroAngle( tAngle ) * DEG2BASE;
 
-        moveX = FastMath.sin( mAngle ) * autoDistance;
-        moveY = FastMath.cos( mAngle ) * autoDistance;
+        moveX = FastMath.sin( mAngle ) * autoSpeed;
+        moveY = FastMath.cos( mAngle ) * autoSpeed;
 
         autoDriveLog = "target " + String.format( dblFormat, tAngle) + " ( "
                 + String.format( dblFormat, autoAngle) + " ), radians "
@@ -556,13 +556,19 @@ public class SwerveDrive {
 
         // adjust heading based on orientation target
         if (Math.abs(autoOrient - curHeading) > 60.0) {
-            turnSpd = 0.4;
+            turnSpd = 0.1;
         } else {
-            turnSpd = 0.15;
+            turnSpd = 0.05;
         }
         if (autoOrient > curHeading) {
             turnSpd = -turnSpd;
         }
+
+        // TODO: fix auto orient
+
+        
+        // DEBUG - stop auto orient for now
+        turnSpd = 0;
 
         // move the robot
         driveRobot( moveX, moveY, turnSpd, 0.0);
