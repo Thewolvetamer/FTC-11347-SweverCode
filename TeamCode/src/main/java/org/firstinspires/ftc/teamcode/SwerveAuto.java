@@ -89,7 +89,7 @@ public class SwerveAuto extends SwerveCore {
     private float robotOrientation[];
     private float robotSpeed[];
     private float robotPosition[];
-    private int count100;
+    private int delaycount;
     // for Vuforia detection
     private GoldAlignDetector detector;
 
@@ -204,7 +204,7 @@ public class SwerveAuto extends SwerveCore {
         detector.ratioScorer.perfectRatio = 1.0;
        detector.enable();
 
-        swerveDebug(500, "SwerveAuto::init", "Vuforia initialized");
+        swerveDebug(500, "SwerveAuto::init", "DogeCV initialized");
 
 
         // orient to the field now and save our angle for use in teleOp
@@ -310,7 +310,7 @@ public class SwerveAuto extends SwerveCore {
                 // INIT is only used to have some state before we set START in start()
                 swerveDebug(1, "SwerveAuto::loop *ERROR*", "== loop with INIT state");
                 setState(autoStates.SWERVE_START, 0);
-                count100=0;
+                delaycount=0;
                 break;
 
             // First state - wait for autoDelay to complete before moving
@@ -362,7 +362,8 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_SCAN:
                 while(!detector.getAligned()) {
                     ourSwerve.driveRobot(0,0,.5,0);
-                    count100=100+count100;
+
+                    delaycount=100+delaycount;
                 }
                 setState(autoStates.SWERVE_TO_PARTICLES,0);
 // Move to the particles
