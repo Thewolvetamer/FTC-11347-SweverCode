@@ -529,7 +529,7 @@ public class SwerveDrive {
         // - get wheel target in degrees
         mAngle = autoAngle + ( curHeading + baseOrientationAngle );
         // - normalize and convert to radians
-        mAngle = normalizeGyroAngle( mAngle ); // * DEG2BASE;
+        mAngle = normalizeGyroAngle( mAngle ) * (180/Math.PI);
         moveX = FastMath.sin( mAngle ) * autoDistance;
         moveY = FastMath.cos( mAngle ) * autoDistance;
 //<<<<<<< HEAD
