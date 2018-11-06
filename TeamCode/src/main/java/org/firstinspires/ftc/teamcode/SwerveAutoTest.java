@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
-@Autonomous(name="Swerve: 9-AutoTEST 1.0", group="Swerve")
+@Autonomous(name="Swerve: 9-AutoTEST 1.15", group="Swerve")
 //@Disabled
 public class SwerveAutoTest extends SwerveAuto {
 
@@ -77,6 +77,7 @@ public class SwerveAutoTest extends SwerveAuto {
         // always add one for the state set in init below
         debugStates = 4 + 1;
         debugStartState = autoStates.SWERVE_TEST_MOVE_ROBOT;
+        //debugStartState = autoStates.SWERVE_TEST_TURN_ROBOT;
         // *************************************************
         // *************************************************
         
