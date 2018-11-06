@@ -118,6 +118,7 @@ public class SwerveDrive {
     public String speedLog;
     public String angleLog;
     public String orientationLog;
+    public String autoDriveLog;
 
     // IMU for heading when using movement automation
     private BNO055IMU imu;
@@ -204,6 +205,17 @@ public class SwerveDrive {
         this.imu = newImu;
 
 
+        // default reporting is none
+        modeLog = "(none)";
+        moveLog = "(none)";
+        moveAdjustLog = "(none)";
+        speedLog = "(none)";
+        angleLog = "(none)";
+        orientationLog = "(none");
+        autoDriveLog = "(none)";
+
+
+
         // space for remembering wheel distances
         autoWheelMove = new double[ 5 ];
         autoWheelLast = new double[ 5 ];
@@ -253,6 +265,7 @@ public class SwerveDrive {
         return angleLog;
     }
     public String getOrientLog() { return orientationLog; }
+    public String getAutoDriveLog() { return autoDriveLog; }
 
     // ***********************************************************************
     // setSwerveMode - update the base robot orientation
@@ -532,18 +545,6 @@ public class SwerveDrive {
         mAngle = normalizeGyroAngle( mAngle ) * DEG2BASE;
         moveX = FastMath.sin( mAngle ) * autoDistance;
         moveY = FastMath.cos( mAngle ) * autoDistance;
-//<<<<<<< HEAD
-//<<<<<<< HEAD
-//=======
-//
-//
-//
-//>>>>>>> 213ef38929df76ac7974be601d2eb2d44bd32240
-//=======
-//
-//
-//
-//>>>>>>> 213ef38929df76ac7974be601d2eb2d44bd32240
 
 
 
