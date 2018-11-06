@@ -364,7 +364,7 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_SCAN:
                 while(!detector.getAligned()) {
                     ourSwerve.driveRobot(0,0,.5,0);
-
+                    
                     delaycount=100+delaycount;
                 }
                 setState(autoStates.SWERVE_TO_PARTICLES,0);

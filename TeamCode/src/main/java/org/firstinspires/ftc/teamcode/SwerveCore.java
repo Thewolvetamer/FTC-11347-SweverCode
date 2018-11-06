@@ -351,8 +351,8 @@ public class SwerveCore extends OpMode {
         swerveLog( "X S3", ourSwerve.getMoveAdjustLog());
         swerveLog( "X S4", ourSwerve.getAngleLog());
         swerveLog( "X S5", ourSwerve.getSpeedLog());
-        swerveLog( "X S6", ourSwerve.getOrientLog();
-        swerveLog( "X S7", ourSwerve.getAutoDriveLog();
+        swerveLog( "X S6", ourSwerve.getOrientLog());
+        swerveLog( "X S7", ourSwerve.getAutoDriveLog());
     }
 
 
