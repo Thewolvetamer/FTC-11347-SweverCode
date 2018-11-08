@@ -457,8 +457,12 @@ public class SwerveDrive {
 
     // ***********************************************************************
     // ***********************************************************************
-    public double normalizeGyroAngle(double angle){
+    public double normalizeGyroAngle360(double angle){
         return (angle - (FastMath.floor( angle / 360) * 360) );
+    }
+
+    public double normalizeGyroAngle180(double angle){
+        return (angle - (FastMath.floor( angle / 180) * 180) );
     }
 
     // ***********************************************************************
@@ -545,7 +549,7 @@ public class SwerveDrive {
         // - get wheel target in degrees
         tAngle = autoAngle - curHeading + baseOrientationAngle;
         // - normalize and convert to radians
-        mAngle = normalizeGyroAngle( tAngle ) * DEG2BASE;
+        mAngle = normalizeGyroAngle360( tAngle ) * DEG2BASE;
 
         moveX = FastMath.sin( mAngle ) * autoSpeed;
         moveY = FastMath.cos( mAngle ) * autoSpeed;
