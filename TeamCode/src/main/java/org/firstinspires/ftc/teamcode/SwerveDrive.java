@@ -112,13 +112,13 @@ public class SwerveDrive {
     private double sideRatio;
 
     // logging data available for use
-    public String modeLog;
-    public String moveLog;
-    public String moveAdjustLog;
-    public String speedLog;
-    public String angleLog;
-    public String orientationLog;
-    public String autoDriveLog;
+    private String modeLog;
+    private String moveLog;
+    private String moveAdjustLog;
+    private String speedLog;
+    private String angleLog;
+    private String orientationLog;
+    private String autoDriveLog;
 
     // IMU for heading when using movement automation
     private BNO055IMU imu;
@@ -566,7 +566,7 @@ public class SwerveDrive {
 
         // TODO: fix auto orient
 
-        
+
         // DEBUG - stop auto orient for now
         turnSpd = 0;
 
