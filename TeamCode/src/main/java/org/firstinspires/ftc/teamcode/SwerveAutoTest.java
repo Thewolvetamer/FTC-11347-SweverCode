@@ -75,8 +75,8 @@ public class SwerveAutoTest extends SwerveAuto {
         // *************************************************
         debugActive = Boolean.TRUE;
         // always add one for the state set in init below
-        debugStates = 4 + 1;
-        debugStartState = autoStates.SWERVE_TEST_MOVE_ROBOT;
+        debugStates = 2 + 1;
+        debugStartState = autoStates.SWERVE_TO_WALL;
         //debugStartState = autoStates.SWERVE_TEST_TURN_ROBOT;
         // *************************************************
         // *************************************************
