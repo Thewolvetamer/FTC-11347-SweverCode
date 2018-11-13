@@ -458,12 +458,24 @@ public class SwerveDrive {
     // ***********************************************************************
     // ***********************************************************************
     public double normalizeGyroAngle360(double angle){
-        return (angle - (FastMath.floor( angle / 360) * 360) );
+        double angle180;
+
+        // get our angle to 0-360
+        angle180 = angle - (FastMath.floor( angle / 360.0) * 360.0);
+
+        // now adjust to be -180 to 180
+        if ( angle180 > 180.0 ) {
+            angle180 -= 360.0;
+        }
+
+        return ( angle180 );
     }
 
-    public double normalizeGyroAngle180(double angle){
-        return (angle - (FastMath.floor( angle / 180) * 180) );
-    }
+    // ***********************************************************************
+    // ***********************************************************************
+//    public double normalizeGyroAngle180(double angle){
+//        return (angle - (FastMath.floor( angle / 180) * 180) );
+//    }
 
     // ***********************************************************************
     // stopRobot
@@ -560,9 +572,11 @@ public class SwerveDrive {
 
         // adjust heading based on orientation target
         if (Math.abs(autoOrient - curHeading) > 60.0) {
-            turnSpd = 0.1;
+            turnSpd = autoSpeed * 0.1;
+        } else if (Math.abs(autoOrient - curHeading) > 20.0) {
+            turnSpd = autoSpeed * .05;
         } else {
-            turnSpd = 0.05;
+            turnSpd = autoSpeed * .01;
         }
         if (autoOrient > curHeading) {
             turnSpd = -turnSpd;
@@ -572,7 +586,7 @@ public class SwerveDrive {
 
 
         // DEBUG - stop auto orient for now
-        turnSpd = 0;
+        //turnSpd = 0;
 
         // move the robot
         driveRobot( moveX, moveY, turnSpd, 0.0);

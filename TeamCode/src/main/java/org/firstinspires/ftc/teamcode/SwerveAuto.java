@@ -30,7 +30,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 // **** DO NOT ENABLE - Started from the Silver and Gold auto code derived classes now ****
 // ****   @Autonomous(name="Swerve: 1-Auto 0.6", group="Swerve")
 // ***********************************************************************
-
+// 11/9/2018 - Swerve drive is now capable of auto correcting orientation to a degree while driving. The wheels actively adjust while moving
 public class SwerveAuto extends SwerveCore {
 
     //private static Boolean useLightFlicker = Boolean.TRUE;
@@ -330,7 +330,7 @@ public class SwerveAuto extends SwerveCore {
 //                    setState(autoStates.SWERVE_SLIDE, 0);
 
 
-                    setState(autoStates.SWERVE_TO_PARTICLES, 0);
+                    setState(autoStates.SWERVE_SLIDE, 0);
                 }
                 break;
 
@@ -349,17 +349,18 @@ public class SwerveAuto extends SwerveCore {
                 swerveRightRear.updateWheel(0.0, 0.7);
 
                 // wait, then slide
-                setState(autoStates.SWERVE_SLIDE, 8500);
+                setState(autoStates.SWERVE_DELAY, 8500);
                 break;
 
             // Slide sideways
-            // running into people so we added a delay for when we need it
+            // running into robots so we added a delay for when we need it
             case SWERVE_DELAY:
                 // delay
                 setState(autoStates.SWERVE_SLIDE, 0);
                 break;
             case SWERVE_SLIDE:
-                ourSwerve.driveRobot(0.7, 0, 0, 0);
+                ourSwerve.autoDrive(0.7, 99, 0, 15);
+                autoDriveWait = Boolean.TRUE;
 
 
                 // turn for the planned time
@@ -369,29 +370,29 @@ public class SwerveAuto extends SwerveCore {
 // Move to the particles
 
             case SWERVE_TO_PARTICLES:
-                ourSwerve.autoDrive( 0.3, 0.0, 0.0, 45.0 );
+                ourSwerve.autoDrive( 0.3, 0.0, 0.0, 10.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.FALSE;
 
                 // turn for the planned time
-                setState(autoStates.SWERVE_TO_WALL, 10000);
+                setState(autoStates.SWERVE_TO_WALL, 2000);
                 break;
 
             // Move to the wall
             case SWERVE_TO_WALL:
                 if (targetSilver) {
-//                    should be -90 but the wheels flip
-//                    TODO fix ^^^
-                    ourSwerve.autoDrive( 0.5, 265.0, 0.0, 125.0 );
+                    ourSwerve.autoDrive( 0.4, 275.0, 45.0, 195.0 );
+
+
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
                     // wait for wall move
-                    setState(autoStates.SWERVE_WALL_TURN, 10000);
+                    setState(autoStates.SWERVE_WALL_TURN, 3000);
                 } else {
                     ourSwerve.driveRobot(-0.6, 0.4, 0.35, 0);
                     // wait for wall move
-                    setState(autoStates.SWERVE_WALL_TURN, 10000);
+                    setState(autoStates.SWERVE_TO_DEPOT, 3000);
                 }
                 break;
 
@@ -399,11 +400,11 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_WALL_TURN:
                 ourSwerve.stopRobot();
 
-                swerveSleep(1000);
-                orientRobot(80.0);
+                swerveSleep(600);
+                //orientRobot(45.0);
 
                 // turn for the planned time
-                setState(autoStates.SWERVE_WALL_PAUSE, 3000);
+                setState(autoStates.SWERVE_WALL_PAUSE, 2000);
                 break;
 
 
@@ -413,20 +414,20 @@ public class SwerveAuto extends SwerveCore {
                 ourSwerve.stopRobot();
 
                 // wait for delay
-                setState(autoStates.SWERVE_TO_DEPOT, 0);
+                setState(autoStates.SWERVE_TO_DEPOT, 300);
                 break;
 
             // Move to the depot
             case SWERVE_TO_DEPOT:
-                ourSwerve.autoDrive( 0.56, 230, 0.0, 100.0 );
+                ourSwerve.autoDrive( -0.60, 45.0, 45.0, 170.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
                 // drive to the depot
                 if (targetSilver) {
-                    setState(autoStates.SWERVE_PLACE_MARKER, 10000);
+                    setState(autoStates.SWERVE_PLACE_MARKER, 4000);
                 } else {
-                    setState(autoStates.SWERVE_PLACE_MARKER, 10000);
+                    setState(autoStates.SWERVE_PLACE_MARKER, 4000);
                 }
                 break;
 
@@ -444,7 +445,7 @@ public class SwerveAuto extends SwerveCore {
 
             // Move to the pit
             case SWERVE_TO_PIT:
-                ourSwerve.autoDrive( 0.70, 53.0, 0.0, 190.0 );
+                ourSwerve.autoDrive( 1.0, 47.0, 45.0, 220.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
