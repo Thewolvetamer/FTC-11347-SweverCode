@@ -46,6 +46,7 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_DROP,
         SWERVE_SLIDE,
         SWERVE_PRESCAN,
+        SWERVE_DELAY2,
         SWERVE_SCAN,
         SWERVE_TO_PARTICLES,
         SWERVE_TO_WALL,
@@ -331,8 +332,12 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             // Drop down from the lander
+            case SWERVE_DELAY:
+                // delay
+                setState(autoStates.SWERVE_DROP, 1500);
+                break;
             case SWERVE_DROP:
-
+                detector.disable();
                 lineSlideArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 lineSlideArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lineSlideArm.setTargetPosition(3800);
@@ -350,7 +355,7 @@ public class SwerveAuto extends SwerveCore {
 
             // Slide sideways
             // running into robots so we added a delay for when we need it
-            case SWERVE_DELAY:
+            case SWERVE_DELAY2:
                 // delay
                 setState(autoStates.SWERVE_SLIDE, 0);
                 break;
@@ -369,6 +374,11 @@ public class SwerveAuto extends SwerveCore {
                 ourSwerve.autoDrive( 0.3, 0.0, 0.0, 30.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.FALSE;
+                if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.LEFT ) ;
+
+                else if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.CENTER ) ;
+
+                else if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.RIGHT ) ;
 
                 // turn for the planned time
                 setState(autoStates.SWERVE_TO_WALL, 2000);
@@ -538,8 +548,8 @@ public class SwerveAuto extends SwerveCore {
     @Override
     public void stop() {
         swerveDebug(500, "SwerveAuto::stop", "START");
-        detector.disable();
-        // Disables vuforia on stop.
+
+        
 
 
 
