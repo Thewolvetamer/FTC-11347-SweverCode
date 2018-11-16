@@ -175,7 +175,7 @@ public class GoldAlignDetector extends DogeCVDetector {
 
     /**
      * Returns if the gold element is aligned
-     * @return if the gold element is alined
+     * @return if the gold element is aligned
      */
     public boolean getAligned(){
         return aligned;

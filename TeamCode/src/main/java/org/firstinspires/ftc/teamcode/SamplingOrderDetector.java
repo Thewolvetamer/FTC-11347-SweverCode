@@ -227,6 +227,7 @@ public class SamplingOrderDetector extends DogeCVDetector {
                 Rect rect = choosenWhiteRect.get(i);
                 if(chosenYellowRect.x > rect.x){
                     leftCount++;
+
                 }
             }
             if(leftCount == 0){
