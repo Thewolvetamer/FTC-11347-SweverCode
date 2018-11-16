@@ -374,12 +374,15 @@ public class SwerveAuto extends SwerveCore {
                 ourSwerve.autoDrive( 0.3, 0.0, 0.0, 30.0 );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.FALSE;
-                if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.LEFT ) ;
-
-                else if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.CENTER ) ;
-
-                else if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.RIGHT ) ;
-
+//                if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.LEFT ) ;
+//                    ourSwerve.autoDrive(0.4,280.0,0.0,.0);
+//                    ourSwerve.autoDrive(0.4,0.0,0.0,20);
+//                if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.CENTER ) ;
+//                    ourSwerve.autoDrive(0.4,0.0,0.0,20);
+//                    ourSwerve.autoDrive(-0.4,0.0,0.0,20);
+//                if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.RIGHT ) ;
+//                    ourSwerve.autoDrive(0.4,80.0,0.0,20);
+//                    ourSwerve.autoDrive(-0.4,80.0,0.0,20);
                 // turn for the planned time
                 setState(autoStates.SWERVE_TO_WALL, 2000);
                 break;
