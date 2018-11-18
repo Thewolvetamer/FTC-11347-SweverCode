@@ -350,7 +350,7 @@ public class SwerveAuto extends SwerveCore {
                 swerveRightRear.updateWheel(0.0, 0.7);
 
                 // wait, then slide
-                setState(autoStates.SWERVE_TO_PARTICLES, 8500);
+                setState(autoStates.SWERVE_DELAY2, 8500);
                 break;
 
             // Slide sideways
@@ -365,7 +365,7 @@ public class SwerveAuto extends SwerveCore {
 
 
                 // turn for the planned time
-                setState(autoStates .SWERVE_TO_PARTICLES, 500);
+                setState(autoStates.SWERVE_TO_PARTICLES, 500);
                 break;
 
 // Move to the particles
@@ -383,7 +383,7 @@ public class SwerveAuto extends SwerveCore {
 //                if (detector.getLastOrder()== SamplingOrderDetector.GoldLocation.RIGHT ) ;
 //                    ourSwerve.autoDrive(0.4,80.0,0.0,20);
 //                    ourSwerve.autoDrive(-0.4,80.0,0.0,20);
-                // turn for the planned time
+//                 turn for the planned time
                 setState(autoStates.SWERVE_TO_WALL, 2000);
                 break;
 
@@ -397,11 +397,11 @@ public class SwerveAuto extends SwerveCore {
                     // wait for wall move
                     setState(autoStates.SWERVE_TO_DEPOT, 3000);
                 } else {
-                    ourSwerve.autoDrive( 0.4, 0.0, 140.0, 200.0 );
+                    ourSwerve.autoDrive( 0.4, 265.0, 135.0, 120.0 );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     // wait for wall move
-                    setState(autoStates.SWERVE_TO_DEPOT, 3000);
+                    setState(autoStates.SWERVE_TO_DEPOT, 9000);
                 }
                 break;
 
@@ -409,15 +409,15 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_TO_DEPOT:
                 // drive to the depot
                 if (targetSilver) {
-                    ourSwerve.autoDrive( 0.60, 220.0, 50.0, 100.0 );
+                    ourSwerve.autoDrive( 0.60, 225.0, 50.0, 120.0 );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_PLACE_MARKER, 4000);
+                    setState(autoStates.SWERVE_PLACE_MARKER, 5000);
                 } else {
-                    ourSwerve.autoDrive( 0.60, 310.0, 140.0, 100.0 );
+                    ourSwerve.autoDrive( 0.60, 20.0, 135.0, 100.0 );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_PLACE_MARKER, 4000);
+                    setState(autoStates.SWERVE_PLACE_MARKER, 5000);
                 }
                 break;
 
@@ -436,26 +436,24 @@ public class SwerveAuto extends SwerveCore {
             // Move to the pit
             case SWERVE_TO_PIT:
                 if(targetSilver) {
-                    ourSwerve.autoDrive(1.0, 45.0, 50.0, 190.0);
+                    ourSwerve.autoDrive(1.0, 25.0, 50.0, 190.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
                     brakeOn();
-                    ourSwerve.autoDrive(1.0, 45.0, 50.0, 5.0);
+                    ourSwerve.autoDrive(1.0, 60.0, 50.0, 5.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     brakeOff();
                 }
                 else {
-                    ourSwerve.autoDrive(1.0, 135.0, 131.0, 190.0);
+                    ourSwerve.autoDrive(1.0, 200.0, 135.0, 190.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
+
+
                     brakeOn();
-                    ourSwerve.autoDrive(1.0, 135.0, 131.0, 5.0);
-                    autoDriveWait = Boolean.TRUE;
-                    autoDriveStop = Boolean.TRUE;
-                    brakeOff();
                 }
 
 
