@@ -435,7 +435,7 @@ public class SwerveAuto extends SwerveCore {
 
             // Move to the pit
             case SWERVE_TO_PIT:
-                if(targetSilver == Boolean.TRUE) {
+                if(targetSilver) {
                     ourSwerve.autoDrive(1.0, 45.0, 50.0, 190.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
