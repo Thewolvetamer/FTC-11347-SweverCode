@@ -72,7 +72,7 @@ public class SwerveAuto extends SwerveCore {
     private String loopSenseStatus;
     private Boolean autoDriveWait;
     private Boolean autoDriveStop;
-
+    public Boolean start90;
 
     // debug options to run a few states
     // -- enabled/controlled in SwerveAutoTEST init/start
@@ -179,8 +179,11 @@ public class SwerveAuto extends SwerveCore {
         double initWheelPower;
 
         swerveDebug(500, "SwerveAuto::init", "START");
-
-        initWheelAngle = 0.3;
+        if(start90) {
+            initWheelAngle = 0.7;
+        } else {
+            initWheelAngle = 0.3;
+        }
         initWheelPower = 0.02;
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
@@ -447,7 +450,7 @@ public class SwerveAuto extends SwerveCore {
                     brakeOff();
                 }
                 else {
-                    ourSwerve.autoDrive(.9, 228.75, 0.0, 205.0);
+                    ourSwerve.autoDrive(.9, 228.75, 0.0, 210.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
