@@ -73,7 +73,6 @@ public class SwerveAuto extends SwerveCore {
     private Boolean autoDriveWait;
     private Boolean autoDriveStop;
     public Boolean start90;
-
     // debug options to run a few states
     // -- enabled/controlled in SwerveAutoTEST init/start
     boolean debugActive = Boolean.FALSE;
@@ -175,6 +174,8 @@ public class SwerveAuto extends SwerveCore {
     // The system calls this member once when the OpMode is enabled.
     @Override
     public void init() {
+
+
         double initWheelAngle;
         double initWheelPower;
 
