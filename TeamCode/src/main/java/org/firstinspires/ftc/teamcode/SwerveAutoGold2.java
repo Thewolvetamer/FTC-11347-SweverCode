@@ -41,6 +41,7 @@ public class SwerveAutoGold2 extends SwerveAuto {
 
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
+        start90= Boolean.TRUE;
         super.init();
         start90= Boolean.TRUE;
         targetSilver = Boolean.FALSE;
