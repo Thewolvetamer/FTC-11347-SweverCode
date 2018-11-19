@@ -180,7 +180,7 @@ public class SwerveAuto extends SwerveCore {
 
         swerveDebug(500, "SwerveAuto::init", "START");
         if(start90) {
-            initWheelAngle = 0.7;
+            initWheelAngle = 0.6;
         } else {
             initWheelAngle = 0.3;
         }
