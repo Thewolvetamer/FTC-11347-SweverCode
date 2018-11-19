@@ -397,7 +397,7 @@ public class SwerveAuto extends SwerveCore {
                     // wait for wall move
                     setState(autoStates.SWERVE_TO_DEPOT, 3000);
                 } else {
-                    ourSwerve.autoDrive( 0.4, 265.0, 135.0, 120.0 );
+                    ourSwerve.autoDrive( 0.4, 265.0, 135.0, 122.0 );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     // wait for wall move
@@ -414,10 +414,10 @@ public class SwerveAuto extends SwerveCore {
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_PLACE_MARKER, 5000);
                 } else {
-                    ourSwerve.autoDrive( 0.60, 20.0, 135.0, 100.0 );
+                    ourSwerve.autoDrive( 0.60, 42.0, 0.0, 130.0 );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_PLACE_MARKER, 5000);
+                    setState(autoStates.SWERVE_PLACE_MARKER, 6000);
                 }
                 break;
 
@@ -447,7 +447,7 @@ public class SwerveAuto extends SwerveCore {
                     brakeOff();
                 }
                 else {
-                    ourSwerve.autoDrive(1.0, 200.0, 135.0, 190.0);
+                    ourSwerve.autoDrive(.9, 228.75, 0.0, 205.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
