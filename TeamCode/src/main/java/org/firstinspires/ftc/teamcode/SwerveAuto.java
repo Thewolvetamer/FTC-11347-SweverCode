@@ -180,11 +180,7 @@ public class SwerveAuto extends SwerveCore {
         double initWheelPower;
 
         swerveDebug(500, "SwerveAuto::init", "START");
-        if(start90) {
-            initWheelAngle = 0.6;
-        } else {
-            initWheelAngle = 0.3;
-        }
+        initWheelAngle = .3;
         initWheelPower = 0.02;
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
@@ -399,7 +395,7 @@ public class SwerveAuto extends SwerveCore {
                     autoDriveStop = Boolean.TRUE;
 
                     // wait for wall move
-                    setState(autoStates.SWERVE_TO_DEPOT, 3000);
+                    setState(autoStates.SWERVE_TO_DEPOT, 5000);
                 } else {
                     ourSwerve.autoDrive( 0.4, 265.0, 135.0, 122.0 );
                     autoDriveWait = Boolean.TRUE;
@@ -440,15 +436,15 @@ public class SwerveAuto extends SwerveCore {
             // Move to the pit
             case SWERVE_TO_PIT:
                 if(targetSilver) {
-                    ourSwerve.autoDrive(1.0, 25.0, 50.0, 190.0);
+                    ourSwerve.autoDrive(1.0, 25.0, 50.0, 199.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
                     brakeOn();
-                    ourSwerve.autoDrive(1.0, 60.0, 50.0, 5.0);
-                    autoDriveWait = Boolean.TRUE;
-                    autoDriveStop = Boolean.TRUE;
-                    brakeOff();
+//                    ourSwerve.autoDrive(1.0, 60.0, 50.0, 5.0);
+//                    autoDriveWait = Boolean.TRUE;
+//                    autoDriveStop = Boolean.TRUE;
+//                    brakeOff();
                 }
                 else {
                     ourSwerve.autoDrive(.9, 228.75, 0.0, 210.0);
