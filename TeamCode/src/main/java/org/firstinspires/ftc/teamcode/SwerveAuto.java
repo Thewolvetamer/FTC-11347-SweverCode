@@ -191,6 +191,7 @@ public class SwerveAuto extends SwerveCore {
 
         //DogeCV Initialization
         detector = new SamplingOrderDetector();
+
         // CameraIndex: 0 is back, 1 is front
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance(),1,Boolean.FALSE);
         detector.useDefaults();
