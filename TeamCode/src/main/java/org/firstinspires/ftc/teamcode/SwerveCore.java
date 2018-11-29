@@ -61,8 +61,7 @@ public class SwerveCore extends OpMode {
     DcMotor motorRightRear;
     DcMotor motorLeftRear;
     DcMotor lineSlideArm;
-    DcMotor fickerShooter;
-    DcMotor intake;
+    //DcMotor intake;
     DcMotor loader;
     Servo   servoRightFront;
     Servo   servoLeftFront;
@@ -192,10 +191,12 @@ public class SwerveCore extends OpMode {
         motorRightRear.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "Right Rear Motor", motorRightRear);
 
-        intake = hardwareMap.dcMotor.get("intake");
-        swerveDebugDevice(500, "Right Rear Motor", intake);
+//        intake = hardwareMap.dcMotor.get("intake");
+//        swerveDebugDevice(500, "intake", intake);
+        lineSlideArm = hardwareMap.dcMotor.get("lineSlideArm");
+        swerveDebugDevice(500, "climber", lineSlideArm);
         loader = hardwareMap.dcMotor.get("loader");
-        swerveDebugDevice(500, "Right Rear Motor", loader);
+        swerveDebugDevice(500, "loader", loader);
 
         swerveDebug(500, "SwerveCore::init", "MOTORS connected");
 
@@ -218,11 +219,6 @@ public class SwerveCore extends OpMode {
         //Game Mark Drop Servo Port 1 Hub 4
         gameMarkDrop = hardwareMap.servo.get("gameMarkDrop");
 
-        //Linear slide arm DC motor Port 2 Hub 2
-        lineSlideArm = hardwareMap.dcMotor.get("SlideArm");
-
-        //Ficker Shooter Silver DC motor Port 2 Hub 2
-//        fickerShooter = hardwareMap.dcMotor.get("SilverShooter");
 
         //Silver ball loader Servo
         //silverLoad = hardwareMap.servo.get("SilverLoader");
@@ -231,8 +227,8 @@ public class SwerveCore extends OpMode {
         // battery power
         // We found a very useful link to the battery voltage here:
         //    https://www.reddit.com/r/FTC/comments/3odx26/is_it_possible_to_get_the_battery_voltage/
-        batteryVoltSensor = hardwareMap.voltageSensor.get("Expansion Hub 4");
-        swerveDebugDevice(500,"Battery Voltage Sensor", batteryVoltSensor);
+        //batteryVoltSensor = hardwareMap.voltageSensor.get("Expansion Hub 4");
+        //swerveDebugDevice(500,"Battery Voltage Sensor", batteryVoltSensor);
 
         // Rev has a built-in IMU for relative position information. The swerve drive uses the IMU.
         ourIMU = hardwareMap.get(BNO055IMU.class, "imu");

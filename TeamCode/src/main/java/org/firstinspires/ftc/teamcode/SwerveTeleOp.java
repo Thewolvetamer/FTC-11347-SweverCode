@@ -110,7 +110,7 @@ public class SwerveTeleOp extends SwerveCore {
 
 //        ballShooter();
 
-        intake();
+//        intake();
 
         load();
 
@@ -170,7 +170,7 @@ public class SwerveTeleOp extends SwerveCore {
 //    void ballShooter() {
 //        //ficker Shooter control
 //
-//        //Right triger too fire
+//        //Right triger to fire
 //        if (gamepad2.right_bumper) {
 //            fickerShooter.setPower(1);
 //        } else {
@@ -179,17 +179,16 @@ public class SwerveTeleOp extends SwerveCore {
 //    }
 
 
-    void intake() {
-        //loads sliver balls into the magusinz
-//
-        //Right trigger to load
-            intake.setPower(-gamepad2.left_stick_y);
-    }
+//    void intake() {
+//        //loads sliver balls into the magazines
+////
+//        //Right trigger to load
+//            intake.setPower(-gamepad2.left_stick_y);
+//    }
 
 
     void load() {
-        //loads into the magusinz
-//                       ^^^^lol xd
+        //loads into the magazines
         //Right bumper to load
         loader.setPower(-gamepad2.right_stick_y);
     }
