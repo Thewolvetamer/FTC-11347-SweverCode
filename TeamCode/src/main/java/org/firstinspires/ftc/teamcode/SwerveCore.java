@@ -60,15 +60,17 @@ public class SwerveCore extends OpMode {
     DcMotor motorLeftFront;
     DcMotor motorRightRear;
     DcMotor motorLeftRear;
-    DcMotor lineSlideArm;
-    //DcMotor intake;
-    DcMotor loader;
+    DcMotor climber;
+    DcMotor spool;
+    DcMotor spool2;
+
     Servo   servoRightFront;
     Servo   servoLeftFront;
     Servo   servoRightRear;
     Servo   servoLeftRear;
     Servo   gameMarkDrop;
-    //Servo   silverLoad;
+    Servo   intake;
+
     SwerveWheel swerveRightFront;
     SwerveWheel swerveLeftFront;
 
@@ -91,6 +93,9 @@ public class SwerveCore extends OpMode {
     Boolean settingsDone;
     // Are we red?
     Boolean targetSilver;
+    Boolean doge;
+
+
     // Delay at start
     int autoDelay;
     static final int delayMAX = 7000;
@@ -151,6 +156,8 @@ public class SwerveCore extends OpMode {
 
 
         targetSilver = Boolean.TRUE;
+        doge = Boolean.FALSE;
+
 
 
         // Record the starting time for this OpMode
@@ -190,13 +197,12 @@ public class SwerveCore extends OpMode {
         motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRightRear.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "Right Rear Motor", motorRightRear);
-
-//        intake = hardwareMap.dcMotor.get("intake");
-//        swerveDebugDevice(500, "intake", intake);
-        lineSlideArm = hardwareMap.dcMotor.get("lineSlideArm");
-        swerveDebugDevice(500, "climber", lineSlideArm);
-        loader = hardwareMap.dcMotor.get("loader");
-        swerveDebugDevice(500, "loader", loader);
+        climber = hardwareMap.dcMotor.get("climber");
+        swerveDebugDevice(500, "climber", climber);
+        spool = hardwareMap.dcMotor.get("spool");
+        swerveDebugDevice(500, "spool", spool);
+        spool2 = hardwareMap.dcMotor.get("spool2");
+        swerveDebugDevice(500, "spool2", spool2);
 
         swerveDebug(500, "SwerveCore::init", "MOTORS connected");
 
@@ -214,10 +220,15 @@ public class SwerveCore extends OpMode {
         servoRightRear.scaleRange(1.0/6,5.0/6);
         swerveDebugDevice(500, "Right Rear Servo", servoRightRear);
 
-        swerveDebug(500, "SwerveCore::init", "SERVOS connected");
-
         //Game Mark Drop Servo Port 1 Hub 4
         gameMarkDrop = hardwareMap.servo.get("gameMarkDrop");
+        swerveDebugDevice(500, "Game Marker Drop", gameMarkDrop);
+
+        intake = hardwareMap.servo.get("intake");
+        swerveDebugDevice(500, "intake", intake);
+
+
+        swerveDebug(500, "SwerveCore::init", "SERVOS connected");
 
 
         //Silver ball loader Servo

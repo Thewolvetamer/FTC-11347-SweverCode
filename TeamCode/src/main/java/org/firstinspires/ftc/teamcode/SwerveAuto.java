@@ -18,10 +18,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.disnodeteam.dogecv.DogeCV;
-import com.disnodeteam.dogecv.CameraViewDisplay;
-import org.firstinspires.ftc.teamcode.SamplingOrderDetector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 // ***********************************************************************
@@ -46,12 +43,15 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_DROP,
         SWERVE_SLIDE,
         SWERVE_PRESCAN,
+        SWERVE_LEFT_PARTICLE,
+        SWERVE_LEFT_RETREAT,
         SWERVE_RETREAT,
         SWERVE_DELAY2,
         SWERVE_TO_PARTICLES2,
         SWERVE_SCAN,
         SWERVE_TO_PARTICLES1,
         SWERVE_TO_PARTICLES,
+        SWERVE_TO_PARTICLES_DOGE,
         SWERVE_TO_WALL,
         SWERVE_WALL_PAUSE,
         SWERVE_WALL_TURN,
@@ -99,7 +99,12 @@ public class SwerveAuto extends SwerveCore {
 
     // variables for auto actions
     private int moveTimePushoff;
-    public double partangle;
+    double partangle;
+    double partdist;
+    double partangle2;
+    double partdist2;
+
+
     // ***********************************************************************
     // SwerveAuto
     // ***********************************************************************
@@ -347,11 +352,13 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_DROP:
 
                 detector.disable();
-                // lineSlideArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                // lineSlideArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                // lineSlideArm.setTargetPosition(3400);
+                 climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                 climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 climber.setTargetPosition(1000);
+//                 position for 4:1                1375
+//                 position for 10:1               3400
 
-                lineSlideArm.setPower(1);
+                climber.setPower(.4);
 
                 swerveLeftFront.updateWheel(0.0, 0.7);
                 swerveRightFront.updateWheel(0.0, 0.7);
@@ -361,7 +368,7 @@ public class SwerveAuto extends SwerveCore {
                 // wait, then slide
 
 
-                setState(autoStates.SWERVE_DELAY2, 5800);
+                setState(autoStates.SWERVE_DELAY2, 6800);
 
                 break;
 
@@ -369,13 +376,13 @@ public class SwerveAuto extends SwerveCore {
             // running into robots so we added a delay for when we need it
             case SWERVE_DELAY2:
                 // delay
-                lineSlideArm.setPower(0);
+                climber.setPower(0);
                 setState(autoStates.SWERVE_SLIDE, 200);
                 break;
             case SWERVE_SLIDE:
                 ourSwerve.autoDrive(0.7, 85, 0, 9);
                 autoDriveWait = Boolean.TRUE;
-
+                autoDriveStop = Boolean.TRUE;
 
                 // turn for the planned time
                 setState(autoStates.SWERVE_TO_PARTICLES1, 500);
@@ -385,55 +392,112 @@ public class SwerveAuto extends SwerveCore {
 
             case SWERVE_TO_PARTICLES1:
                 ourSwerve.autoDrive(0.3, 0.0, 0.0, 30.0);
-                setState(autoStates.SWERVE_TO_PARTICLES2, 2500);
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
+                if(doge){
+                    setState(autoStates.SWERVE_TO_PARTICLES2, 2500);
+                }
+                else{
+                    setState(autoStates.SWERVE_TO_PARTICLES, 2500);
+                }
+                break;
             case SWERVE_TO_PARTICLES2:
                 //adding delay for stability
-                setState(autoStates.SWERVE_TO_PARTICLES, 1000);
-            case SWERVE_TO_PARTICLES:
-
+                if(detector.getLastOrder() == SamplingOrderDetector.GoldLocation.LEFT) {
+                    setState(autoStates.SWERVE_LEFT_PARTICLE, 500);
+                }
+                else{
+                    setState(autoStates.SWERVE_TO_PARTICLES, 500);
+                }
+            break;
+            case SWERVE_LEFT_PARTICLE:
+                partangle = 265.0;
+                partdist = 55;
+                ourSwerve.autoDrive(0.6, partangle, 0.0, partdist);
                 autoDriveWait = Boolean.TRUE;
-                autoDriveStop = Boolean.FALSE;
-                partangle = 0.0;
+                autoDriveStop = Boolean.TRUE;
+                setState(autoStates.SWERVE_TO_PARTICLES, 6000);
+                break;
+
+            case SWERVE_TO_PARTICLES:
+                partangle = -40.0;
+                partdist = 45;
+                ourSwerve.autoDrive(0.6, partangle, 0.0, partdist);
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
+                setState(autoStates.SWERVE_RETREAT,6000);
+                break;
+
+            case SWERVE_TO_PARTICLES_DOGE:
+
+//                use detector.getLastOrder() == SamplingOrderDetector.GoldLocation.
                 if (detector.getLastOrder() == SamplingOrderDetector.GoldLocation.RIGHT) {
                     partangle = 280.0;
-                    ourSwerve.autoDrive(0.4, partangle, 0.0, 20.0);
+                    partdist = 27;
+                    ourSwerve.autoDrive(0.6, partangle, 0.0, partdist);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_RETREAT,6000);
                 }
-
                 if (detector.getLastOrder() == SamplingOrderDetector.GoldLocation.CENTER) {
-                    partangle = 0.0;
-                    ourSwerve.autoDrive(0.4, partangle, 0.0, 20.0);
+                    partangle = -40.0;
+                    partdist = 45;
+                    ourSwerve.autoDrive(0.6, partangle, 0.0, partdist);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_RETREAT,6000);
                 }
                 if (detector.getLastOrder() == SamplingOrderDetector.GoldLocation.LEFT) {
-                    partangle = 60.0;
-                    ourSwerve.autoDrive(0.4, partangle, 0.0, 20.0);
+                    partdist2 = 55;
+                    partangle2 = 0.0;
+                    ourSwerve.autoDrive(0.6, partangle2, 0.0, partdist2);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+
+                    setState(autoStates.SWERVE_LEFT_RETREAT, 6000);
                 }
-                setState(autoStates.SWERVE_RETREAT,3000);
-
-//                 turn for the planned time
-
-                break;
+                else {
+                    partangle = -40.0;
+                    partdist = 27;
+                    ourSwerve.autoDrive(0.6, partangle, 0.0, partdist);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_RETREAT,6000);
+                }
+                 break;
 
             // Move to the wall
 
             case SWERVE_RETREAT:
-                ourSwerve.autoDrive(-0.4,partangle,0.0,20.0);
+                ourSwerve.autoDrive(-0.4, partangle,0.0, partdist);
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
                 setState(autoStates.SWERVE_TO_WALL, 2000);
+                break;
+
+            case SWERVE_LEFT_RETREAT:
+                ourSwerve.autoDrive(-0.4, partangle2,0.0, partdist2);
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
+                setState(autoStates.SWERVE_TO_WALL, 2000);
+                break;
+
             case SWERVE_TO_WALL:
                 if (targetSilver) {
-                    ourSwerve.autoDrive( 0.4, 270.0, 50.0, 200.0 );
+                    ourSwerve.autoDrive( 0.4, 276.5, 50.0, 200.0 );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
                     // wait for wall move
                     setState(autoStates.SWERVE_TO_DEPOT, 5000);
                 } else {
-                    ourSwerve.autoDrive( 0.4, 275.0, 135.0, 117.0 );
+                    ourSwerve.autoDrive( 0.4, 272.0, 135.0, 117.0 );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     // wait for wall move
                     setState(autoStates.SWERVE_TO_DEPOT, 9000);
                 }
-                break;
+                 break;
 
             // Move to the depot
             case SWERVE_TO_DEPOT:
@@ -466,7 +530,7 @@ public class SwerveAuto extends SwerveCore {
             // Move to the pit
             case SWERVE_TO_PIT:
                 if(targetSilver) {
-                    ourSwerve.autoDrive(1.0, 25.0, 50.0, 199.0);
+                    ourSwerve.autoDrive(1.0, 46.5, 0.0, 199.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
@@ -477,7 +541,7 @@ public class SwerveAuto extends SwerveCore {
 //                    brakeOff();
                 }
                 else {
-                    ourSwerve.autoDrive(.9, 229.1, 0.0, 210.0);
+                    ourSwerve.autoDrive(.9, 229.8, 0.0, 210.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
@@ -573,7 +637,7 @@ public class SwerveAuto extends SwerveCore {
 
     // ***********************************************************************
     // stop
-    // ***********************************************************************
+    // ***=-*******************************************************************
     // Performs any actions that are necessary when the OpMode is disabled.
     // The system calls this member once when the OpMode is disabled.
     @Override

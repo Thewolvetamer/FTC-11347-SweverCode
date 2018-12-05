@@ -1,5 +1,5 @@
 // ***********************************************************************
-// SwerveAutoTEST
+// SwerveAutoSilver
 // ***********************************************************************
 // The autonomous mode for swerve operations for Red team position 1
 
@@ -14,16 +14,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
-@Autonomous(name="Swerve: 9-AutoTEST 1.15", group="Swerve")
+@Autonomous(name="Swerve: 2-AutoSilver2 1.1", group="Swerve")
 //@Disabled
-public class SwerveAutoTest extends SwerveAuto {
+public class SwerveAutoSilver2 extends SwerveAuto {
 
     // ***********************************************************************
-    // SwerveAutoTEST
+    // SwerveAutoSilver
     // ***********************************************************************
     // Constructs the class.
     // The system calls this member when the class is instantiated.
-    public SwerveAutoTest() {
+    public SwerveAutoSilver2() {
         // Initialize base classes.
         // All via self-construction.
 
@@ -37,7 +37,7 @@ public class SwerveAutoTest extends SwerveAuto {
     // Set needed values for Red alliance position 1
     @Override
     public void init() {
-        swerveDebug(500, "SwerveAutoTEST::init", "STARTing init for TETS");
+        swerveDebug(500, "SwerveAutoSilver::init", "STARTing init for Silver");
 
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
@@ -46,14 +46,11 @@ public class SwerveAutoTest extends SwerveAuto {
         targetSilver = Boolean.TRUE;
         doge = Boolean.FALSE;
 
-
         // Robot and autonomous settings are read in from files in the core class init()
         // Report the autonomous settings
         showAutonomousGoals();
 
-        swerveLog( "X S6", ourSwerve.getOrientLog());
-
-        swerveDebug(500, "SwerveAutoTEST::init", "DONE");
+        swerveDebug(500, "SwerveAutoSilver::init", "DONE");
     }
 
 
@@ -64,25 +61,11 @@ public class SwerveAutoTest extends SwerveAuto {
     // Called once when the OpMode is started.
     @Override
     public void start() {
-        swerveDebug(500, "SwerveAutoTEST::start", "START");
+        swerveDebug(500, "SwerveAutoSilver::start", "START");
 
         // Call the super/base class start method.
         super.start();
 
-
-        // *************************************************
-        // *************************************************
-        // ****** set debugging on or off and options ******
-        // *************************************************
-        // *************************************************
-        debugActive = Boolean.TRUE;
-        // always add one for the state set in init below
-        debugStates = 5 + 1;
-        debugStartState = autoStates.SWERVE_SLIDE;
-        // *************************************************
-        // *************************************************
-        
-
-        swerveDebug( 500, "SwerveAutoTEST::start", "DONE");
+        swerveDebug( 500, "SwerveAutoSilver::start", "DONE");
     }
 }

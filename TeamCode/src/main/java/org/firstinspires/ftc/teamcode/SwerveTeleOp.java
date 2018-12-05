@@ -153,17 +153,17 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     void liftRobot() {
-        //Robot lift control
+        //Robot climber control
 
         // x for down, y for up
         if (gamepad2.x) {
-            lineSlideArm.setPower(-1);
+            climber.setPower(-1);
         } else if (gamepad2.y) {
 
-            lineSlideArm.setPower(1);
+            climber.setPower(1);
         } else {
 
-            lineSlideArm.setPower(0);
+            climber.setPower(0);
         }
     }
 
@@ -190,7 +190,7 @@ public class SwerveTeleOp extends SwerveCore {
     void load() {
         //loads into the magazines
         //Right bumper to load
-        loader.setPower(-gamepad2.right_stick_y);
+//        loader.setPower(-gamepad2.right_stick_y);
     }
 }
 
