@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
+    int wristSpeed;
 
     // ***********************************************************************
     // SwerveTeleOp
@@ -100,19 +101,22 @@ public class SwerveTeleOp extends SwerveCore {
 
         // *** use buttons to trigger other actions ***
 
-        //strafeR();
+        strafeR();
 
-        //strafel();
+        strafel();
 
         dropTeamIcon();
 
         liftRobot();
 
-//        ballShooter();
+        wrist();
 
-//        intake();
+        extend();
 
-        load();
+        intake();
+
+        halfWrist();
+
 
 
         // Any loop background updates happen now....
@@ -167,64 +171,61 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-//    void ballShooter() {
-//        //ficker Shooter control
-//
-//        //Right triger to fire
-//        if (gamepad2.right_bumper) {
-//            fickerShooter.setPower(1);
-//        } else {
-//            fickerShooter.setPower(0);
-//        }
-//    }
 
+    void strafeR() {
 
-//    void intake() {
-//        //loads sliver balls into the magazines
-////
-//        //Right trigger to load
-//            intake.setPower(-gamepad2.left_stick_y);
-//    }
-
-
-    void load() {
-        //loads into the magazines
-        //Right bumper to load
-//        loader.setPower(-gamepad2.right_stick_y);
-    }
-}
-
-       /* void strafeR(){
-
-            if (gamepad1.dpad_right){
-                swerveLeftFront.updateWheel(1, -0.50);
-                swerveRightFront.updateWheel(1, -0.50);
-                swerveLeftRear.updateWheel(1, -0.50);
-                swerveRightRear.updateWheel(1, -0.50);
-            } else {
-                swerveLeftFront.updateWheel(0, 0);
-                swerveRightFront.updateWheel(0, 0);
-                swerveLeftRear.updateWheel(0, 0);
-                swerveRightRear.updateWheel(0, 0);
-            }
-
+        if (gamepad1.dpad_right) {
+            swerveLeftFront.updateWheel(1, -0.50);
+            swerveRightFront.updateWheel(1, -0.50);
+            swerveLeftRear.updateWheel(1, -0.50);
+            swerveRightRear.updateWheel(1, -0.50);
         }
+    }
 
-    void strafel(){
+    void strafel() {
 
-        if (gamepad1.dpad_right){
+        if (gamepad1.dpad_left) {
             swerveLeftFront.updateWheel(1, 0.50);
             swerveRightFront.updateWheel(1, 0.50);
             swerveLeftRear.updateWheel(1, 0.50);
             swerveRightRear.updateWheel(1, 0.50);
-        } else {
-            swerveLeftFront.updateWheel(0, 0);
-            swerveRightFront.updateWheel(0, 0);
-            swerveLeftRear.updateWheel(0, 0);
-            swerveRightRear.updateWheel(0, 0);
+        }
+    }
+
+    void extend() {
+        extension.setPower(gamepad2.right_stick_y);
+    }
+
+    void halfWrist() {
+        if(gamepad2.a){
+            wristSpeed++;
+        }
+    }
+
+    void wrist() {
+        if (wristSpeed % 2 == 1) {
+            wrist.setPower(gamepad2.left_stick_y / 2);
+        }
+        else {
+            wrist.setPower(gamepad2.left_stick_y);
+        }
+    }
+
+    void intake() {
+        if(gamepad2.left_bumper){
+            intake.setPower(-1);
         }
 
-    }*/
+        if(gamepad2.right_bumper){
+            intake.setPower(.6);
+        }
+
+        if(!gamepad2.right_bumper && !gamepad2.left_bumper) {
+            intake.setPower(0);
+        }
+    }
+
+}
 
 
 
