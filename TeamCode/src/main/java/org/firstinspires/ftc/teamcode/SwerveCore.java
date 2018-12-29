@@ -93,7 +93,6 @@ public class SwerveCore extends OpMode {
     Boolean settingsDone;
     // Are we red?
     Boolean targetSilver;
-    Boolean doge;
 
 
     // Delay at start
@@ -156,7 +155,6 @@ public class SwerveCore extends OpMode {
 
 
         targetSilver = Boolean.TRUE;
-        doge = Boolean.FALSE;
 
 
 

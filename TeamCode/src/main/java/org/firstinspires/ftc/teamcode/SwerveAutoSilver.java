@@ -44,7 +44,6 @@ public class SwerveAutoSilver extends SwerveAuto {
         super.init();
 
         targetSilver = Boolean.TRUE;
-        doge = Boolean.TRUE;
 
         // Robot and autonomous settings are read in from files in the core class init()
         // Report the autonomous settings

@@ -44,7 +44,6 @@ public class SwerveAutoTest extends SwerveAuto {
         super.init();
 
         targetSilver = Boolean.TRUE;
-        doge = Boolean.FALSE;
 
 
         // Robot and autonomous settings are read in from files in the core class init()
@@ -77,7 +76,7 @@ public class SwerveAutoTest extends SwerveAuto {
         // *************************************************
         debugActive = Boolean.TRUE;
         // always add one for the state set in init below
-        debugStates = 1 + 1;
+        debugStates = 1;
         debugStartState = autoStates.SWERVE_TURN_TO_PARTICLES;
         // *************************************************
         // *************************************************

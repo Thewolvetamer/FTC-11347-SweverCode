@@ -2,6 +2,8 @@
 // build.gradle in FtcRobotController
 //
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
 android {
 
     defaultConfig {
@@ -16,14 +18,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 }
+
 repositories {
     flatDir {
         dirs '../libs'
     }
+    mavenCentral()
 }
-apply from: 'build.release.gradle'
 
+apply from: 'build.release.gradle'
 dependencies {
-    implementation project(':DogeCV')
-    implementation project(':openCVLibrary3')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
