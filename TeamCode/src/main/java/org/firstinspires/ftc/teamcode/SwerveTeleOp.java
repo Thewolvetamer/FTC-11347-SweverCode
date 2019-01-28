@@ -16,7 +16,8 @@ public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
     int wristSpeed;
-    int minToggle=0;
+    int minToggle = 0;
+
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -120,7 +121,6 @@ public class SwerveTeleOp extends SwerveCore {
         flaps();
 
 
-
         // Any loop background updates happen now....
         loopEndReporting();
 
@@ -205,11 +205,11 @@ public class SwerveTeleOp extends SwerveCore {
 
     void intake() {
 //        intake
-        if(gamepad2.left_bumper){
+        if (gamepad2.left_bumper) {
             intake.setPower(.6);
         }
 //        outtake
-        else if(gamepad2.right_bumper){
+        else if (gamepad2.right_bumper) {
             intake.setPower(-1);
         }
 //        zero power
@@ -220,22 +220,22 @@ public class SwerveTeleOp extends SwerveCore {
 
     void flaps() {
 //        full open
-        if(gamepad2.x){
-            minToggle +=1;
+        if (gamepad2.x) {
+            minToggle += 1;
+
         }
-        if(gamepad2.x){
-            if(minToggle%2==0) {
 
-                flapR.setPosition(.5);
-                flapL.setPosition(.5);
+        if (minToggle % 2 == 0) {
 
-            }
-            else if(minToggle%2==1) {
+            flapR.setPosition(.5);
+            flapL.setPosition(.5);
 
-                flapR.setPosition(1);
-                flapL.setPosition(1);
-            }
+        } else if (minToggle % 2 == 1) {
+
+            flapR.setPosition(1);
+            flapL.setPosition(1);
         }
+
         if(gamepad2.right_trigger >= 0.2) {
             flapR.setPosition(-1);
             flapL.setPosition(-1);
@@ -249,11 +249,6 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
 }
-
-
-
-
-
 //telemetry.update()
 
 
