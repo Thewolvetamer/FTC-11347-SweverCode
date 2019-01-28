@@ -221,13 +221,20 @@ public class SwerveTeleOp extends SwerveCore {
     void flaps() {
 //        full open
         if(gamepad2.x){
-            if(minToggle=false&&gamepad2.x) {
-                minToggle = true;
+
+        }
+        if(gamepad2.x){
+            if(minToggle=false) {
+
                 flapR.setPosition(.5);
                 flapL.setPosition(.5);
             }
-            else if(minToggle=true&&gamepad2.x){
-                minToggle=false;
+            else if(minToggle=true){
+
+                flapR.setPosition(1);
+                flapL.setPosition(1);
+            }
+            else{
 
             }
         }
