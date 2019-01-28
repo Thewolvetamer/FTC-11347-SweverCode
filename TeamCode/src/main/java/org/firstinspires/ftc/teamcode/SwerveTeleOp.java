@@ -16,7 +16,7 @@ public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
     int wristSpeed;
-    boolean minToggle=true;
+    int minToggle=0;
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -221,32 +221,30 @@ public class SwerveTeleOp extends SwerveCore {
     void flaps() {
 //        full open
         if(gamepad2.x){
-
+            minToggle +=1;
         }
         if(gamepad2.x){
-            if(minToggle=false) {
+            if(minToggle%2==0) {
 
                 flapR.setPosition(.5);
                 flapL.setPosition(.5);
-                minToggle=true;
 
             }
-            else if(minToggle=true){
-                minToggle=false;
+            else if(minToggle%2==1) {
+
                 flapR.setPosition(1);
                 flapL.setPosition(1);
             }
-
         }
         if(gamepad2.right_trigger >= 0.2) {
             flapR.setPosition(-1);
             flapL.setPosition(-1);
-        } else if(gamepad2.left_trigger >= 0.2) {
-            flapR.setPosition(.5);
-            flapL.setPosition(.5);
-        } else {
-            flapR.setPosition(1);
-            flapL.setPosition(1);
+//        } else if(gamepad2.left_trigger >= 0.2) {
+//            flapR.setPosition(.5);
+//            flapL.setPosition(.5);
+//        } else {
+//            flapR.setPosition(1);
+//            flapL.setPosition(1);
         }
     }
 
