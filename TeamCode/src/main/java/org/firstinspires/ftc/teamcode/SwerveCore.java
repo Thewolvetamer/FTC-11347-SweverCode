@@ -70,6 +70,8 @@ public class SwerveCore extends OpMode {
     Servo   servoRightRear;
     Servo   servoLeftRear;
     Servo   gameMarkDrop;
+    Servo   flapR;
+    Servo   flapL;
 
     SwerveWheel swerveRightFront;
     SwerveWheel swerveLeftFront;
@@ -91,8 +93,9 @@ public class SwerveCore extends OpMode {
 
     /* Are we done reading settings? */
     Boolean settingsDone;
-    // Are we red?
+
     Boolean targetSilver;
+    Boolean noLift;
 
 
     // Delay at start
@@ -228,10 +231,13 @@ public class SwerveCore extends OpMode {
         //Game Mark Drop Servo Port 1 Hub 4
         gameMarkDrop = hardwareMap.servo.get("gameMarkDrop");
         swerveDebugDevice(500, "Game Marker Drop", gameMarkDrop);
-//
-//        intake = hardwareMap.servo.get("intake");
-//        swerveDebugDevice(500, "intake", intake);
 
+        flapR = hardwareMap.servo.get("flapR");
+        flapR.setDirection(Servo.Direction.REVERSE);
+        swerveDebugDevice(500, "Right Flap", flapR);
+
+        flapL = hardwareMap.servo.get("flapL");
+        swerveDebugDevice(500, "Left Flap", flapL);
 
         swerveDebug(500, "SwerveCore::init", "SERVOS connected");
 
@@ -245,6 +251,7 @@ public class SwerveCore extends OpMode {
         //    https://www.reddit.com/r/FTC/comments/3odx26/is_it_possible_to_get_the_battery_voltage/
         //batteryVoltSensor = hardwareMap.voltageSensor.get("Expansion Hub 4");
         //swerveDebugDevice(500,"Battery Voltage Sensor", batteryVoltSensor);
+
 
         // Rev has a built-in IMU for relative position information. The swerve drive uses the IMU.
         ourIMU = hardwareMap.get(BNO055IMU.class, "imu");

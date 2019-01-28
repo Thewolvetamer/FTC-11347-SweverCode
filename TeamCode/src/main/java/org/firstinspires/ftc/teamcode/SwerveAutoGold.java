@@ -42,7 +42,7 @@ public class SwerveAutoGold extends SwerveAuto {
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
         super.init();
-
+        noLift = false;
         targetSilver = Boolean.FALSE;
 
         // Robot and autonomous settings are read in from files in the core class init()

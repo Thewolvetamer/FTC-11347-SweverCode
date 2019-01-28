@@ -1,7 +1,9 @@
+//11347 has all the cool kids
 // ***********************************************************************
 // SwerveAuto
 // ***********************************************************************
 // The autonomous mode for swerve operations
+
 
 //
 // ****** IMPORTANT NOTE FOR STATE CHANGES ******
@@ -44,26 +46,24 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_DROP,
         SWERVE_DELAY,
         SWERVE_SLIDE,
-        SWERVE_TO_PARTICLES,
+        SWERVE_PULL_BACK,
+        SWERVE_CENTER,
         SWERVE_TURN_TO_PARTICLES,
-        SWERVE_EXTEND_TO_PARTICLES,
-        SWERVE_HIT_CUBE,
-        SWERVE_RETRACT,
-        SWERVE_LIFT_ARM,
+        SWERVE_HIT_PARTICLE,
+        SWERVE_PULL_FORWARD,
         SWERVE_TO_WALL,
         SWERVE_TO_DEPOT,
         SWERVE_PLACE_MARKER,
         SWERVE_TO_CRATER,
         SWERVE_CRATER_PARTICLES,
         SWERVE_PARTICLE_TO_LANDER,
-        SWERVE_TO_CRATER_AGAIN,
+        SWERVE_SCORE_BALLS,
+        SWERVE_ARM_TO_CRATER,
         SWERVE_LAST_MOVE,
         SWERVE_DONE,
-        
+
         SWERVE_TEST_TURN_ROBOT,
-        SWERVE_TEST_MOVE_ROBOT,
-        SWERVE_TEST_MOVE1_ROBOT,
-        SWERVE_TEST_MOVE2_ROBOT
+        SWERVE_TEST_MOVE_ROBOT
     }
 
     private autoStates revTankState;
@@ -102,10 +102,6 @@ public class SwerveAuto extends SwerveCore {
 
     // variables for auto actions
     private int moveTimePushoff;
-    double partangle;
-    double partdist;
-    double partangle2;
-    double partdist2;
 
 
     // ***********************************************************************
@@ -129,52 +125,45 @@ public class SwerveAuto extends SwerveCore {
     public String getStateName(autoStates myState) {
         // Set the name for the state we are in
         switch (myState) {
-/*      SWERVE_TO_DEPOT,
-        SWERVE_PLACE_MARKER,
-        SWERVE_TO_CRATER,
-        SWERVE_CRATER_CUBE,
-        SWERVE_CRATER_PARTICLES,
-        SWERVE_LAST_MOVE,
-        SWERVE_DONE,
-        SWERVE_TEST_TURN_ROBOT,
-        SWERVE_TEST_MOVE_ROBOT,
-        SWERVE_TEST_MOVE1_ROBOT,
-        SWERVE_TEST_MOVE2_ROBOT
-*/
+
             case SWERVE_INIT:
                 return "INITIALIZING";
             case SWERVE_START:
                 return "START";
+            case SWERVE_ALIGN:
+                return "ALIGN";
             case SWERVE_DROP:
-                return "Drop down from lander";
+                return "DROP";
             case SWERVE_DELAY:
-                return "Pause after drop from lander";
+                return "DELAY";
             case SWERVE_SLIDE:
-                return "Slide over after drop";
-            case SWERVE_TO_PARTICLES:
-                return "Move to particles";
+                return "SLIDE";
+            case SWERVE_PULL_BACK:
+                return "PULL BACK";
+            case SWERVE_CENTER:
+                return "CENTER";
             case SWERVE_TURN_TO_PARTICLES:
-                return "turn to the cube";
-            case SWERVE_EXTEND_TO_PARTICLES:
-                return "extend arm to the cube";
-            case SWERVE_HIT_CUBE:
-                return "grab the cube";
-            case SWERVE_RETRACT:
-                return "Retract with the cube and lift the extension";
+                return "TURN TO PARTICLES";
             case SWERVE_TO_WALL:
-                return "Run to the wall";
+                return "TO WALL";
             case SWERVE_TO_DEPOT:
-                return "Head for the depot";
+                return "TO DEPOT";
             case SWERVE_PLACE_MARKER:
-                return "Place the team marker";
+                return "PLACE MARKER";
             case SWERVE_TO_CRATER:
-                return "Move into the crater";
+                return "TO CRATER";
             case SWERVE_CRATER_PARTICLES:
-                return "pick up new particles";
+                return "CRATER PARTICLES";
+            case SWERVE_PARTICLE_TO_LANDER:
+                return "PARTICLE TO LANDER";
+            case SWERVE_SCORE_BALLS:
+                return "SCORE BALLS";
+            case SWERVE_ARM_TO_CRATER:
+                return "ARM TO CRATER";
             case SWERVE_LAST_MOVE:
-                return "Waiting for last move to complete";
+                return "LAST MOVE";
             case SWERVE_DONE:
-                return "All done - robot waits while stopped";
+                return "DONE";
 
 //          Testing cases
             case SWERVE_TEST_TURN_ROBOT:
@@ -220,15 +209,22 @@ public class SwerveAuto extends SwerveCore {
 
         //Tensor Flow Initialization
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+//        sets which camera to use
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.vuforiaLicenseKey = "AXALhZf/////AAABmeL06CuSFUvSihBEZtVB9MllwYAol1njgG9CAEcNIyohat03TdAACXdYBpbS6M0BCHZAnGChIMBGm0BP2MHKV7IHPsfti2ZwLEf0bZgd/oNwpq+h/YnIhrm4qARe/3sKUsJZo4tlHK+FkFU10vWg0uBHqgfSf1zW/lJbyVhh+h4u8/3y6B6tXG+3yb9zQZECGgJyqifA5sQNyqCP/Wy0O1AY9hgCnbCHeOMChhpaKiGpXM4PNPsDbKo59yEb6QSF8KNciYUQmR7vviirGKFj4TetMNHrgKVPYCQGzmWdKvmCB5sikQ6lelNGHU9Je6sKMScefU0s8Vn5WyToDfddPoNejyrmLkq9jH3ccZ/7Q+gA";
 
-        vision = new MasterVision(parameters, hardwareMap, false, MasterVision.TFLiteAlgorithm.INFER_RIGHT);
+//        infer tells tensor flow which side  it doesnt have in relation to the robot
+        if(targetSilver) {
+            vision = new MasterVision(parameters, hardwareMap, false, MasterVision.TFLiteAlgorithm.INFER_RIGHT);
+        }
+        else{
+            vision = new MasterVision(parameters, hardwareMap, false, MasterVision.TFLiteAlgorithm.INFER_LEFT);
+        }
         vision.init();// enables the camera overlay
         vision.enable();// enables the tracking algorithms
 
 
-        swerveDebug(500, "SwerveAuto::init", "DogeCV initialized");
+        swerveDebug(500, "SwerveAuto::init", "TensorFlow Ready");
 
 
         // orient to the field now and save our angle for use in teleOp
@@ -236,8 +232,11 @@ public class SwerveAuto extends SwerveCore {
 
         // set initial pushoff delay
         moveTimePushoff = 400;
+        autoDriveWait = Boolean.FALSE;
         // force the marker drop servo to hold tight
         gameMarkDrop.setPosition(0);
+        flapL.setPosition(0);
+        flapR.setPosition(0);
 
         // cause all the wheels to turn to the initialization position - 45 degrees
         swerveLeftFront.updateWheel(initWheelPower, -initWheelAngle);
@@ -277,11 +276,6 @@ public class SwerveAuto extends SwerveCore {
         // Call the super/base class start method.
         super.start();
 
-        // Slowly shift the wheel power
-        //useGradualWheelChange = Boolean.TRUE;
-
-        // no auto drive yet
-        autoDriveWait = Boolean.FALSE;
 
         // nothing sensed yet
         loopSenseStatus = "No sensing yet";
@@ -305,19 +299,25 @@ public class SwerveAuto extends SwerveCore {
     @Override
     public void loop() {
 
+//        turn off tensorFlow
+
         vision.disable();
         goldPosition = vision.getTfLite().getLastKnownSampleOrder();
 
         // Normal logging of loop start
+
         swerveDebug(500, "SwerveAuto::loop", "START, state is " +
                 getCurStateName() + "'");
+
+//        display the target
 
         swerveDebug(50, "SwerveAuto::loop", "Sensing status: " +
                 goldPosition + "'");
 
         // check for auto drive
+
         if ( autoDriveWait ) {
-            if ( ourSwerve.autoDriveCheck( autoDriveStop )) {
+            if ( ourSwerve.autoDriveCheck( autoDriveStop, targetSilver )) {
                 autoDriveWait = Boolean.FALSE;
 
                 // auto finished in time, so no more waiting
@@ -326,6 +326,7 @@ public class SwerveAuto extends SwerveCore {
         }
 
         // if we are waiting, move on
+
         if (!checkStateReady()) {
             swerveDebug(500, "SwerveAuto::loop", "Waiting for steady state (" +
                     checkReport + ")");
@@ -335,8 +336,10 @@ public class SwerveAuto extends SwerveCore {
         }
 
         // Move based on the current state
+
         switch (revTankState) {
-            // SHOULD NEVER HAPPEN - INIT while we are running....
+
+//            SHOULD NEVER HAPPEN - INIT while we are running....
             case SWERVE_INIT:
                 // INIT is only used to have some state before we set START in start()
                 swerveDebug(1, "SwerveAuto::loop *ERROR*", "== loop with INIT state");
@@ -344,7 +347,7 @@ public class SwerveAuto extends SwerveCore {
                 delaycount = 0;
                 break;
 
-            // First state
+//            First state
             case SWERVE_START:
                 // jump to debug if active
                 if (debugActive) {
@@ -353,146 +356,189 @@ public class SwerveAuto extends SwerveCore {
 
 
                     // start the drop
-//                    setState(autoStates.SWERVE_SLIDE, 0);
 
 
                     setState(autoStates.SWERVE_ALIGN, 0);
                 }
                 break;
+
+//            align the wheels before the drop
             case SWERVE_ALIGN:
-                swerveLeftFront.updateWheel(0.0, 0.7);
-                swerveRightFront.updateWheel(0.0, 0.7);
-                swerveLeftRear.updateWheel(0.0, 0.7);
-                swerveRightRear.updateWheel(0.0, 0.7);
+                ourSwerve.autoDrive( 0.2, 85, 0.0, .01, targetSilver );
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
                 setState(autoStates.SWERVE_DROP, 250);
                 break;
-
-            // Drop down from the lander
-
+//            Drop down from the lander
             case SWERVE_DROP:
-                extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                extension.setTargetPosition(-1800);
+                if(noLift=true){
+                    extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    extension.setTargetPosition(-1000);
 
-                wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                wrist.setTargetPosition(-2600);
+                    wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    wrist.setTargetPosition(-1800);
+                    // extend wrist
+                    wrist.setPower(-1);
+                    swerveSleep(2000);
+                    extension.setPower(-.6);
 
-                climber.setPower(.8);
-                wrist.setPower(-1);
-                swerveSleep(2000);
-                extension.setPower(-.6);
+                    setState(autoStates.SWERVE_DELAY, 3300);
+                }
 
-                setState(autoStates.SWERVE_DELAY, 5500);
+                else {
+                    extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    extension.setTargetPosition(-1000);
+
+                    wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    wrist.setTargetPosition(-1800);
+                    // extend wrist
+                    climber.setPower(.85);
+                    wrist.setPower(-1);
+                    swerveSleep(2000);
+                    extension.setPower(-.6);
+
+                    setState(autoStates.SWERVE_DELAY, 3300);
+                }
                 break;
 
-//            Slide sideways
-//            running into robots so we added a delay for when we need it
-//            also stops motors
+//            delays in order to give the lit time to finish
             case SWERVE_DELAY:
-//                customizable delay
-                swerveSleep(0);
                 climber.setPower(0);
-                wrist.setPower(0);
+
+//                                customizable delay
+                swerveSleep(0);
                 setState(autoStates.SWERVE_SLIDE, 10);
                 break;
-            
+
+//            slide off of the lander
             case SWERVE_SLIDE:
-                ourSwerve.autoDrive(1.0, 85, 0, 7);
+                ourSwerve.autoDrive(0.6, 85, 0, 6, targetSilver);
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
 //                 turn for the planned time
-                setState(autoStates.SWERVE_TO_PARTICLES, 500);
+                setState(autoStates.SWERVE_CENTER, 5000);
                 break;
 
-// Move to the particles
-
-            case SWERVE_TO_PARTICLES:
-                ourSwerve.autoDrive(1.0, 0.0, 0.0, 20.0);
+//            Move to the particles
+            case SWERVE_CENTER:
+                ourSwerve.autoDrive(1.0, 295.0, 0.0, 25.0, targetSilver);
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
-                setState(autoStates.SWERVE_TURN_TO_PARTICLES, 2500);
+                setState(autoStates.SWERVE_PULL_BACK, 2500);
+                break;
+
+//            pull back against lander
+            case SWERVE_PULL_BACK:
+                ourSwerve.autoDrive(0.4, 180.0, 0.0, 5.0, targetSilver);
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
+                swerveSleep(750);
+                wrist.setTargetPosition(-2150);
+                wrist.setPower(-1);
+                setState(autoStates.SWERVE_TURN_TO_PARTICLES, 2000);
                 break;
 
             case SWERVE_TURN_TO_PARTICLES:
-
-                if (goldPosition == SampleRandomizedPositions.RIGHT) {
-                    right = Boolean.TRUE;
-                    orientRobot(-45);
-                    setState(autoStates.SWERVE_EXTEND_TO_PARTICLES,2100);
+                if (goldPosition == SampleRandomizedPositions.RIGHT){
+                    orientRobot(20);
+                    setState(autoStates.SWERVE_HIT_PARTICLE, 1000);
                 }
+                else if (goldPosition == SampleRandomizedPositions.LEFT){
+                    extension.setTargetPosition(-1100);
+                    extension.setPower(-1);
+                    orientRobot(-20);
+                    setState(autoStates.SWERVE_HIT_PARTICLE, 1000);
+                }
+                else{
+                    setState(autoStates.SWERVE_HIT_PARTICLE, 0);
+                }
+                break;
+
+//            turn towards the particle
+            case SWERVE_HIT_PARTICLE:
+                wrist.setTargetPosition(-2365);
+                wrist.setPower(-1);
+                if (goldPosition == SampleRandomizedPositions.LEFT) {
+                    right = Boolean.TRUE;
+                    orientRobot(-30);
+                    if(!targetSilver) {
+                        setState(autoStates.SWERVE_PULL_FORWARD, 1600);
+                    }
+                    else{
+                        setState(autoStates.SWERVE_TO_WALL, 1600);
+                    }                }
                 if (goldPosition == SampleRandomizedPositions.CENTER) {
                     center = Boolean.TRUE;
-                    orientRobot(-25);
-                    setState(autoStates.SWERVE_HIT_CUBE,1200);
+                    orientRobot(-17);
+                    ourSwerve.autoDrive(1.0, 17, 0.0, 3, targetSilver);
+                    autoDriveStop = Boolean.TRUE;
+                    autoDriveWait = Boolean.TRUE;
+                    setState(autoStates.SWERVE_TO_WALL,700);
                 }
-                if (goldPosition == SampleRandomizedPositions.LEFT) {
+                if (goldPosition == SampleRandomizedPositions.RIGHT) {
                     left = Boolean.TRUE;
-                    orientRobot(15);
-                    setState(autoStates.SWERVE_HIT_CUBE,1000);
+                    orientRobot(60);
+                    if(targetSilver) {
+                        setState(autoStates.SWERVE_PULL_FORWARD, 700);
+                    }
+                    else{
+                        setState(autoStates.SWERVE_TO_WALL, 700);
+                    }
                 }
                 else {
+//                    guess center
                     center = Boolean.TRUE;
-                    orientRobot(15);
-                    setState(autoStates.SWERVE_HIT_CUBE,1000);
+                    orientRobot(-17);
+                    setState(autoStates.SWERVE_TO_WALL,1000);
                 }
                 break;
 
-            case SWERVE_EXTEND_TO_PARTICLES:
-                extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                extension.setTargetPosition(432);
-
-                extension.setPower(1);
-                setState(autoStates.SWERVE_HIT_CUBE, 3000);
+            case SWERVE_PULL_FORWARD:
+                ourSwerve.autoDrive(1.0, 17, 0.0, 5, targetSilver);
+                autoDriveStop = Boolean.TRUE;
+                autoDriveWait = Boolean.TRUE;
+                setState(autoStates.SWERVE_TO_WALL, 1000);
                 break;
 
-            case SWERVE_HIT_CUBE:
-                if (right){
-                    orientRobot(-30);
-                    setState(autoStates.SWERVE_LIFT_ARM, 1000);
-                }
-                else {
-                    orientRobot(0);
-                    setState(autoStates.SWERVE_RETRACT, 800);
-                }
-                break;
-            
-            // Move to the wall
+//            Move to the wall
             case SWERVE_TO_WALL:
-                extension.setTargetPosition(0);
                 wrist.setTargetPosition(-1200);
+                extension.setTargetPosition(0);
 
-                extension.setPower(-1);
                 wrist.setPower(1);
+                swerveSleep(1000);
+                extension.setPower(1);
                 if (targetSilver) {
-                    ourSwerve.autoDrive( 1.0, 278, 50.0, 110.0 );
+                    ourSwerve.autoDrive(1.0, 286, 50.0, 83.0, targetSilver);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-
                     // wait for wall move
                     setState(autoStates.SWERVE_TO_DEPOT, 5000);
                 }
                 else {
-                    ourSwerve.autoDrive( 1.0, 272.0, 135.0, 103.0 );
+                    ourSwerve.autoDrive( 1.0, 286, 15.0, 76.0, targetSilver );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     // wait for wall move
                     setState(autoStates.SWERVE_TO_DEPOT, 9000);
                 }
-                 break;
+                break;
 
             // Move to the depot
             case SWERVE_TO_DEPOT:
                 // drive to the depot
                 if (targetSilver) {
-                    ourSwerve.autoDrive( 1.0, 225.0, 45.0, 110.0 );
+                    ourSwerve.autoDrive( 1.0, 225.0, 45.0, 135.0, targetSilver );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_PLACE_MARKER, 5000);
                 } else {
-                    ourSwerve.autoDrive( 1.0, 42.0, 0.0, 140.0 );
+                    ourSwerve.autoDrive( 1.0, 37.0, 45.0, 127.0, targetSilver );
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_PLACE_MARKER, 6000);
@@ -514,35 +560,54 @@ public class SwerveAuto extends SwerveCore {
             // Move to the crater
             case SWERVE_TO_CRATER:
                 if(targetSilver) {
-                    ourSwerve.autoDrive(1.0, 60, 0.0, 199.0);
+                    ourSwerve.autoDrive(1.0, 42, 45.0, 165.0, targetSilver);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-//                    makes sure we have time to dump into the lander
-                    if (getRuntime() <= 20000) {
-                        setState(autoStates.SWERVE_LAST_MOVE, 10000);
-                    }
-                    else {
-                        setState(autoStates.SWERVE_LAST_MOVE, 10000);
-                    }
+                    wrist.setTargetPosition(-2150);
+                    wrist.setPower(-1);
+                    setState(autoStates.SWERVE_CRATER_PARTICLES, 5000);
                 }
                 else {
-                    ourSwerve.autoDrive(.9, 229.8, 0.0, 200.0);
+                    ourSwerve.autoDrive(1.0, 233.0, 0.0, 200.0, targetSilver);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_LAST_MOVE, 10000);
+                    setState(autoStates.SWERVE_CRATER_PARTICLES, 5000);
                 }
                 break;
-            
+
+//            grab two balls from the crater
             case SWERVE_CRATER_PARTICLES:
+//                not yet implemented
+                wrist.setTargetPosition(-1900);
+                extension.setTargetPosition(-1200);
+                swerveSleep(1000);
+                wrist.setPower(-1.0);
+                extension.setPower(0.6);
+                intake.setPower(-1);
+                orientRobot(60);
+                setState(autoStates.SWERVE_LAST_MOVE, 5000);
                 break;
 
+/***** Code to Potentially score balls in auto *****/
+
+//            drive back to lander
             case SWERVE_PARTICLE_TO_LANDER:
+
                 break;
 
-            case SWERVE_TO_CRATER_AGAIN:
+//            score the balls
+            case SWERVE_SCORE_BALLS:
+//                not yet implemented
+                break;
+
+//            break the crater plane with arm
+            case SWERVE_ARM_TO_CRATER:
+//                not yet implemented
+                break;
 
             // Waiting for final move to complete before done
             // We use this because waiting for this state still gives reporting of wait status
+
             case SWERVE_LAST_MOVE:
                 // stop moving
                 ourSwerve.stopRobot();
@@ -551,6 +616,7 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             // All moves are done
+
             case SWERVE_DONE:
                 // stop any movement
                 ourSwerve.stopRobot();
@@ -558,29 +624,25 @@ public class SwerveAuto extends SwerveCore {
 
 
 
+
             // **** TEST cases **** //
+
             // test turning robot to face 90 degrees
+
             case SWERVE_TEST_TURN_ROBOT:
                 orientRobot(90.0);
-                orientRobot(90.0);
-                setState(autoStates.SWERVE_DONE, 0);
+                setState(autoStates.SWERVE_DONE, 1000);
                 break;
 
             // test moving the robot 60cm (one mat tile, roughly) at 20 degrees
+
             case SWERVE_TEST_MOVE_ROBOT:
-                ourSwerve.autoDrive( 0.6, 90.0, 20.0, 120.0 );
+                ourSwerve.autoDrive( 0.6, 90.0, 0.0, 420.0, targetSilver );
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
 
                 setState(autoStates.SWERVE_DONE, 4000);
                 break;
-
-//            case SWERVE_TEST_BREAK_ROBOT:
-//                ourSwerve.autoBreak(-0.8);
-//
-//
-//                setState(autoStates.SWERVE_DONE, 300);
-//                break;
 
 
             default:
@@ -591,6 +653,7 @@ public class SwerveAuto extends SwerveCore {
         }
 
         // Report changes if not done
+
         if ( debugActive || ( revTankState != autoStates.SWERVE_DONE )) {
             loopEndReporting();
         }
@@ -604,16 +667,13 @@ public class SwerveAuto extends SwerveCore {
     // ***=-*******************************************************************
     // Performs any actions that are necessary when the OpMode is disabled.
     // The system calls this member once when the OpMode is disabled.
+
     @Override
     public void stop() {
         swerveDebug(500, "SwerveAuto::stop", "START");
 
-
+//        completely shut down tensorFlow
         vision.shutdown();
-
-
-
-
 
 
         // Call the super/base class stop method
@@ -745,7 +805,7 @@ public class SwerveAuto extends SwerveCore {
             }
 
             // turn the robot
-            ourSwerve.driveRobot(0.0, 0.0, turnSpeed, 0.0);
+            ourSwerve.driveRobot(0.0, 0.0, turnSpeed, 0.0, targetSilver);
         }
 
         // stop the robot
@@ -753,6 +813,5 @@ public class SwerveAuto extends SwerveCore {
 
         return (Boolean.TRUE);
     }
-
 
 }

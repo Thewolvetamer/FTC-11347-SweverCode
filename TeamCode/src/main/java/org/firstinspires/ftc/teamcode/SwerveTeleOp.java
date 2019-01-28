@@ -43,6 +43,9 @@ public class SwerveTeleOp extends SwerveCore {
         // Note that the class will connect to all of our motors and servos
         super.init();
 
+        flapL.setPosition(1);
+        flapR.setPosition(0);
+
         // We are just starting, so not in the end game yet...
         inEndGame = Boolean.FALSE;
 
@@ -96,8 +99,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
 
         // Move the robot, flipping y since the joysticks are upside down
-        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y,
-                -gamepad1.right_stick_x, gamepad1.right_stick_y);
+        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y, targetSilver);
 
         // *** use buttons to trigger other actions ***
 
@@ -115,7 +117,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         intake();
 
-        halfWrist();
+        flaps();
 
 
 
@@ -160,9 +162,9 @@ public class SwerveTeleOp extends SwerveCore {
         //Robot climber control
 
         // x for down, y for up
-        if (gamepad2.x) {
+        if (gamepad2.dpad_down) {
             climber.setPower(-1);
-        } else if (gamepad2.y) {
+        } else if (gamepad2.dpad_up) {
 
             climber.setPower(1);
         } else {
@@ -196,36 +198,43 @@ public class SwerveTeleOp extends SwerveCore {
         extension.setPower(gamepad2.right_stick_y);
     }
 
-    void halfWrist() {
-        if(gamepad2.a){
-            wristSpeed++;
-        }
-    }
 
     void wrist() {
-        if (wristSpeed % 2 == 1) {
-            wrist.setPower(gamepad2.left_stick_y / 2);
-        }
-        else {
-            wrist.setPower(gamepad2.left_stick_y);
-        }
+        wrist.setPower(-gamepad2.left_stick_y);
     }
 
     void intake() {
+//        intake
         if(gamepad2.left_bumper){
-            intake.setPower(-1);
-        }
-
-        if(gamepad2.right_bumper){
             intake.setPower(.6);
         }
+//        outtake
+        else if(gamepad2.right_bumper){
+            intake.setPower(-1);
+        }
+//        zero power
+        else {
+            intake.setPower(0.0);
+        }
+    }
 
-        if(!gamepad2.right_bumper && !gamepad2.left_bumper) {
-            intake.setPower(0);
+    void flaps() {
+//        full open
+        if(gamepad2.right_trigger >= 0.2) {
+            flapR.setPosition(-1);
+            flapL.setPosition(-1);
+        } else if(gamepad2.left_trigger >= 0.2) {
+            flapR.setPosition(.5);
+            flapL.setPosition(.5);
+        } else {
+            flapR.setPosition(1);
+            flapL.setPosition(1);
         }
     }
 
 }
+
+
 
 
 
