@@ -18,6 +18,8 @@ public class SwerveTeleOp extends SwerveCore {
 //    int wristSpeed;
     private int minToggle = 0;
     private boolean toggleVar=false;
+    private boolean toggle2 = false;
+    double togglePos;
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -80,8 +82,8 @@ public class SwerveTeleOp extends SwerveCore {
     // Called continuously while OpMode is running
     @Override
     public void loop() {
-        double totalPower;
-        int endGameTime;
+//        double totalPower;
+//        int endGameTime;
 
         swerveDebug(2000, "SwerveTeleOp::loop", "START");
 
@@ -144,7 +146,7 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     //lifrArm,dropTeamIcon,ballshooter created and tested on 10/8/18
-    void dropTeamIcon() {
+    private void dropTeamIcon() {
 
         if (gamepad2.b) {
             // move to 180 degrees
@@ -157,8 +159,11 @@ public class SwerveTeleOp extends SwerveCore {
         //telemetry.addData("Status", "Running");
         //telemetry.update();
     }
-
-    void liftRobot() {
+    private void allFlaps(double position){
+        flapR.setPosition(position);
+        flapL.setPosition(position);
+}
+    private void liftRobot() {
         //Robot climber control
 
         // x for down, y for up
@@ -219,32 +224,43 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     void flaps() {
-//        full open
+//        How do you even set a toggle button?
         if (gamepad2.a&&!toggleVar) {
-                toggleVar=true;
+            // remmeber button is pressed
+            toggleVar=true;
 
+            if ( toggle2 ) {
+                // flip to other when button pressed again
+                toggle2 = false;
+                allFlaps(.5);
 
+                togglePos=.5;
+            } else {
+                toggle2 = true;
+                allFlaps(1);
+                togglePos=1;
+            }
         }
         if (toggleVar&&!gamepad2.a){
-            minToggle+=1;
-            toggleVar=false;
+            // button released
+            toggleVar = false;
         }
 
 
-        if (minToggle % 2 == 0) {
 
-            flapR.setPosition(.5);
-            flapL.setPosition(.5);
 
-        } else if (minToggle % 2 == 1) {
 
-            flapR.setPosition(1);
-            flapL.setPosition(1);
-        }
 
         if(gamepad2.right_trigger >= 0.2) {
             flapR.setPosition(-1);
             flapL.setPosition(-1);
+        }
+        else {
+            flapR.setPosition(togglePos);
+            flapL.setPosition(togglePos);
+        }
+
+
 //        } else if(gamepad2.left_trigger >= 0.2) {
 //            flapR.setPosition(.5);
 //            flapL.setPosition(.5);
@@ -254,7 +270,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-}
+
 //telemetry.update()
 
 
