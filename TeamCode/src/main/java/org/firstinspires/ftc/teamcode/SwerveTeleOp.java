@@ -15,9 +15,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
-    int wristSpeed;
-    int minToggle = 0;
-
+//    int wristSpeed;
+    private int minToggle = 0;
+    private boolean toggleVar=false;
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -174,7 +174,7 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
 
-    void strafeR() {
+    private void strafeR() {
 
         if (gamepad1.dpad_right) {
             swerveLeftFront.updateWheel(1, -0.50);
@@ -184,7 +184,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-    void strafel() {
+    private void strafel() {
 
         if (gamepad1.dpad_left) {
             swerveLeftFront.updateWheel(1, 0.50);
@@ -220,10 +220,16 @@ public class SwerveTeleOp extends SwerveCore {
 
     void flaps() {
 //        full open
-        if (gamepad2.x) {
-            minToggle += 1;
+        if (gamepad2.a&&!toggleVar) {
+                toggleVar=true;
+
 
         }
+        if (toggleVar&&!gamepad2.a){
+            minToggle+=1;
+            toggleVar=false;
+        }
+
 
         if (minToggle % 2 == 0) {
 
