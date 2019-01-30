@@ -252,12 +252,11 @@ public class SwerveTeleOp extends SwerveCore {
 
 
         if(gamepad2.right_trigger >= 0.2) {
-            flapR.setPosition(-1);
-            flapL.setPosition(-1);
+            allFlaps(-1);
         }
         else {
-            flapR.setPosition(togglePos);
-            flapL.setPosition(togglePos);
+
+            allFlaps(togglePos);
         }
 
 
