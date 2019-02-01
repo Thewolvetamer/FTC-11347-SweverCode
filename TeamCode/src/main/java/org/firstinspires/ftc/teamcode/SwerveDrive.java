@@ -107,7 +107,7 @@ public class SwerveDrive {
 
     // distance is in cm, we have 288 encoder ticks per rotation and a 6 inch wheel diameter
     // encoder ticks per cm of lateral distance
-    private double wheelcm2encoder = ( 144 / ( 6 * 2.54 * Math.PI ) );
+    private double wheelcm2encoder = ( 130 / ( 6 * 2.54 * Math.PI ) );
 
 
     // ratio value between length and width for the drive base to adjust turns
@@ -314,7 +314,7 @@ public class SwerveDrive {
     // Move X and Y set the direction and speed of the robot overall.
     // Turn X and Y set the rotation/orientation of the robot.
     // Both may be modified by the orientation read from the IMU.
-    public void driveRobot( double moveX, double moveY, double turnX, double turnY, boolean silver ) {
+    public void driveRobot( double moveX, double moveY, double turnX, double turnY ) {
         int wheel;          // wheel being updated
         double angle;       // angle for turning
         double baseHeadlessAngle;
@@ -349,14 +349,14 @@ public class SwerveDrive {
 /**** Code for the Robot Oriented Drive *****/
 //            angle = FastMath.atan2( moveY, moveX ) - curHeading * DEG2BASE;
 
-            if(silver) {
-                baseHeadlessAngle = baseOrientationAngle + 135;
-            }
-            else {
-                baseHeadlessAngle = baseOrientationAngle - 135;
-            }
+//            if(silver) {
+//                baseHeadlessAngle = baseOrientationAngle + 135;
+//            }
+//            else {
+//                baseHeadlessAngle = baseOrientationAngle - 135;
+//            }
             angle = FastMath.atan2( moveY, moveX ) - curHeading * DEG2BASE;
-            angle = angle - baseHeadlessAngle * DEG2BASE;
+            angle = angle * DEG2BASE;
 
             moveAdjustLog = "Move Adj: "
                     + String.format( dblFormat, curHeading )
@@ -494,7 +494,7 @@ public class SwerveDrive {
     // ***********************************************************************
     // stop all motion
     void stopRobot() {
-        driveRobot( 0.0, 0.0, 0.0, 0.0, true );
+        driveRobot( 0.0, 0.0, 0.0, 0.0 );
     }
 
     // ***********************************************************************
@@ -503,7 +503,7 @@ public class SwerveDrive {
     // move the robot at target speed with wheels at target angle (relative to base)
     // gradually orient the robot top to match the orientation given
     // go until target distance (in cm) is reached
-    void autoDrive( double aSpeed, double aAngle, double aOrient, double aDist, boolean silver ) {
+    void autoDrive( double aSpeed, double aAngle, double aOrient, double aDist ) {
         int w;
 
         autoSpeed = aSpeed;
@@ -519,7 +519,7 @@ public class SwerveDrive {
         }
 
         // update movement and check for done
-        autoDriveCheck( Boolean.FALSE, silver );
+        autoDriveCheck( Boolean.FALSE );
     }
 
     // ***********************************************************************
@@ -527,7 +527,7 @@ public class SwerveDrive {
     // ***********************************************************************
     // check for done on auto drive
     // if not done, update target movements from auto drive
-    boolean autoDriveCheck( boolean forceStop, boolean silver ) {
+    boolean autoDriveCheck( boolean forceStop ) {
         int w;
         double wNext;
         double rDist;
@@ -601,7 +601,7 @@ public class SwerveDrive {
         //turnSpd = 0;
 
         // move the robot
-        driveRobot( moveX, moveY, turnSpd, 0.0, silver);
+        driveRobot( moveX, moveY, turnSpd, 0.0);
 
         return( Boolean.FALSE );
     }

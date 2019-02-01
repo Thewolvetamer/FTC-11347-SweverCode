@@ -102,7 +102,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
 
         // Move the robot, flipping y since the joysticks are upside down
-        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y, targetSilver);
+        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
 
         // *** use buttons to trigger other actions ***
 
