@@ -106,7 +106,7 @@ public class SwerveCore extends OpMode {
     // Controller handling values
     //
 
-    // When reading the controllers, ignore small bumps
+    // When reading the controllers, ignore small bumps, stick and trigger deadzone
     public static double minJoystickMove = 0.2;
     public static double minTriggerMove = 0.2;
 
@@ -579,6 +579,7 @@ public class SwerveCore extends OpMode {
         if ( debugLevel > myLevel ) {
             telemetry.addData( "**DEBUG**: " + myName, myMessage );
         }
+
 
         // Add debug data to the log...
         // -- for very high levels of debug item, ONLY add if debugging at that level

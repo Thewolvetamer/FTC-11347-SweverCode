@@ -107,7 +107,7 @@ public class SwerveDrive {
 
     // distance is in cm, we have 288 encoder ticks per rotation and a 6 inch wheel diameter
     // encoder ticks per cm of lateral distance
-    private double wheelcm2encoder = ( 130 / ( 6 * 2.54 * Math.PI ) );
+    private double wheelcm2encoder = ( 125 / ( 6 * 2.54 * Math.PI ) );
 
 
     // ratio value between length and width for the drive base to adjust turns
