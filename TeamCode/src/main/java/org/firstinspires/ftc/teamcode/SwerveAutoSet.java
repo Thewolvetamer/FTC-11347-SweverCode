@@ -129,12 +129,12 @@ public class SwerveAutoSet extends SwerveCore {
         if (gamepad1.x) {
             settingsDone = Boolean.FALSE;
 
-            targetSilver = Boolean.FALSE;
+            crater = Boolean.FALSE;
         }
         if (gamepad1.b) {
             settingsDone = Boolean.FALSE;
 
-            targetSilver = Boolean.TRUE;
+            crater = Boolean.TRUE;
         }
 
         // Check for waiting for partner

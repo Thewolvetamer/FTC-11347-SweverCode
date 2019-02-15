@@ -43,7 +43,7 @@ public class SwerveAutoTest extends SwerveAuto {
         // Note that the class will connect to all of our motors and servos
         super.init();
 
-        targetSilver = Boolean.TRUE;
+        crater = Boolean.TRUE;
 
 
         // Robot and autonomous settings are read in from files in the core class init()

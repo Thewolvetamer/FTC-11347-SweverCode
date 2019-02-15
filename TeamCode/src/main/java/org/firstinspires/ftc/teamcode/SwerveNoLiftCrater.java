@@ -1,9 +1,9 @@
 // We have constant problems with our lift.
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-@Autonomous(name="Swerve: OnGroundGold", group="Swerve")
+@Autonomous(name="Swerve: OnGroundCrater", group="Swerve")
 
-public class SwerveNoLiftGold extends SwerveAuto {
+public class SwerveNoLiftCrater extends SwerveAuto {
 
     // ***********************************************************************
     // SwerveAutoGold
@@ -18,19 +18,19 @@ public class SwerveNoLiftGold extends SwerveAuto {
     // Set needed values for Red alliance position 1
     @Override
     public void init() {
-        swerveDebug(500, "SwerveAutoGold::init", "STARTing init for Gold");
+        swerveDebug(500, "SwerveAutoCrater::init", "STARTing init for Crater");
 
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
         super.init();
-        noLift = Boolean.TRUE;
-        targetSilver = Boolean.FALSE;
+        noLift = true;
+        crater = Boolean.TRUE;
 
         // Robot and autonomous settings are read in from files in the core class init()
         // Report the autonomous settings
         showAutonomousGoals();
 
-        swerveDebug(500, "SwerveAutoGold::init", "DONE");
+        swerveDebug(500, "SwerveAutoCrater::init", "DONE");
     }
 
 

@@ -94,7 +94,7 @@ public class SwerveCore extends OpMode {
     /* Are we done reading settings? */
     Boolean settingsDone;
 
-    Boolean targetSilver;
+    Boolean crater;
     Boolean noLift;
 
 
@@ -157,7 +157,7 @@ public class SwerveCore extends OpMode {
         swerveNumberFormat = new DecimalFormat("0.00");
 
 
-        targetSilver = Boolean.TRUE;
+        crater = Boolean.TRUE;
 
 
 
@@ -449,10 +449,10 @@ public class SwerveCore extends OpMode {
     // ***********************************************************************
     // Use telemetry to report on the autonomous goal settings
     public void showAutonomousGoals() {
-        if (targetSilver) {
-            swerveLog("Z1", "Target is SILVER");
+        if (crater) {
+            swerveLog("Z1", "Target is crater");
         } else {
-            swerveLog("Z1", "Target is  GOLD ");
+            swerveLog("Z1", "Target is  depot ");
         }
 
         swerveLog("Z2", "Delay is " + autoDelay);
@@ -472,9 +472,9 @@ public class SwerveCore extends OpMode {
 
             myValue = myFile.read();
             if ( myValue == 1 ) {
-                targetSilver = Boolean.TRUE;
+                crater = Boolean.TRUE;
             } else {
-                targetSilver = Boolean.FALSE;
+                crater = Boolean.FALSE;
             }
 
             autoDelay = myFile.read();
@@ -504,7 +504,7 @@ public class SwerveCore extends OpMode {
         try {
             myFile = new FileOutputStream(swerveFileAutoSettings, false);
 
-            if (targetSilver) {
+            if (crater) {
                 myValue = 1;
             } else {
                 myValue = 0;

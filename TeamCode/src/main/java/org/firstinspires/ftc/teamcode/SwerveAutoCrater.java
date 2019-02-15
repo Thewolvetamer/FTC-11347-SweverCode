@@ -1,5 +1,5 @@
 // ***********************************************************************
-// SwerveAutoGold
+// SwerveAutoSilver
 // ***********************************************************************
 // The autonomous mode for swerve operations for Red team position 1
 
@@ -14,16 +14,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
-@Autonomous(name="Swerve: 2-AutoGold 1.1", group="Swerve")
+@Autonomous(name="Swerve: 2-AutoSilver 1.1", group="Swerve")
 //@Disabled
-public class SwerveAutoGold extends SwerveAuto {
+public class SwerveAutoCrater extends SwerveAuto {
 
     // ***********************************************************************
-    // SwerveAutoGold
+    // SwerveAutoSilver
     // ***********************************************************************
     // Constructs the class.
     // The system calls this member when the class is instantiated.
-    public SwerveAutoGold() {
+    public SwerveAutoCrater() {
         // Initialize base classes.
         // All via self-construction.
 
@@ -37,19 +37,19 @@ public class SwerveAutoGold extends SwerveAuto {
     // Set needed values for Red alliance position 1
     @Override
     public void init() {
-        swerveDebug(500, "SwerveAutoGold::init", "STARTing init for Gold");
+        swerveDebug(500, "SwerveAutoSilver::init", "STARTing init for Silver");
 
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
         super.init();
-        noLift = false;
-        targetSilver = Boolean.FALSE;
 
+        crater = Boolean.TRUE;
+        noLift = false;
         // Robot and autonomous settings are read in from files in the core class init()
         // Report the autonomous settings
         showAutonomousGoals();
 
-        swerveDebug(500, "SwerveAutoGold::init", "DONE");
+        swerveDebug(500, "SwerveAutoSilver::init", "DONE");
     }
 
 
@@ -60,11 +60,11 @@ public class SwerveAutoGold extends SwerveAuto {
     // Called once when the OpMode is started.
     @Override
     public void start() {
-        swerveDebug(500, "SwerveAutoGold::start", "START");
+        swerveDebug(500, "SwerveAutoSilver::start", "START");
 
         // Call the super/base class start method.
         super.start();
 
-        swerveDebug( 500, "SwerveAutoGold::start", "DONE");
+        swerveDebug( 500, "SwerveAutoSilver::start", "DONE");
     }
 }

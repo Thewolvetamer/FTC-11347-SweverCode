@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.vision.SampleRandomizedPositions;
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
-// **** DO NOT ENABLE - Started from the Silver and Gold auto code derived classes now ****
+// **** DO NOT ENABLE - Started from the crater and depot auto code derived classes now ****
 // ****   @Autonomous(name="Swerve: 1-Auto 0.6", group="Swerve")
 // ***********************************************************************
 // 11/9/2018 - Swerve drive is now capable of auto correcting orientation to a degree while driving. The wheels actively adjust while moving
@@ -47,11 +47,13 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_DELAY,
         SWERVE_SLIDE,
         SWERVE_PULL_BACK,
-        SWERVE_CENTER,
+        SWERVE_PARTICLE_TO_DEPOT,
+        SWERVE_PUSH_PARTICLE,
         SWERVE_TURN,
         SWERVE_HIT_PARTICLE,
         SWERVE_PULL_FORWARD,
         SWERVE_TO_WALL,
+        SWERVE_AVOID_PARTICLE,
         SWERVE_TO_DEPOT,
         SWERVE_PLACE_MARKER,
         SWERVE_TO_CRATER,
@@ -148,7 +150,7 @@ public class SwerveAuto extends SwerveCore {
                 return "SLIDE";
             case SWERVE_PULL_BACK:
                 return "PULL BACK";
-            case SWERVE_CENTER:
+            case SWERVE_AVOID_PARTICLE:
                 return "CENTER";
             case SWERVE_TURN:
                 return "TURN TO PARTICLES";
@@ -222,12 +224,7 @@ public class SwerveAuto extends SwerveCore {
         parameters.vuforiaLicenseKey = "AXALhZf/////AAABmeL06CuSFUvSihBEZtVB9MllwYAol1njgG9CAEcNIyohat03TdAACXdYBpbS6M0BCHZAnGChIMBGm0BP2MHKV7IHPsfti2ZwLEf0bZgd/oNwpq+h/YnIhrm4qARe/3sKUsJZo4tlHK+FkFU10vWg0uBHqgfSf1zW/lJbyVhh+h4u8/3y6B6tXG+3yb9zQZECGgJyqifA5sQNyqCP/Wy0O1AY9hgCnbCHeOMChhpaKiGpXM4PNPsDbKo59yEb6QSF8KNciYUQmR7vviirGKFj4TetMNHrgKVPYCQGzmWdKvmCB5sikQ6lelNGHU9Je6sKMScefU0s8Vn5WyToDfddPoNejyrmLkq9jH3ccZ/7Q+gA";
 
 //        infer tells tensor flow which side  it doesnt have in relation to the robot
-        if(targetSilver) {
-            vision = new MasterVision(parameters, hardwareMap, false, MasterVision.TFLiteAlgorithm.INFER_RIGHT);
-//        }
-//        else{
-//            vision = new MasterVision(parameters, hardwareMap, false, MasterVision.TFLiteAlgorithm.INFER_LEFT);
-        }
+        vision = new MasterVision(parameters, hardwareMap, false, MasterVision.TFLiteAlgorithm.INFER_RIGHT);
         vision.init();// enables the camera overlay
         vision.enable();// enables the tracking algorithms
 
@@ -265,7 +262,7 @@ public class SwerveAuto extends SwerveCore {
 
         // Robot and autonomous settings are read in from files in the core class init()
         // Report the autonomous settings
-        // ***** now done in silver & gold *****
+        // ***** now done in crater & depot *****
         // ***** showAutonomousGoals();
 
         swerveDebug(500, "SwerveAuto::init", "DONE");
@@ -446,7 +443,7 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             case SWERVE_PULL_FORWARD:
-                if ( targetSilver ) {
+                if (crater) {
                     ourSwerve.autoDrive(0.3, 0.0, 0.0, 20);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
@@ -465,79 +462,34 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             case SWERVE_PULL_BACK:
-                if ( targetSilver ) {
+                if (crater) {
                     ourSwerve.autoDrive(.3, 180, 0.0, 25);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_TURN, 5000);
                 }
                 else if ( !( parPosition == particlePosition.partCenter ) ) {
-                    if ( parPosition == particlePosition.partLeft) {
-                        ourSwerve.autoDrive(0.3, 42, 45, 85);
-                        autoDriveWait = Boolean.TRUE;
-                        autoDriveStop = Boolean.TRUE;
-                    }
-                    else {
-                        ourSwerve.autoDrive(0.3, -40, -45, 85);
-                        autoDriveWait = Boolean.TRUE;
-                        autoDriveStop = Boolean.TRUE;
-                    }
-                    setState(autoStates.SWERVE_TO_DEPOT, 5000);
+                    setState(autoStates.SWERVE_PUSH_PARTICLE, 0);
                 }
                 else {
-                    ourSwerve.autoDrive(.3, 180, 0.0, 12);
-                    autoDriveWait = Boolean.TRUE;
-                    autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_TURN, 5000);
+                    setState(autoStates.SWERVE_PARTICLE_TO_DEPOT, 0);
                 }
                 break;
-
-            case SWERVE_TURN:
-                if ( targetSilver ) {
-                    orientRobot(78);
-                    setState(autoStates.SWERVE_TO_WALL, 650);
+            case SWERVE_PUSH_PARTICLE:
+                if ( parPosition == particlePosition.partLeft) {
+                    ourSwerve.autoDrive(0.3, 42, 45, 85);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
                 }
                 else {
-                    orientRobot(-115);
-                    setState(autoStates.SWERVE_PLACE_MARKER, 1000);
-                }
-                break;
-
-//            Move to the wall
-            case SWERVE_TO_WALL:
-                if (targetSilver) {
-                    ourSwerve.autoDrive(0.5, 270, 90.0, 75 + wallDist);
+                    ourSwerve.autoDrive(0.3, -40, -45, 85);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    // wait for wall move
-                    setState(autoStates.SWERVE_CENTER, 5000);
                 }
-                else {
-                    ourSwerve.autoDrive(0.4, 270, -135, 30);
-                    autoDriveWait = Boolean.TRUE;
-                    autoDriveStop = Boolean.TRUE;
-                    // wait for wall move
-                    setState(autoStates.SWERVE_TO_CRATER, 9000);
-                }
-                break;
-
-            case SWERVE_CENTER:
-                ourSwerve.autoDrive(0.4, 258, 45.0, 80);
-                autoDriveWait = Boolean.TRUE;
-                autoDriveStop = Boolean.TRUE;
                 setState(autoStates.SWERVE_TO_DEPOT, 5000);
                 break;
-
-            // Move to the depot
-            case SWERVE_TO_DEPOT:
-                // drive to the depot
-                if ( targetSilver ) {
-                    ourSwerve.autoDrive(0.4, 228.0, 45.0, 100);
-                    autoDriveWait = Boolean.TRUE;
-                    autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_PLACE_MARKER, 5000);
-                }
-                else {
+            case SWERVE_PARTICLE_TO_DEPOT:
+                if ( !( parPosition == particlePosition.partCenter ) ) {
                     if ( parPosition == particlePosition.partLeft) {
                         ourSwerve.autoDrive(0.4, 225.0, 45.0, 15);
                         autoDriveWait = Boolean.TRUE;
@@ -550,6 +502,58 @@ public class SwerveAuto extends SwerveCore {
                     }
                     setState(autoStates.SWERVE_TURN, 5000);
                 }
+
+                else {
+                    ourSwerve.autoDrive(.3, 180, 0.0, 12);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_TURN, 5000);
+                }
+                break;
+
+            case SWERVE_TURN:
+                if (crater) {
+                    orientRobot(78);
+                    setState(autoStates.SWERVE_TO_WALL, 650);
+                }
+                else {
+                    orientRobot(-115);
+                    setState(autoStates.SWERVE_PLACE_MARKER, 1000);
+                }
+                break;
+
+//            Move to the wall
+            case SWERVE_TO_WALL:
+                if (crater) {
+                    ourSwerve.autoDrive(0.5, 270, 90.0, 75 + wallDist);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                    // wait for wall move
+                    setState(autoStates.SWERVE_AVOID_PARTICLE, 5000);
+                }
+                else {
+                    ourSwerve.autoDrive(0.4, 270, -135, 30);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                    // wait for wall move
+                    setState(autoStates.SWERVE_TO_CRATER, 9000);
+                }
+                break;
+
+            case SWERVE_AVOID_PARTICLE:
+                ourSwerve.autoDrive(0.4, 258, 45.0, 80);
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
+                setState(autoStates.SWERVE_TO_DEPOT, 5000);
+                break;
+
+            // Move to the depot
+            case SWERVE_TO_DEPOT:
+                // drive to the depot
+                ourSwerve.autoDrive(0.4, 228.0, 45.0, 100);
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
+                setState(autoStates.SWERVE_PLACE_MARKER, 5000);
                 break;
 
             // place marker
@@ -561,7 +565,7 @@ public class SwerveAuto extends SwerveCore {
                 gameMarkDrop.setPosition(1);
 
                 // wait for marker drop
-                if ( targetSilver ) {
+                if (crater) {
                     setState(autoStates.SWERVE_TO_CRATER, 1000);
                 }
                 else {
@@ -577,7 +581,7 @@ public class SwerveAuto extends SwerveCore {
                 extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 extension.setTargetPosition(-1200);
-                if(targetSilver) {
+                if(crater) {
                     ourSwerve.autoDrive(0.8, 43, 45.0, 210.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;

@@ -4,28 +4,27 @@
 // The tele-op mode for swerve robot operations
 
 package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
-@TeleOp(name="Swerve: 1-TeleOp 0.5.2", group="Swerve")
-//@Disable
 
-public class SwerveTeleOp extends SwerveCore {
+public class SwerveTeleOpCrater extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
-//    int wristSpeed;
+    //    int wristSpeed;
     private int minToggle = 0;
     private boolean toggleVar=false;
     private boolean toggle2 = false;
     double togglePos;
+    boolean crater = true;
+
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
     // Constructs the class.
     // The system calls this member when the class is instantiated.
-    public SwerveTeleOp() {
+    public SwerveTeleOpCrater() {
         // Initialize base classes.
         // All via self-construction.
 
@@ -102,7 +101,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
 
         // Move the robot, flipping y since the joysticks are upside down
-        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
+        ourSwerve.headlessDriveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y, crater);
 
         // *** use buttons to trigger other actions ***
 
@@ -162,7 +161,7 @@ public class SwerveTeleOp extends SwerveCore {
     private void allFlaps(double position){
         flapR.setPosition(position);
         flapL.setPosition(position);
-}
+    }
     private void liftRobot() {
         //Robot climber control
 
@@ -266,8 +265,8 @@ public class SwerveTeleOp extends SwerveCore {
 //        } else {
 //            flapR.setPosition(1);
 //            flapL.setPosition(1);
-        }
     }
+}
 
 
 //telemetry.update()

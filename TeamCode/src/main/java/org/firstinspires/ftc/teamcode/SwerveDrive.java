@@ -317,7 +317,6 @@ public class SwerveDrive {
     public void driveRobot( double moveX, double moveY, double turnX, double turnY ) {
         int wheel;          // wheel being updated
         double angle;       // angle for turning
-        double baseHeadlessAngle;
 
         // only adjust driving every so often
         if ( nextOrientationTime > swerveTime.milliseconds()) {
@@ -346,15 +345,6 @@ public class SwerveDrive {
 
             // shift the input angles based on robot rotation
 
-/**** Code for the Robot Oriented Drive *****/
-//            angle = FastMath.atan2( moveY, moveX ) - curHeading * DEG2BASE;
-
-//            if(silver) {
-//                baseHeadlessAngle = baseOrientationAngle + 135;
-//            }
-//            else {
-//                baseHeadlessAngle = baseOrientationAngle - 135;
-//            }
             angle = FastMath.atan2( moveY, moveX ) - curHeading * DEG2BASE;
             angle = angle * DEG2BASE;
 
@@ -393,6 +383,61 @@ public class SwerveDrive {
                 swerveWheels[wheel].updateWheel( 0, positions[wheel] );
 
             // otherwise, set the target speed and position
+            } else {
+                swerveWheels[wheel].updateWheel( speeds[wheel], positions[wheel] );
+            }
+        }
+    }
+
+
+    // ***********************************************************************
+    // headless drive - move the robot in relation to the driver
+    // ***********************************************************************
+    // adjusts the direction of the robot to drive in relation to the driver
+    public void headlessDriveRobot( double moveX, double moveY, double turnX, double turnY, boolean crater ) {
+        int wheel;          // wheel being updated
+        double angle;       // angle for turning
+        double baseHeadlessAngle;
+
+
+        // check the orientation of the robot - for field-oriented driving
+        checkOrientation();
+
+        // note drive directions
+        moveLog = "MoveXY: " + String.format( dblFormat, moveX ) + ", "
+                + String.format( dblFormat, moveY )
+                + "  TurnXY: " + String.format( dblFormat, turnX ) + ", "
+                + String.format( dblFormat, turnY );
+
+
+        // shift the input angles based on robot rotation
+
+
+        if(crater) {
+            baseHeadlessAngle = baseOrientationAngle + ((3 * Math.PI) / 4);
+        }
+        else {
+            baseHeadlessAngle = baseOrientationAngle - ((3 * Math.PI) / 4);
+        }
+        angle = FastMath.atan2( moveY, moveX ) - baseHeadlessAngle;
+        angle = angle * DEG2BASE;
+
+        moveAdjustLog = "Move Adj: "
+                + String.format( dblFormat, curHeading )
+                + " ( " + String.format( dblFormat, angle ) + " ) "
+        ;
+
+
+        // calculate the wheel moves needed
+        calculateWheels( moveX, moveY, turnX * Math.PI );
+
+        // update wheels
+        for (wheel = 0; wheel < swerveWheels.length; wheel++){
+            // if the fastest wheel is almost stopped, just stop the robot
+            if ( maxSpeed < 0.05 ) {
+                swerveWheels[wheel].updateWheel( 0, positions[wheel] );
+
+                // otherwise, set the target speed and position
             } else {
                 swerveWheels[wheel].updateWheel( speeds[wheel], positions[wheel] );
             }
