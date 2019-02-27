@@ -56,22 +56,14 @@ public class SwerveCore extends OpMode {
 
     //
     // Swerve drive is 4 wheels turned by 4 servos
-    DcMotor motorRightFront;
-    DcMotor motorLeftFront;
-    DcMotor motorRightRear;
-    DcMotor motorLeftRear;
+   
     DcMotor climber;
-    DcMotor wrist;
-    DcMotor extension;
-    DcMotor intake;
-
-    Servo   servoRightFront;
-    Servo   servoLeftFront;
-    Servo   servoRightRear;
-    Servo   servoLeftRear;
+    DcMotor wrist, extension, intake;
+    DcMotor motorRightFront,motorLeftFront,motorRightRear,motorLeftRear;
+    Servo   servoRightFront, servoLeftFront, servoRightRear,servoLeftRear;
+    
     Servo   gameMarkDrop;
-    Servo   flapR;
-    Servo   flapL;
+    Servo   flapR, flapL;
 
     SwerveWheel swerveRightFront;
     SwerveWheel swerveLeftFront;
@@ -96,7 +88,7 @@ public class SwerveCore extends OpMode {
 
     Boolean crater;
     Boolean noLift;
-
+    Boolean imuTracking = false; 
 
     // Delay at start
     int autoDelay;
@@ -133,6 +125,7 @@ public class SwerveCore extends OpMode {
     // ***********************************************************************
     // Constructs the class.
     // The system calls this member when the class is instantiated.
+    
     public SwerveCore() {
         // Initialize base classes.
         // All via self-construction.
@@ -354,6 +347,7 @@ public class SwerveCore extends OpMode {
     // Report on core robot status
     public void loopEndReporting() {
         // Loop reporting only needs to be logged for very high debug levels
+        if(!imuTest){
         swerveDebug( 5000, "LoopC", "SwerveCore::loopEndReporting run");
 
         // Note run time
@@ -373,7 +367,7 @@ public class SwerveCore extends OpMode {
         swerveLog( "X S6", ourSwerve.getOrientLog());
         swerveLog( "X S7", ourSwerve.getAutoDriveLog());
     }
-
+    }
 
     // ***********************************************************************
     // controllerTelemetry
@@ -456,6 +450,7 @@ public class SwerveCore extends OpMode {
         }
 
         swerveLog("Z2", "Delay is " + autoDelay);
+        
     }
 
 
@@ -593,6 +588,7 @@ public class SwerveCore extends OpMode {
     // swerveLog
     // ***********************************************************************
     // Log messages that are always shown
+    //TODO: decrease clutter in logs
     public void swerveLog(String myName, String myMessage ) {
 
         // Show the message on the driver display
