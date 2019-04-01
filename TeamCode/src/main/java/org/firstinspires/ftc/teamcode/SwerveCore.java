@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -72,6 +73,7 @@ public class SwerveCore extends OpMode {
     Servo   gameMarkDrop;
     Servo   flapR;
     Servo   flapL;
+    Servo   pusher;
 
     SwerveWheel swerveRightFront;
     SwerveWheel swerveLeftFront;
@@ -200,6 +202,8 @@ public class SwerveCore extends OpMode {
         swerveDebugDevice(500, "Right Rear Motor", motorRightRear);
 
         climber = hardwareMap.dcMotor.get("climber");
+        climber.setDirection(DcMotor.Direction.REVERSE);
+        climber.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         swerveDebugDevice(500, "climber", climber);
 
         wrist = hardwareMap.dcMotor.get("wrist");
@@ -238,6 +242,9 @@ public class SwerveCore extends OpMode {
 
         flapL = hardwareMap.servo.get("flapL");
         swerveDebugDevice(500, "Left Flap", flapL);
+
+        pusher = hardwareMap.servo.get("Pusher");
+        swerveDebugDevice(500, " Pusher", pusher);
 
         swerveDebug(500, "SwerveCore::init", "SERVOS connected");
 

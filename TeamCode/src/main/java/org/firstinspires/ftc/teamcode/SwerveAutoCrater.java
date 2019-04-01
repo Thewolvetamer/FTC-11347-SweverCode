@@ -14,12 +14,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
-@Autonomous(name="Swerve: 2-AutoSilver 1.1", group="Swerve")
+@Autonomous(name="Swerve: 2-AutoCrater 1.1", group="Swerve")
 //@Disabled
 public class SwerveAutoCrater extends SwerveAuto {
 
     // ***********************************************************************
-    // SwerveAutoSilver
+    // SwerveAutoCrater
     // ***********************************************************************
     // Constructs the class.
     // The system calls this member when the class is instantiated.

@@ -1,4 +1,3 @@
-//11347 has all the cool kids
 // ***********************************************************************
 // SwerveAuto
 // ***********************************************************************
@@ -242,6 +241,7 @@ public class SwerveAuto extends SwerveCore {
         gameMarkDrop.setPosition(0);
         flapL.setPosition(0);
         flapR.setPosition(0);
+        pusher.setPosition(.5);
 
         // cause all the wheels to turn to the initialization position - 45 degrees
         swerveLeftFront.updateWheel(initWheelPower, -initWheelAngle);
@@ -289,22 +289,22 @@ public class SwerveAuto extends SwerveCore {
         if ( goldPosition == SampleRandomizedPositions.RIGHT) {
             parPosition = particlePosition.partRight;
         } else if ( goldPosition == SampleRandomizedPositions.LEFT ) {
-            parPosition = particlePosition.partRight;
+            parPosition = particlePosition.partLeft;
         } else {
-            parPosition = particlePosition.partRight;
+            parPosition = particlePosition.partCenter;
         }
 
         // set variables based on position
         switch( parPosition ) {
             case partRight:
                 parDist = 55;
-                parAng = 20;
+                parAng = 22;
                 wallDist = 35;
                 break;
 
             case partLeft:
                 parDist = 70;
-                parAng = -65;
+                parAng = -58;
                 wallDist = -35;
                 break;
 
@@ -312,7 +312,7 @@ public class SwerveAuto extends SwerveCore {
             case partUnknown:
             default:
                 parDist = 43;
-                parAng = -17;
+                parAng = -22;
                 break;
         }
 
@@ -404,27 +404,26 @@ public class SwerveAuto extends SwerveCore {
                 break;
 //            Drop down from the lander
             case SWERVE_DROP:
-                if(noLift=true){
-                    setState(autoStates.SWERVE_DELAY, 10);
-                }
-
-                else {
-                    climber.setPower(.85);
-                    setState(autoStates.SWERVE_DELAY, 3300);
-                }
+                wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                wrist.setTargetPosition(-600);
+                wrist.setPower(-.6);
+                climber.setPower(.5);
+                setState(autoStates.SWERVE_DELAY, 3500);
                 break;
 
             // delays in order to give the lit time to finish
             case SWERVE_DELAY:
-                climber.setPower(0);
+                climber.setPower(.3);
 
 //                                customizable delay
                 swerveSleep(0);
-                setState(autoStates.SWERVE_SLIDE, 10);
+                setState(autoStates.SWERVE_SLIDE, 700);
                 break;
 
 //            slide off of the lander
             case SWERVE_SLIDE:
+                climber.setPower(0);
                 ourSwerve.autoDrive(0.6, 85, 0, 7);
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
@@ -439,31 +438,37 @@ public class SwerveAuto extends SwerveCore {
                 ourSwerve.autoDrive(.3, parAng, 0, parDist);
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
+                if(crater) {
+                    pusher.setPosition(1);
+                }
                 setState(autoStates.SWERVE_PULL_FORWARD, 5000);
                 break;
 
             case SWERVE_PULL_FORWARD:
                 if (crater) {
-                    ourSwerve.autoDrive(0.3, 0.0, 0.0, 20);
+                    ourSwerve.autoDrive(0.3, 0.0, 0.0, 23);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_PULL_BACK, 5000);
                 }
                 else if ( !( parPosition == particlePosition.partCenter ) ) {
                     ourSwerve.autoDrive(0.3, 0.0, 0.0, 50);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_PULL_BACK, 5000);
                 }
                 else {
-                    ourSwerve.autoDrive(0.3, 0.0, 0.0, 110);
+                    ourSwerve.autoDrive(0.3, -2, 0.0, 125);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_PULL_BACK, 5000);
                 }
-                setState(autoStates.SWERVE_PULL_BACK, 5000);
                 break;
 
             case SWERVE_PULL_BACK:
+                pusher.setPosition(.5);
                 if (crater) {
-                    ourSwerve.autoDrive(.3, 180, 0.0, 25);
+                    ourSwerve.autoDrive(.3, 180, 0.0, 28);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_TURN, 5000);
@@ -472,43 +477,28 @@ public class SwerveAuto extends SwerveCore {
                     setState(autoStates.SWERVE_PUSH_PARTICLE, 0);
                 }
                 else {
-                    setState(autoStates.SWERVE_PARTICLE_TO_DEPOT, 0);
+                    setState(autoStates.SWERVE_PARTICLE_TO_DEPOT, 2000);
                 }
                 break;
+
             case SWERVE_PUSH_PARTICLE:
                 if ( parPosition == particlePosition.partLeft) {
-                    ourSwerve.autoDrive(0.3, 42, 45, 85);
+                    ourSwerve.autoDrive(0.3, 40,45, 85);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_PARTICLE_TO_DEPOT, 5000);
                 }
                 else {
                     ourSwerve.autoDrive(0.3, -40, -45, 85);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
+                    setState(autoStates.SWERVE_PARTICLE_TO_DEPOT, 5000);
                 }
-                setState(autoStates.SWERVE_TO_DEPOT, 5000);
                 break;
-            case SWERVE_PARTICLE_TO_DEPOT:
-                if ( !( parPosition == particlePosition.partCenter ) ) {
-                    if ( parPosition == particlePosition.partLeft) {
-                        ourSwerve.autoDrive(0.4, 225.0, 45.0, 15);
-                        autoDriveWait = Boolean.TRUE;
-                        autoDriveStop = Boolean.TRUE;
-                    }
-                    else {
-                        ourSwerve.autoDrive(0.4, 135.0, -45.0, 15);
-                        autoDriveWait = Boolean.TRUE;
-                        autoDriveStop = Boolean.TRUE;
-                    }
-                    setState(autoStates.SWERVE_TURN, 5000);
-                }
 
-                else {
-                    ourSwerve.autoDrive(.3, 180, 0.0, 12);
-                    autoDriveWait = Boolean.TRUE;
-                    autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_TURN, 5000);
-                }
+            case SWERVE_PARTICLE_TO_DEPOT:
+                pusher.setPosition(-1);
+                setState(autoStates.SWERVE_TURN, 500);
                 break;
 
             case SWERVE_TURN:
@@ -517,7 +507,7 @@ public class SwerveAuto extends SwerveCore {
                     setState(autoStates.SWERVE_TO_WALL, 650);
                 }
                 else {
-                    orientRobot(-115);
+                    orientRobot(-125);
                     setState(autoStates.SWERVE_PLACE_MARKER, 1000);
                 }
                 break;
@@ -559,10 +549,14 @@ public class SwerveAuto extends SwerveCore {
             // place marker
             case SWERVE_PLACE_MARKER:
                 // stop robot
+                wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                wrist.setTargetPosition(-1500);
                 ourSwerve.stopRobot();
 
                 // drop the marker
                 gameMarkDrop.setPosition(1);
+                wrist.setPower(-.7);
 
                 // wait for marker drop
                 if (crater) {
@@ -575,12 +569,9 @@ public class SwerveAuto extends SwerveCore {
 
             // Move to the crater
             case SWERVE_TO_CRATER:
-                wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                wrist.setTargetPosition(-1900);
                 extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                extension.setTargetPosition(-1200);
+                extension.setTargetPosition(-1900);
                 if(crater) {
                     ourSwerve.autoDrive(0.8, 43, 45.0, 210.0);
                     autoDriveWait = Boolean.TRUE;
@@ -589,16 +580,18 @@ public class SwerveAuto extends SwerveCore {
                     wrist.setPower(-1.0);
                     swerveSleep(1750);
                     extension.setPower(-0.6);
+                    intake.setPower(1);
                     setState(autoStates.SWERVE_LAST_MOVE, 5000);
                 }
                 else {
-                    ourSwerve.autoDrive(0.4, 230.0, -120.0, 190.0);
+                    ourSwerve.autoDrive(0.4, 230.0, -120.0, 180.0);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
 
                     wrist.setPower(-1.0);
                     swerveSleep(1750);
                     extension.setPower(-0.6);
+                    intake.setPower(1);
                     setState(autoStates.SWERVE_LAST_MOVE, 5000);
                 }
                 break;
@@ -640,6 +633,11 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_DONE:
                 // stop any movement
                 ourSwerve.stopRobot();
+                wrist.setPower(0);
+                extension.setPower(0);
+                swerveDebug(500, "Climber Position", "The cllimber postition is " + climber.getCurrentPosition());
+
+
                 break;
 
 

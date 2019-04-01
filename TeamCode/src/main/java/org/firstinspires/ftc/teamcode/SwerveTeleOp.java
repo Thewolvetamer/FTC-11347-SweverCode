@@ -4,27 +4,27 @@
 // The tele-op mode for swerve robot operations
 
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
-
-public class SwerveTeleOpCrater extends SwerveCore {
+@TeleOp(name="Swerve: 2-TeleOp 1.1", group="Swerve")
+//@Disabled
+public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
     //    int wristSpeed;
     private int minToggle = 0;
-    private boolean toggleVar=false;
+    private boolean toggleVar = false;
     private boolean toggle2 = false;
     double togglePos;
-    boolean crater = true;
-
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
     // Constructs the class.
     // The system calls this member when the class is instantiated.
-    public SwerveTeleOpCrater() {
+    public SwerveTeleOp() {
         // Initialize base classes.
         // All via self-construction.
 
@@ -45,8 +45,7 @@ public class SwerveTeleOpCrater extends SwerveCore {
         // Note that the class will connect to all of our motors and servos
         super.init();
 
-        flapL.setPosition(1);
-        flapR.setPosition(0);
+
 
         // We are just starting, so not in the end game yet...
         inEndGame = Boolean.FALSE;
@@ -66,6 +65,9 @@ public class SwerveTeleOpCrater extends SwerveCore {
 
         // Call the super/base class start method.
         super.start();
+        flapL.setPosition(1);
+        flapR.setPosition(1);
+        pusher.setPosition(-1);
 
         // start without using gradual drive changes
         ourSwerve.setUseGradual(Boolean.FALSE);
@@ -86,7 +88,7 @@ public class SwerveTeleOpCrater extends SwerveCore {
 
         swerveDebug(2000, "SwerveTeleOp::loop", "START");
 
-        // set swerve drive oritation automation level based on driver request
+        // set swerve drive orientation automation level based on driver request
         if (gamepad1.a) {
             ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_AUTO);
         }
@@ -98,6 +100,9 @@ public class SwerveTeleOpCrater extends SwerveCore {
         }
         if (gamepad1.y) {
             ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DRIVE_TURN);
+        }
+        if (gamepad1.dpad_down) {
+            ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DEMO);
         }
 
         // Move the robot, flipping y since the joysticks are upside down
@@ -151,17 +156,19 @@ public class SwerveTeleOpCrater extends SwerveCore {
             // move to 180 degrees
             gameMarkDrop.setPosition(1);
         } else {
-            gameMarkDrop.setPosition(0.4);
+            gameMarkDrop.setPosition(0);
         }
 
         //telemetry.addData("Servo Position", gameMarkDrop.getPosition());
         //telemetry.addData("Status", "Running");
         //telemetry.update();
     }
-    private void allFlaps(double position){
+
+    private void allFlaps(double position) {
         flapR.setPosition(position);
         flapL.setPosition(position);
     }
+
     private void liftRobot() {
         //Robot climber control
 
@@ -170,17 +177,17 @@ public class SwerveTeleOpCrater extends SwerveCore {
             climber.setPower(-1);
         } else if (gamepad2.dpad_up) {
 
-            climber.setPower(1);
+            climber.setPower(.6);
         } else {
 
             climber.setPower(0);
         }
     }
 
-
+    // makes it easier to go directly sideways
     private void strafeR() {
 
-        if (gamepad1.dpad_right) {
+        if (gamepad1.dpad_left) {
             swerveLeftFront.updateWheel(1, -0.50);
             swerveRightFront.updateWheel(1, -0.50);
             swerveLeftRear.updateWheel(1, -0.50);
@@ -190,13 +197,14 @@ public class SwerveTeleOpCrater extends SwerveCore {
 
     private void strafel() {
 
-        if (gamepad1.dpad_left) {
+        if (gamepad1.dpad_right) {
             swerveLeftFront.updateWheel(1, 0.50);
             swerveRightFront.updateWheel(1, 0.50);
             swerveLeftRear.updateWheel(1, 0.50);
             swerveRightRear.updateWheel(1, 0.50);
         }
     }
+
 
     void extend() {
         extension.setPower(gamepad2.right_stick_y);
@@ -223,52 +231,36 @@ public class SwerveTeleOpCrater extends SwerveCore {
     }
 
     void flaps() {
-//        How do you even set a toggle button?
-        if (gamepad2.a&&!toggleVar) {
+        if (gamepad2.a && !toggleVar) {
             // remmeber button is pressed
-            toggleVar=true;
+            toggleVar = true;
 
-            if ( toggle2 ) {
+            if (toggle2) {
                 // flip to other when button pressed again
                 toggle2 = false;
                 allFlaps(.5);
 
-                togglePos=.5;
+                togglePos = .5;
             } else {
                 toggle2 = true;
                 allFlaps(1);
-                togglePos=1;
+                togglePos = 1;
             }
         }
-        if (toggleVar&&!gamepad2.a){
+        if (toggleVar && !gamepad2.a) {
             // button released
             toggleVar = false;
         }
 
 
-
-
-
-
-        if(gamepad2.right_trigger >= 0.2) {
+        if (gamepad2.right_trigger >= 0.2) {
             allFlaps(-1);
-        }
-        else {
+        } else {
 
             allFlaps(togglePos);
         }
-
-
-//        } else if(gamepad2.left_trigger >= 0.2) {
-//            flapR.setPosition(.5);
-//            flapL.setPosition(.5);
-//        } else {
-//            flapR.setPosition(1);
-//            flapL.setPosition(1);
     }
 }
-
-
 //telemetry.update()
 
 
