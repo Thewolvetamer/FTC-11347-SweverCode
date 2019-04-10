@@ -123,6 +123,7 @@ public class SwerveDrive {
     private String angleLog;
     private String orientationLog;
     private String autoDriveLog;
+    private String heightLog;
 
     // IMU for heading when using movement automation
     private BNO055IMU imu;
@@ -217,6 +218,7 @@ public class SwerveDrive {
         speedLog = "(none)";
         angleLog = "(none)";
         orientationLog = "(none)";
+        heightLog = "(none)";
 
 
 
@@ -272,6 +274,7 @@ public class SwerveDrive {
     }
     public String getOrientLog() { return orientationLog; }
     public String getAutoDriveLog() { return autoDriveLog; }
+    public String getHeightLog() { return heightLog; }
 
     // ***********************************************************************
     // setSwerveMode - update the base robot orientation
@@ -352,10 +355,7 @@ public class SwerveDrive {
 
             moveAdjustLog = "Move Adj: "
                     + String.format( dblFormat, curHeading )
-                    + " ( " + String.format( dblFormat, angle ) + " ) "
-//                    + " to " + String.format( dblFormat, moveX )
-//                    + ", " + String.format( dblFormat, moveY );
-            ;
+                    + " ( " + String.format( dblFormat, angle ) + " ) ";
 
         } else {
             moveAdjustLog = "Move Adj: (none)";
@@ -630,7 +630,7 @@ public class SwerveDrive {
 
         // move based on angles
         // - get wheel target in degrees
-        tAngle = autoAngle - curHeading + baseOrientationAngle;
+        tAngle = autoAngle - curHeading + baseOrientationAngle - 90;
         // - normalize and convert to radians
         mAngle = normalizeGyroAngle360( tAngle ) * DEG2BASE;
 
@@ -730,5 +730,8 @@ public class SwerveDrive {
         return 0;
     }
 
+    void distance(double dist) {
+        heightLog = "My height is " + dist;
+    }
 
 }

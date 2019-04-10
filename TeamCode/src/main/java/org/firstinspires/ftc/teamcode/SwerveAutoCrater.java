@@ -44,7 +44,6 @@ public class SwerveAutoCrater extends SwerveAuto {
         super.init();
 
         crater = Boolean.TRUE;
-        noLift = false;
         // Robot and autonomous settings are read in from files in the core class init()
         // Report the autonomous settings
         showAutonomousGoals();

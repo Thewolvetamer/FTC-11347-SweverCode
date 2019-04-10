@@ -5,6 +5,9 @@
 
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
@@ -19,6 +22,17 @@ public class SwerveTeleOp extends SwerveCore {
     private boolean toggleVar = false;
     private boolean toggle2 = false;
     double togglePos;
+
+    enum autoScoring {
+        DRIVE_FORWARD,
+        EXTEND,
+        INTAKE,
+        TURN_LEFT,
+        TURN_RIGHT,
+        LANDER
+    }
+    private autoScoring curScoreState;
+
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -65,9 +79,6 @@ public class SwerveTeleOp extends SwerveCore {
 
         // Call the super/base class start method.
         super.start();
-        flapL.setPosition(1);
-        flapR.setPosition(1);
-        pusher.setPosition(-1);
 
         // start without using gradual drive changes
         ourSwerve.setUseGradual(Boolean.FALSE);
@@ -106,7 +117,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
 
         // Move the robot, flipping y since the joysticks are upside down
-        ourSwerve.headlessDriveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y, crater);
+        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
 
         // *** use buttons to trigger other actions ***
 
@@ -116,15 +127,15 @@ public class SwerveTeleOp extends SwerveCore {
 
         dropTeamIcon();
 
-        liftRobot();
+        climb();
 
         wrist();
 
-        extend();
+        hSlide();
 
-        intake();
+        vSlide();
 
-        flaps();
+        ourSwerve.distance(height.getDistance(DistanceUnit.CM));
 
 
         // Any loop background updates happen now....
@@ -164,25 +175,7 @@ public class SwerveTeleOp extends SwerveCore {
         //telemetry.update();
     }
 
-    private void allFlaps(double position) {
-        flapR.setPosition(position);
-        flapL.setPosition(position);
-    }
 
-    private void liftRobot() {
-        //Robot climber control
-
-        // x for down, y for up
-        if (gamepad2.dpad_down) {
-            climber.setPower(-1);
-        } else if (gamepad2.dpad_up) {
-
-            climber.setPower(.6);
-        } else {
-
-            climber.setPower(0);
-        }
-    }
 
     // makes it easier to go directly sideways
     private void strafeR() {
@@ -205,61 +198,66 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-
-    void extend() {
-        extension.setPower(gamepad2.right_stick_y);
-    }
-
-
-    void wrist() {
-        wrist.setPower(-gamepad2.left_stick_y);
-    }
-
-    void intake() {
-//        intake
-        if (gamepad2.left_bumper) {
-            intake.setPower(.6);
+    private void climb() {
+        if(gamepad2.dpad_up ) {
+            climber.setPower(.6);
         }
-//        outtake
-        else if (gamepad2.right_bumper) {
-            intake.setPower(-1);
+        else if(height.getDistance(DistanceUnit.CM) < 100 && gamepad2.dpad_left) {
+            climber.setPower(1);
         }
-//        zero power
         else {
-            intake.setPower(0.0);
+            climber.setPower(0);
         }
     }
 
-    void flaps() {
-        if (gamepad2.a && !toggleVar) {
-            // remmeber button is pressed
-            toggleVar = true;
+    private void vSlide() {
+        if(gamepad2.a) {
+            vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            distance/circumference of spool   * tpr
+            vSlide.setTargetPosition(1);
 
-            if (toggle2) {
-                // flip to other when button pressed again
-                toggle2 = false;
-                allFlaps(.5);
+            vSlide.setPower(1);
+        }
+        else if(vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
+            dump.setPosition(1);
+            swerveSleep(1000);
+            dump.setPosition(0);
+            vSlide.setTargetPosition(0);
+            vSlide.setPower(-1);
+        }
+    }
 
-                togglePos = .5;
-            } else {
-                toggle2 = true;
-                allFlaps(1);
-                togglePos = 1;
+    private void hSlide() {
+        hSlide.setPower(gamepad2.right_stick_y);
+    }
+
+    private void wrist() {
+        if(intake.getPosition() == 1) {
+            wristR.setPosition(1);
+            wristL.setPosition(1);
+        }
+        if(intake.getPosition() == 0){
+            swerveSleep(750);
+            if(intake.getPosition() == 0) {
+                wristL.setPosition(0);
+                wristR.setPosition(0);
             }
         }
-        if (toggleVar && !gamepad2.a) {
-            // button released
-            toggleVar = false;
-        }
-
-
-        if (gamepad2.right_trigger >= 0.2) {
-            allFlaps(-1);
-        } else {
-
-            allFlaps(togglePos);
-        }
     }
+
+
+//    public void autoScore(boolean button) {
+//        if(curSwerveMode == swerveModes.SWERVE_AUTO) {
+//            switch(curScoreState) {
+//                case DRIVE_FORWARD:
+//                    if(button) {
+//
+//                    }
+//            }
+//        }
+//    }
+
 }
 //telemetry.update()
 
