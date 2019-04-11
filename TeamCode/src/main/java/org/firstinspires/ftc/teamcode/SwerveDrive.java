@@ -82,7 +82,7 @@ public class SwerveDrive {
         SWERVE_DEMO
     }
     // mode we are operating in
-    private swerveModes curSwerveMode;
+    public swerveModes curSwerveMode;
 
     // Our 4 swerve drive wheels (servo and motor)
     private SwerveWheel[] swerveWheels;

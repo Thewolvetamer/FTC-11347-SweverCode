@@ -17,11 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
-    //    int wristSpeed;
-    private int minToggle = 0;
-    private boolean toggleVar = false;
-    private boolean toggle2 = false;
-    double togglePos;
 
     enum autoScoring {
         DRIVE_FORWARD,
@@ -39,11 +34,7 @@ public class SwerveTeleOp extends SwerveCore {
     // Constructs the class.
     // The system calls this member when the class is instantiated.
     public SwerveTeleOp() {
-        // Initialize base classes.
-        // All via self-construction.
 
-        // Initialize class members.
-        // All via self-construction.
     }
 
     // ***********************************************************************
@@ -80,8 +71,7 @@ public class SwerveTeleOp extends SwerveCore {
         // Call the super/base class start method.
         super.start();
 
-        // start without using gradual drive changes
-        ourSwerve.setUseGradual(Boolean.FALSE);
+        ourSwerve.curSwerveMode = SwerveDrive.swerveModes.SWERVE_DRIVER;
 
         swerveDebug(500, "SwerveTeleOp::start", "DONE");
     }
@@ -112,9 +102,6 @@ public class SwerveTeleOp extends SwerveCore {
         if (gamepad1.y) {
             ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DRIVE_TURN);
         }
-        if (gamepad1.dpad_down) {
-            ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DEMO);
-        }
 
         // Move the robot, flipping y since the joysticks are upside down
         ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
@@ -123,17 +110,19 @@ public class SwerveTeleOp extends SwerveCore {
 
         strafeR();
 
-        strafel();
+        strafeL();
 
         dropTeamIcon();
 
         climb();
 
-        wrist();
+//        wrist();
 
         hSlide();
 
-        vSlide();
+        vSlide.setPower(0);
+
+//        autoScore(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
 
         ourSwerve.distance(height.getDistance(DistanceUnit.CM));
 
@@ -188,7 +177,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-    private void strafel() {
+    private void strafeL() {
 
         if (gamepad1.dpad_right) {
             swerveLeftFront.updateWheel(1, 0.50);
@@ -202,8 +191,11 @@ public class SwerveTeleOp extends SwerveCore {
         if(gamepad2.dpad_up ) {
             climber.setPower(.6);
         }
-        else if(height.getDistance(DistanceUnit.CM) < 100 && gamepad2.dpad_left) {
-            climber.setPower(1);
+//        else if(height.getDistance(DistanceUnit.CM) < 100 && gamepad2.dpad_left) {
+//            climber.setPower(1);
+//        }
+        else if(gamepad2.dpad_down) {
+            climber.setPower(-1);
         }
         else {
             climber.setPower(0);
@@ -221,10 +213,15 @@ public class SwerveTeleOp extends SwerveCore {
         }
         else if(vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
             dump.setPosition(1);
-            swerveSleep(1000);
-            dump.setPosition(0);
-            vSlide.setTargetPosition(0);
-            vSlide.setPower(-1);
+            double t = getRuntime();
+            if(getRuntime() == t + 1000) {
+                dump.setPosition(0);
+                vSlide.setTargetPosition(0);
+                vSlide.setPower(-1);
+            }
+        }
+        else {
+            vSlide.setPower(0);
         }
     }
 
@@ -247,18 +244,61 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
 
-//    public void autoScore(boolean button) {
-//        if(curSwerveMode == swerveModes.SWERVE_AUTO) {
+//    public void autoScore(boolean button, boolean back, boolean left, boolean right) {
+//        hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
 //            switch(curScoreState) {
 //                case DRIVE_FORWARD:
 //                    if(button) {
-//
+//                        curScoreState = autoScoring.EXTEND;
 //                    }
+//                    else if(back) {
+//                        curScoreState = autoScoring.LANDER;
+//                    }
+//                    else{
+//                        ourSwerve.driveRobot(1, 0, 0, 0);
+//                    }
+//                    break;
+//
+//                case EXTEND:
+//                    if(button){
+//                        curScoreState = autoScoring.INTAKE;
+//                    }
+//                    else if(back) {
+//                        curScoreState = autoScoring.DRIVE_FORWARD;
+//                    }
+//                    else {
+//                        hSlide.setPower(.7);
+//                    }
+//                    break;
+//
+//                case INTAKE:
+//                    intake.setPosition(1);
+//                    if(left) {
+//                        ourSwerve.driveRobot(0,0, -1, 0);
+//                    }
+//                    else if(right) {
+//                        ourSwerve.driveRobot(0,0, 1, 0);
+//                    }
+//                    else if(button) {
+//                        curScoreState = autoScoring.LANDER;
+//                    }
+//                    else if(back) {
+//                        curScoreState = autoScoring.EXTEND;
+//                    }
+//                    break;
+//
+//                case LANDER:
+//                    if(button) {
+//                        vSlide();
+//                        swerveSleep(3000);
+//                        curScoreState = autoScoring.DRIVE_FORWARD;
+//                    }
+//                    else if(back) {
+//                        curScoreState = autoScoring.INTAKE;
+//                    }
+//                    break;
 //            }
 //        }
 //    }
-
 }
-//telemetry.update()
-
-

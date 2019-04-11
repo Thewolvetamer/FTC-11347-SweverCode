@@ -292,8 +292,7 @@ public class SwerveCore extends OpMode {
         swerveLeftFront = new SwerveWheel(motorLeftFront, servoLeftFront);
         swerveRightRear = new SwerveWheel(motorRightRear, servoRightRear);
         swerveLeftRear = new SwerveWheel(motorLeftRear, servoLeftRear);
-        ourSwerve = new SwerveDrive(swerveRightFront, swerveLeftFront, swerveLeftRear,
-                swerveRightRear, 12, 12, ourIMU );
+        ourSwerve = new SwerveDrive(swerveRightFront, swerveLeftFront, swerveLeftRear, swerveRightRear, 12, 12, ourIMU );
         swerveDebug(500, "SwerveCore::init", "swerve drive created");
 
         swerveReadAutoSettings();

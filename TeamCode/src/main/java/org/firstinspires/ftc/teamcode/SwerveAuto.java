@@ -29,7 +29,7 @@ import org.firstinspires.ftc.teamcode.vision.SampleRandomizedPositions;
 // **** DO NOT ENABLE - Started from the crater and depot auto code derived classes now ****
 // ****   @Autonomous(name="Swerve: 1-Auto 0.6", group="Swerve")
 // ***********************************************************************
-// 11/9/2018 - Swerve drive is now capable of auto correcting orientation to a degree while driving. The wheels actively adjust while moving
+// 11/9/2018 - Swerve drive is now capable of auto correcting. The wheels actively adjust while moving
 public class SwerveAuto extends SwerveCore {
 
     //private static Boolean useLightFlicker = Boolean.TRUE;
@@ -396,7 +396,7 @@ public class SwerveAuto extends SwerveCore {
 //            Drop down from the lander
             case SWERVE_DROP:
                 climber.setPower(.5);
-                setState(autoStates.SWERVE_DELAY, 3500);
+                setState(autoStates.SWERVE_DELAY, 3200);
                 break;
 
             // delays in order to give the lit time to finish

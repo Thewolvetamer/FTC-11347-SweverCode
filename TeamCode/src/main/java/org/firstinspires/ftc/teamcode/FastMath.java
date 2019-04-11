@@ -29,8 +29,9 @@ package org.firstinspires.ftc.teamcode;
 
 /**
  * Faster (hopefully) versions of java.lang.Math methods, plus additional ones.
- * Cf. README.txt for more info.
+ * Cf. README.txt for more info
  */
+@SuppressWarnings("unused")
 public final class FastMath extends CmnFastMath {
 
     //--------------------------------------------------------------------------
