@@ -44,6 +44,7 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_ALIGN,
         SWERVE_DROP,
         SWERVE_DELAY,
+        SWERVE_GROUND_ALIGN,
         SWERVE_SLIDE,
         SWERVE_PULL_BACK,
         SWERVE_PARTICLE_TO_DEPOT,
@@ -144,6 +145,8 @@ public class SwerveAuto extends SwerveCore {
                 return "DROP";
             case SWERVE_DELAY:
                 return "DELAY";
+            case SWERVE_GROUND_ALIGN:
+                return "ALIGN ON GROUND";
             case SWERVE_SLIDE:
                 return "SLIDE";
             case SWERVE_PULL_BACK:
@@ -408,6 +411,11 @@ public class SwerveAuto extends SwerveCore {
                 setState(autoStates.SWERVE_SLIDE, 700);
                 break;
 
+
+//            case SWERVE_GROUND_ALIGN:
+//
+//                setState(autoStates.SWERVE_SLIDE,0);
+//                break;
 //            slide off of the lander
             case SWERVE_SLIDE:
                 orientRobot(-90);

@@ -48,6 +48,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.teamcode.FastMath;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -129,7 +130,7 @@ public class SwerveDrive {
     private BNO055IMU imu;
     // and the angles from that IMU
     private Orientation angles;
-
+    private Acceleration gravAngles;
 
 
     // TODO: BE SURE we are using degrees for the angle, or change the file read/write code
@@ -457,6 +458,22 @@ public class SwerveDrive {
             }
         }
     }
+    // ***********************************************************************
+    // checkGravity() gets x,y and z accel the imu senses.
+    // ***********************************************************************
+    boolean isRobotLevel(){
+        gravAngles=imu.getGravity();
+        if(gravAngles.xAccel<.30&&gravAngles.yAccel<.30){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    String getGravXYZAccel(){
+        gravAngles=imu.getGravity();
+        return("X: "+ gravAngles.xAccel+" Y: "+gravAngles.yAccel+" Z: "+gravAngles.zAccel);
+    }
 
     // ***********************************************************************
     // checkOrientation - gather the current orientation data
@@ -464,6 +481,8 @@ public class SwerveDrive {
     void checkOrientation() {
         // read the orientation of the robot
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+
         // and save the heading
         curHeading = - ( angles.firstAngle - baseOrientationAngle );
 
