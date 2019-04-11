@@ -347,7 +347,7 @@ public class SwerveDrive {
                 + String.format( dblFormat, turnY );
 
         // if driving with field orietation automation, adjust for the robot orientation
-        if (( curSwerveMode == swerveModes.SWERVE_AUTO ) || ( curSwerveMode == swerveModes.SWERVE_DRIVE_ORIENT )) {
+        if (( curSwerveMode == swerveModes.SWERVE_DRIVER ) || ( curSwerveMode == swerveModes.SWERVE_DRIVE_ORIENT || ( curSwerveMode == swerveModes.SWERVE_DRIVE_TURN ) )) {
 
             // shift the input angles based on robot rotation
 
@@ -397,67 +397,68 @@ public class SwerveDrive {
     // headless drive - move the robot in relation to the driver
     // ***********************************************************************
     // adjusts the direction of the robot to drive in relation to the driver
-    public void headlessDriveRobot( double moveX, double moveY, double turnX, double turnY, boolean crater ) {
-        int wheel;          // wheel being updated
-        double angle;       // angle for turning
-        double baseHeadlessAngle;
+//    public void headlessDriveRobot( double moveX, double moveY, double turnX, double turnY, boolean crater ) {
+//        int wheel;          // wheel being updated
+//        double angle;       // angle for turning
+//        double baseHeadlessAngle;
+//
+//
+//        // check the orientation of the robot - for field-oriented driving
+//        checkOrientation();
+//
+//        // note drive directions
+//        moveLog = "MoveXY: " + String.format( dblFormat, moveX ) + ", "
+//                + String.format( dblFormat, moveY )
+//                + "  TurnXY: " + String.format( dblFormat, turnX ) + ", "
+//                + String.format( dblFormat, turnY );
+//
+//
+//
+//        if (curSwerveMode == swerveModes.SWERVE_DRIVE_ORIENT || curSwerveMode == swerveModes.SWERVE_DEMO) {
+//            // the angle for diver oriented driving changes based
+//            // upon the starting orientation
+//
+//            // when we do Demos the robot starts facing the same direction as the drivers
+//            // so the base angle should be 0
+//            if (curSwerveMode == swerveModes.SWERVE_DEMO) {
+//                baseHeadlessAngle = 0;
+//            }
+//            // on crater side the robot is -135( 3pi / 4 ) from the driver's orientation
+//            else if(crater && !(curSwerveMode == swerveModes.SWERVE_DEMO)) {
+//                baseHeadlessAngle = baseOrientationAngle + ((3 * Math.PI) / 4);
+//            }
+//            // on depot side the robot is 135( 3pi / 4 ) from the driver's orientation
+//            else {
+//                baseHeadlessAngle = baseOrientationAngle - ((3 * Math.PI) / 4);
+//            }
+//            angle = FastMath.atan2( moveY, moveX ) - baseHeadlessAngle;
+//            angle = angle * DEG2BASE;
+//
+//            moveAdjustLog = "Move Adj: "
+//                    + String.format( dblFormat, curHeading )
+//                    + " ( " + String.format( dblFormat, angle ) + " ) "
+//            ;
+//
+//        } else {
+//            moveAdjustLog = "Move Adj: (none)";
+//        }
+//
+//        // calculate the wheel moves needed
+//        calculateWheels( moveX, moveY, turnX * Math.PI );
+//
+//        // update wheels
+//        for (wheel = 0; wheel < swerveWheels.length; wheel++){
+//            // if the fastest wheel is almost stopped, just stop the robot
+//            if ( maxSpeed < 0.05 ) {
+//                swerveWheels[wheel].updateWheel( 0, positions[wheel] );
+//
+//                // otherwise, set the target speed and position
+//            } else {
+//                swerveWheels[wheel].updateWheel( speeds[wheel], positions[wheel] );
+//            }
+//        }
+//    }
 
-
-        // check the orientation of the robot - for field-oriented driving
-        checkOrientation();
-
-        // note drive directions
-        moveLog = "MoveXY: " + String.format( dblFormat, moveX ) + ", "
-                + String.format( dblFormat, moveY )
-                + "  TurnXY: " + String.format( dblFormat, turnX ) + ", "
-                + String.format( dblFormat, turnY );
-
-
-
-        if (curSwerveMode == swerveModes.SWERVE_DRIVE_ORIENT || curSwerveMode == swerveModes.SWERVE_DEMO) {
-            // the angle for diver oriented driving changes based
-            // upon the starting orientation
-
-            // when we do Demos the robot starts facing the same direction as the drivers
-            // so the base angle should be 0
-            if (curSwerveMode == swerveModes.SWERVE_DEMO) {
-                baseHeadlessAngle = 0;
-            }
-            // on crater side the robot is -135( 3pi / 4 ) from the driver's orientation
-            else if(crater && !(curSwerveMode == swerveModes.SWERVE_DEMO)) {
-                baseHeadlessAngle = baseOrientationAngle + ((3 * Math.PI) / 4);
-            }
-            // on depot side the robot is 135( 3pi / 4 ) from the driver's orientation
-            else {
-                baseHeadlessAngle = baseOrientationAngle - ((3 * Math.PI) / 4);
-            }
-            angle = FastMath.atan2( moveY, moveX ) - baseHeadlessAngle;
-            angle = angle * DEG2BASE;
-
-            moveAdjustLog = "Move Adj: "
-                    + String.format( dblFormat, curHeading )
-                    + " ( " + String.format( dblFormat, angle ) + " ) "
-            ;
-
-        } else {
-            moveAdjustLog = "Move Adj: (none)";
-        }
-
-        // calculate the wheel moves needed
-        calculateWheels( moveX, moveY, turnX * Math.PI );
-
-        // update wheels
-        for (wheel = 0; wheel < swerveWheels.length; wheel++){
-            // if the fastest wheel is almost stopped, just stop the robot
-            if ( maxSpeed < 0.05 ) {
-                swerveWheels[wheel].updateWheel( 0, positions[wheel] );
-
-                // otherwise, set the target speed and position
-            } else {
-                swerveWheels[wheel].updateWheel( speeds[wheel], positions[wheel] );
-            }
-        }
-    }
     // ***********************************************************************
     // checkGravity() gets x,y and z accel the imu senses.
     // ***********************************************************************
@@ -750,7 +751,7 @@ public class SwerveDrive {
     }
 
     void distance(double distL, double distR) {
-        heightLog = "My height is " + distR + " " + distL;
+        heightLog = "My height is " + (distR - 18.6) + " " + (distL - 18.6);
     }
 
 }

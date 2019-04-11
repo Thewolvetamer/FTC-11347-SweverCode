@@ -398,32 +398,35 @@ public class SwerveAuto extends SwerveCore {
                 break;
 //            Drop down from the lander
             case SWERVE_DROP:
-                climber.setPower(.5);
+                // motor has 383.6 ticks per rev
+                climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                climber.setTargetPosition(384*12);
+
+                climber.setPower(.8);
                 setState(autoStates.SWERVE_DELAY, 3200);
                 break;
 
             // delays in order to give the lit time to finish
             case SWERVE_DELAY:
-                climber.setPower(.3);
-
-//                                customizable delay
+//                                customizable delay adjusts for teammates
                 swerveSleep(0);
                 setState(autoStates.SWERVE_SLIDE, 700);
                 break;
 
-
-//            case SWERVE_GROUND_ALIGN:
-//
-//                setState(autoStates.SWERVE_SLIDE,0);
-//                break;
-//            slide off of the lander
             case SWERVE_SLIDE:
-                orientRobot(-90);
+                double t = getRuntime();
+                ourSwerve.autoDrive(.3, 87, 0, 6);
+                autoDriveStop = Boolean.TRUE;
+                autoDriveWait = Boolean.TRUE;
+                while(t == t + 1000) {
+                    orientRobot(-90);
+                }
 //                 turn for the planned time
                 if(debugActive) {
-                    setState(autoStates.SWERVE_AUTO_TESTING_TURN_BACK, 1000);
+                    setState(autoStates.SWERVE_AUTO_TESTING_TURN_BACK, 3000);
                 }
-                    setState(autoStates.SWERVE_HIT_PARTICLE, 1000);
+                    setState(autoStates.SWERVE_HIT_PARTICLE, 3000);
                 break;
 
 //            turn towards the particle

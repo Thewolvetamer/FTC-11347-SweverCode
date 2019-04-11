@@ -265,6 +265,7 @@ public class SwerveCore extends OpMode {
 
         heightR = hardwareMap.get(DistanceSensor.class, "HeightR");
         swerveDebugDevice(500, "Height Sensor Right", heightR);
+
         heightL = hardwareMap.get(DistanceSensor.class, "HeightL");
         swerveDebugDevice(500, "Height Sensor Left", heightL);
 
