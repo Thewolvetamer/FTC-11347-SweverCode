@@ -275,6 +275,7 @@ public class SwerveCore extends OpMode {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+
         parameters.calibrationDataFile = imuCalibration; // from calibration sample
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
@@ -379,7 +380,7 @@ public class SwerveCore extends OpMode {
         swerveLog("  CTL 2", controllerTelemetry(gamepad2));
 
         // Swerve status
-        swerveLog( "X S1", ourSwerve.getModeLog());
+        swerveLog( "X S1", ourSwerve.getGravXYZAccel());
         swerveLog( "X S2", ourSwerve.getMoveLog());
         swerveLog( "X S3", ourSwerve.getMoveAdjustLog());
         swerveLog( "X S4", ourSwerve.getAngleLog());
