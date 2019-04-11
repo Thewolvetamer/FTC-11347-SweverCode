@@ -401,7 +401,7 @@ public class SwerveAuto extends SwerveCore {
                 // motor has 383.6 ticks per rev
                 climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                climber.setTargetPosition(384*12);
+                climber.setTargetPosition(12);
 
                 climber.setPower(.8);
                 setState(autoStates.SWERVE_DELAY, 3200);

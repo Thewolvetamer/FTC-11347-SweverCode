@@ -124,7 +124,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         vSlide.setPower(0);
 
-//        autoScore(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
+        autoScore(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
 
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM), heightR.getDistance(DistanceUnit.CM));
 
@@ -217,7 +217,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
         else if(vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
             dump.setPosition(1);
-            double t = getRuntime();
+            final double t = getRuntime();
             if(getRuntime() == t + 1000) {
                 dump.setPosition(0);
                 vSlide.setTargetPosition(0);
@@ -294,7 +294,7 @@ public class SwerveTeleOp extends SwerveCore {
                 case LANDER:
                     if(button) {
                         vSlide();
-                        double t = getRuntime();
+                        final double t = getRuntime();
                         if(t + 3000 == getRuntime()) {
                             curScoreState = autoScoring.DRIVE_FORWARD;
                         }
