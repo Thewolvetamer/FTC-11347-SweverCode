@@ -104,7 +104,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
 
         // Move the robot, flipping y since the joysticks are upside down
-        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
+        ourSwerve.driveRobot(-gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
 
         // *** use buttons to trigger other actions ***
 
@@ -120,11 +120,13 @@ public class SwerveTeleOp extends SwerveCore {
 
         hSlide();
 
+        vSlide();
+
         vSlide.setPower(0);
 
 //        autoScore(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
 
-        ourSwerve.distance(height.getDistance(DistanceUnit.CM));
+        ourSwerve.distance(heightL.getDistance(DistanceUnit.CM), heightR.getDistance(DistanceUnit.CM));
 
 
         // Any loop background updates happen now....
@@ -191,9 +193,11 @@ public class SwerveTeleOp extends SwerveCore {
         if(gamepad2.dpad_up ) {
             climber.setPower(.6);
         }
-//        else if(height.getDistance(DistanceUnit.CM) < 100 && gamepad2.dpad_left) {
-//            climber.setPower(1);
-//        }
+        else if(gamepad2.dpad_left) {
+            while(heightL.getDistance(DistanceUnit.CM) < 25) {
+                climber.setPower(1);
+            }
+        }
         else if(gamepad2.dpad_down) {
             climber.setPower(-1);
         }
