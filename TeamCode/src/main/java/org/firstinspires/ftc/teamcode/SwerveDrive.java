@@ -103,7 +103,7 @@ public class SwerveDrive {
     private Boolean autoDone;
     private double autoWheelMove[];
     private double autoWheelLast[];
-
+    private double deltaGravity=0;
     //Breaking test
     private double decrementSpeed;
 
@@ -138,7 +138,7 @@ public class SwerveDrive {
     private double baseOrientationAngle;
     // file to save the base orientation angle in
     private String swerveAngleFile;
-    // saved current (adjusted) orietnation/heading
+    // saved current (adjusted) orientation/heading
     double curHeading;
     // when to run the next orientation
     private double nextOrientationTime;
@@ -462,14 +462,17 @@ public class SwerveDrive {
     // ***********************************************************************
     // checkGravity() gets x,y and z accel the imu senses.
     // ***********************************************************************
-    boolean isRobotLevel(){
-        gravAngles=imu.getGravity();
-        if(gravAngles.xAccel<.30&&gravAngles.yAccel<.30){
-            return true;
+
+    boolean isRobotLevel() {
+
+        gravAngles = imu.getGravity();
+        if (Math.abs(gravAngles.xAccel) < .30+deltaGravity && Math.abs(gravAngles.yAccel) < .30+deltaGravity) {
+         return true;
         }
         else{
             return false;
         }
+
     }
     String getGravXYZAccel(){
         gravAngles=imu.getGravity();
