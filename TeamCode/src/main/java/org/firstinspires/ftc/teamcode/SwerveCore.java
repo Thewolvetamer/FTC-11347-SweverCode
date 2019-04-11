@@ -21,6 +21,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -60,28 +62,32 @@ public class SwerveCore extends OpMode {
     DcMotor motorLeftFront;
     DcMotor motorRightRear;
     DcMotor motorLeftRear;
-    DcMotor climber;
-    DcMotor wrist;
-    DcMotor extension;
-    DcMotor intake;
-
     Servo   servoRightFront;
     Servo   servoLeftFront;
     Servo   servoRightRear;
     Servo   servoLeftRear;
-    Servo   gameMarkDrop;
-    Servo   flapR;
-    Servo   flapL;
 
     SwerveWheel swerveRightFront;
     SwerveWheel swerveLeftFront;
-
     SwerveWheel swerveRightRear;
     SwerveWheel swerveLeftRear;
     SwerveDrive ourSwerve;
 
 
+    DcMotor climber;
+    DcMotor vSlide;
+    DcMotor hSlide;
+
+    Servo gameMarkDrop;
+    Servo wristL;
+    Servo wristR;
+    Servo intake;
+    Servo dump;
+
+
+
     // *** Sensors ***
+    DistanceSensor height;
     VoltageSensor   batteryVoltSensor;
     BNO055IMU ourIMU;
 
@@ -95,7 +101,6 @@ public class SwerveCore extends OpMode {
     Boolean settingsDone;
 
     Boolean crater;
-    Boolean noLift;
 
 
     // Delay at start
@@ -199,17 +204,16 @@ public class SwerveCore extends OpMode {
         motorRightRear.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "Right Rear Motor", motorRightRear);
 
-        climber = hardwareMap.dcMotor.get("climber");
-        swerveDebugDevice(500, "climber", climber);
 
-        wrist = hardwareMap.dcMotor.get("wrist");
-        wrist.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        swerveDebugDevice(500, "wrist", wrist);
-        extension = hardwareMap.dcMotor.get("extension");
-        extension.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        swerveDebugDevice(500, "extension", extension);
-        intake = hardwareMap.dcMotor.get("intake");
-        swerveDebugDevice(500, "intake", intake);
+
+        climber = hardwareMap.dcMotor.get("climber");
+        climber.setDirection(DcMotor.Direction.REVERSE);
+        swerveDebugDevice(500, "climber", climber);
+        vSlide = hardwareMap.dcMotor.get("vSlide");
+        swerveDebugDevice(500, "Vertical Slide", vSlide);
+        hSlide = hardwareMap.dcMotor.get("hSlide");
+        swerveDebugDevice(500, "Horizontal Slide", hSlide);
+
 
 
         swerveDebug(500, "SwerveCore::init", "MOTORS connected");
@@ -228,16 +232,21 @@ public class SwerveCore extends OpMode {
         servoRightRear.scaleRange(1.0/6,5.0/6);
         swerveDebugDevice(500, "Right Rear Servo", servoRightRear);
 
+
+
         //Game Mark Drop Servo Port 1 Hub 4
         gameMarkDrop = hardwareMap.servo.get("gameMarkDrop");
         swerveDebugDevice(500, "Game Marker Drop", gameMarkDrop);
+        wristL = hardwareMap.servo.get("wristL");
+        swerveDebugDevice( 500, "Left Wrist", wristL);
+        wristR = hardwareMap.servo.get("wristR");
+        swerveDebugDevice(500, "Right Wrist", wristR);
+        intake = hardwareMap.servo.get("intake");
+        swerveDebugDevice(500, "Intake", intake);
+        dump = hardwareMap.servo.get("dump");
+        swerveDebugDevice(500, "Dumper", dump);
 
-        flapR = hardwareMap.servo.get("flapR");
-        flapR.setDirection(Servo.Direction.REVERSE);
-        swerveDebugDevice(500, "Right Flap", flapR);
 
-        flapL = hardwareMap.servo.get("flapL");
-        swerveDebugDevice(500, "Left Flap", flapL);
 
         swerveDebug(500, "SwerveCore::init", "SERVOS connected");
 
@@ -252,6 +261,9 @@ public class SwerveCore extends OpMode {
         //batteryVoltSensor = hardwareMap.voltageSensor.get("Expansion Hub 4");
         //swerveDebugDevice(500,"Battery Voltage Sensor", batteryVoltSensor);
 
+
+        height = hardwareMap.get(DistanceSensor.class, "Height");
+        swerveDebugDevice(500, "Height Sensor", height);
 
         // Rev has a built-in IMU for relative position information. The swerve drive uses the IMU.
         ourIMU = hardwareMap.get(BNO055IMU.class, "imu");
@@ -280,8 +292,7 @@ public class SwerveCore extends OpMode {
         swerveLeftFront = new SwerveWheel(motorLeftFront, servoLeftFront);
         swerveRightRear = new SwerveWheel(motorRightRear, servoRightRear);
         swerveLeftRear = new SwerveWheel(motorLeftRear, servoLeftRear);
-        ourSwerve = new SwerveDrive(swerveRightFront, swerveLeftFront, swerveLeftRear,
-                swerveRightRear, 12, 12, ourIMU );
+        ourSwerve = new SwerveDrive(swerveRightFront, swerveLeftFront, swerveLeftRear, swerveRightRear, 12, 12, ourIMU );
         swerveDebug(500, "SwerveCore::init", "swerve drive created");
 
         swerveReadAutoSettings();
@@ -372,6 +383,7 @@ public class SwerveCore extends OpMode {
         swerveLog( "X S5", ourSwerve.getSpeedLog());
         swerveLog( "X S6", ourSwerve.getOrientLog());
         swerveLog( "X S7", ourSwerve.getAutoDriveLog());
+        swerveLog( "X S8", ourSwerve.getHeightLog());
     }
 
 

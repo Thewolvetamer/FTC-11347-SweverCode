@@ -78,10 +78,11 @@ public class SwerveDrive {
         SWERVE_DRIVER,
         SWERVE_DRIVE_TURN,
         SWERVE_DRIVE_ORIENT,
-        SWERVE_AUTO
+        SWERVE_AUTO,
+        SWERVE_DEMO
     }
     // mode we are operating in
-    private swerveModes curSwerveMode;
+    public swerveModes curSwerveMode;
 
     // Our 4 swerve drive wheels (servo and motor)
     private SwerveWheel[] swerveWheels;
@@ -122,6 +123,7 @@ public class SwerveDrive {
     private String angleLog;
     private String orientationLog;
     private String autoDriveLog;
+    private String heightLog;
 
     // IMU for heading when using movement automation
     private BNO055IMU imu;
@@ -216,7 +218,7 @@ public class SwerveDrive {
         speedLog = "(none)";
         angleLog = "(none)";
         orientationLog = "(none)";
-        autoDriveLog = "(none)";
+        heightLog = "(none)";
 
 
 
@@ -245,6 +247,8 @@ public class SwerveDrive {
                 return "SWERVE_DRIVE_ORIENT";
             case SWERVE_AUTO:
                 return "SWERVE_AUTO";
+            case SWERVE_DEMO:
+                return  "SWERVE_DEMO";
             default:
                 return "UNKNOWN swerve mode";
         }
@@ -270,6 +274,7 @@ public class SwerveDrive {
     }
     public String getOrientLog() { return orientationLog; }
     public String getAutoDriveLog() { return autoDriveLog; }
+    public String getHeightLog() { return heightLog; }
 
     // ***********************************************************************
     // setSwerveMode - update the base robot orientation
@@ -350,10 +355,7 @@ public class SwerveDrive {
 
             moveAdjustLog = "Move Adj: "
                     + String.format( dblFormat, curHeading )
-                    + " ( " + String.format( dblFormat, angle ) + " ) "
-//                    + " to " + String.format( dblFormat, moveX )
-//                    + ", " + String.format( dblFormat, moveY );
-            ;
+                    + " ( " + String.format( dblFormat, angle ) + " ) ";
 
         } else {
             moveAdjustLog = "Move Adj: (none)";
@@ -410,23 +412,35 @@ public class SwerveDrive {
                 + String.format( dblFormat, turnY );
 
 
-        // shift the input angles based on robot rotation
 
+        if (curSwerveMode == swerveModes.SWERVE_DRIVE_ORIENT || curSwerveMode == swerveModes.SWERVE_DEMO) {
+            // the angle for diver oriented driving changes based
+            // upon the starting orientation
 
-        if(crater) {
-            baseHeadlessAngle = baseOrientationAngle + ((3 * Math.PI) / 4);
+            // when we do Demos the robot starts facing the same direction as the drivers
+            // so the base angle should be 0
+            if (curSwerveMode == swerveModes.SWERVE_DEMO) {
+                baseHeadlessAngle = 0;
+            }
+            // on crater side the robot is -135( 3pi / 4 ) from the driver's orientation
+            else if(crater && !(curSwerveMode == swerveModes.SWERVE_DEMO)) {
+                baseHeadlessAngle = baseOrientationAngle + ((3 * Math.PI) / 4);
+            }
+            // on depot side the robot is 135( 3pi / 4 ) from the driver's orientation
+            else {
+                baseHeadlessAngle = baseOrientationAngle - ((3 * Math.PI) / 4);
+            }
+            angle = FastMath.atan2( moveY, moveX ) - baseHeadlessAngle;
+            angle = angle * DEG2BASE;
+
+            moveAdjustLog = "Move Adj: "
+                    + String.format( dblFormat, curHeading )
+                    + " ( " + String.format( dblFormat, angle ) + " ) "
+            ;
+
+        } else {
+            moveAdjustLog = "Move Adj: (none)";
         }
-        else {
-            baseHeadlessAngle = baseOrientationAngle - ((3 * Math.PI) / 4);
-        }
-        angle = FastMath.atan2( moveY, moveX ) - baseHeadlessAngle;
-        angle = angle * DEG2BASE;
-
-        moveAdjustLog = "Move Adj: "
-                + String.format( dblFormat, curHeading )
-                + " ( " + String.format( dblFormat, angle ) + " ) "
-        ;
-
 
         // calculate the wheel moves needed
         calculateWheels( moveX, moveY, turnX * Math.PI );
@@ -616,7 +630,7 @@ public class SwerveDrive {
 
         // move based on angles
         // - get wheel target in degrees
-        tAngle = autoAngle - curHeading + baseOrientationAngle;
+        tAngle = autoAngle - curHeading + baseOrientationAngle - 90;
         // - normalize and convert to radians
         mAngle = normalizeGyroAngle360( tAngle ) * DEG2BASE;
 
@@ -714,6 +728,10 @@ public class SwerveDrive {
         }
 
         return 0;
+    }
+
+    void distance(double dist) {
+        heightLog = "My height is " + dist;
     }
 
 }

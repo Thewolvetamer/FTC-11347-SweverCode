@@ -14,12 +14,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
-@Autonomous(name="Swerve: 2-AutoGold 1.1", group="Swerve")
+@Autonomous(name="Swerve: 2-AutoDepot 1.1", group="Swerve")
 //@Disabled
 public class SwerveAutoDepot extends SwerveAuto {
 
     // ***********************************************************************
-    // SwerveAutoGold
+    // SwerveAutoDepot
     // ***********************************************************************
     // Constructs the class.
     // The system calls this member when the class is instantiated.
@@ -42,7 +42,6 @@ public class SwerveAutoDepot extends SwerveAuto {
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
         super.init();
-        noLift = false;
         crater = Boolean.FALSE;
 
         // Robot and autonomous settings are read in from files in the core class init()
