@@ -23,6 +23,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.vision.MasterVision;
 import org.firstinspires.ftc.teamcode.vision.SampleRandomizedPositions;
 
+import static com.sun.tools.doclint.HtmlTag.P;
+
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
@@ -404,10 +406,16 @@ public class SwerveAuto extends SwerveCore {
                 climber.setTargetPosition(12);
 
                 climber.setPower(.8);
-                setState(autoStates.SWERVE_DELAY, 3200);
+                setState(autoStates.SWERVE_GROUND_ALIGN, 3200);
                 break;
 
             // delays in order to give the lit time to finish
+            case SWERVE_GROUND_ALIGN:
+                if(ourSwerve.isRobotLevel()==false){
+                    ourSwerve.autoDrive(.4,270,0,10);
+                }
+                setState(autoStates.SWERVE_DELAY,1000);
+
             case SWERVE_DELAY:
 //                                customizable delay adjusts for teammates
                 swerveSleep(0);
