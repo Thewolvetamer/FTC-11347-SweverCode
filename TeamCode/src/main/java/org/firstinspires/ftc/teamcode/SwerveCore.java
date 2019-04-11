@@ -87,7 +87,8 @@ public class SwerveCore extends OpMode {
 
 
     // *** Sensors ***
-    DistanceSensor height;
+    DistanceSensor heightR;
+    DistanceSensor heightL;
     VoltageSensor   batteryVoltSensor;
     BNO055IMU ourIMU;
 
@@ -262,8 +263,11 @@ public class SwerveCore extends OpMode {
         //swerveDebugDevice(500,"Battery Voltage Sensor", batteryVoltSensor);
 
 
-        height = hardwareMap.get(DistanceSensor.class, "Height");
-        swerveDebugDevice(500, "Height Sensor", height);
+        heightR = hardwareMap.get(DistanceSensor.class, "HeightR");
+        swerveDebugDevice(500, "Height Sensor Right", heightR);
+
+        heightL = hardwareMap.get(DistanceSensor.class, "HeightL");
+        swerveDebugDevice(500, "Height Sensor Left", heightL);
 
         // Rev has a built-in IMU for relative position information. The swerve drive uses the IMU.
         ourIMU = hardwareMap.get(BNO055IMU.class, "imu");
@@ -272,6 +276,7 @@ public class SwerveCore extends OpMode {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+
         parameters.calibrationDataFile = imuCalibration; // from calibration sample
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
@@ -376,7 +381,7 @@ public class SwerveCore extends OpMode {
         swerveLog("  CTL 2", controllerTelemetry(gamepad2));
 
         // Swerve status
-        swerveLog( "X S1", ourSwerve.getModeLog());
+        swerveLog( "X S1", ourSwerve.getGravXYZAccel());
         swerveLog( "X S2", ourSwerve.getMoveLog());
         swerveLog( "X S3", ourSwerve.getMoveAdjustLog());
         swerveLog( "X S4", ourSwerve.getAngleLog());

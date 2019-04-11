@@ -104,7 +104,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
 
         // Move the robot, flipping y since the joysticks are upside down
-        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
+        ourSwerve.driveRobot(-gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
 
         // *** use buttons to trigger other actions ***
 
@@ -116,15 +116,17 @@ public class SwerveTeleOp extends SwerveCore {
 
         climb();
 
-//        wrist();
+        wrist();
 
         hSlide();
+
+        vSlide();
 
         vSlide.setPower(0);
 
 //        autoScore(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
 
-        ourSwerve.distance(height.getDistance(DistanceUnit.CM));
+        ourSwerve.distance(heightL.getDistance(DistanceUnit.CM), heightR.getDistance(DistanceUnit.CM));
 
 
         // Any loop background updates happen now....
@@ -191,9 +193,11 @@ public class SwerveTeleOp extends SwerveCore {
         if(gamepad2.dpad_up ) {
             climber.setPower(.6);
         }
-//        else if(height.getDistance(DistanceUnit.CM) < 100 && gamepad2.dpad_left) {
-//            climber.setPower(1);
-//        }
+        else if(gamepad2.dpad_left) {
+            while(heightL.getDistance(DistanceUnit.CM) < 25) {
+                climber.setPower(1);
+            }
+        }
         else if(gamepad2.dpad_down) {
             climber.setPower(-1);
         }
@@ -235,7 +239,6 @@ public class SwerveTeleOp extends SwerveCore {
             wristL.setPosition(1);
         }
         if(intake.getPosition() == 0){
-            swerveSleep(750);
             if(intake.getPosition() == 0) {
                 wristL.setPosition(0);
                 wristR.setPosition(0);
@@ -244,61 +247,63 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
 
-//    public void autoScore(boolean button, boolean back, boolean left, boolean right) {
-//        hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
-//            switch(curScoreState) {
-//                case DRIVE_FORWARD:
-//                    if(button) {
-//                        curScoreState = autoScoring.EXTEND;
-//                    }
-//                    else if(back) {
-//                        curScoreState = autoScoring.LANDER;
-//                    }
-//                    else{
-//                        ourSwerve.driveRobot(1, 0, 0, 0);
-//                    }
-//                    break;
-//
-//                case EXTEND:
-//                    if(button){
-//                        curScoreState = autoScoring.INTAKE;
-//                    }
-//                    else if(back) {
-//                        curScoreState = autoScoring.DRIVE_FORWARD;
-//                    }
-//                    else {
-//                        hSlide.setPower(.7);
-//                    }
-//                    break;
-//
-//                case INTAKE:
-//                    intake.setPosition(1);
-//                    if(left) {
-//                        ourSwerve.driveRobot(0,0, -1, 0);
-//                    }
-//                    else if(right) {
-//                        ourSwerve.driveRobot(0,0, 1, 0);
-//                    }
-//                    else if(button) {
-//                        curScoreState = autoScoring.LANDER;
-//                    }
-//                    else if(back) {
-//                        curScoreState = autoScoring.EXTEND;
-//                    }
-//                    break;
-//
-//                case LANDER:
-//                    if(button) {
-//                        vSlide();
-//                        swerveSleep(3000);
-//                        curScoreState = autoScoring.DRIVE_FORWARD;
-//                    }
-//                    else if(back) {
-//                        curScoreState = autoScoring.INTAKE;
-//                    }
-//                    break;
-//            }
-//        }
-//    }
+    public void autoScore(boolean button, boolean back, boolean left, boolean right) {
+        hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
+            switch(curScoreState) {
+                case DRIVE_FORWARD:
+                    if(button) {
+                        curScoreState = autoScoring.EXTEND;
+                    }
+                    else if(back) {
+                        curScoreState = autoScoring.LANDER;
+                    }
+                    else{
+                        ourSwerve.driveRobot(1, 0, 0, 0);
+                    }
+                    break;
+
+                case EXTEND:
+                    if(button){
+                        curScoreState = autoScoring.INTAKE;
+                    }
+                    else if(back) {
+                        curScoreState = autoScoring.DRIVE_FORWARD;
+                    }
+                    else {
+                        hSlide.setPower(.7);
+                    }
+                    break;
+
+                case INTAKE:
+                    intake.setPosition(1);
+                    if(left) {
+                        ourSwerve.driveRobot(0,0, -1, 0);
+                    }
+                    else if(right) {
+                        ourSwerve.driveRobot(0,0, 1, 0);
+                    }
+                    else if(button) {
+                        curScoreState = autoScoring.LANDER;
+                    }
+                    else if(back) {
+                        curScoreState = autoScoring.EXTEND;
+                    }
+                    break;
+
+                case LANDER:
+                    if(button) {
+                        vSlide();
+                        double t = getRuntime();
+                        if(t + 3000 == getRuntime()) {
+                            curScoreState = autoScoring.DRIVE_FORWARD;
+                        }
+                    }
+                    else if(back) {
+                        curScoreState = autoScoring.INTAKE;
+                    }
+                    break;
+            }
+        }
+    }
 }
