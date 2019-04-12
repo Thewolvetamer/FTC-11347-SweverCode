@@ -126,7 +126,7 @@ public class SwerveTeleOp extends SwerveCore {
         vSlide.setPower(0);
 
 
-        yeet(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
+        yeet();
 
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM), heightR.getDistance(DistanceUnit.CM));
 
@@ -213,9 +213,9 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-    private void vSlide() {
-        if(gamepad2.a) {
-            vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            private void vSlide() {
+                if(gamepad2.a) {
+                    vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //            distance/circumference of spool   * tpr
             vSlide.setTargetPosition(1);
@@ -260,15 +260,16 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
 
-    public void yeet(boolean button, boolean back, boolean left, boolean right) {
+    public void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
             switch(curScoreState) {
                 case DRIVE_FORWARD:
-                    if(button) {
+                    if(gamepad2.a) {
                         curScoreState = autoScoring.EXTEND;
+
                     }
-                    else if(back) {
+                    else if(gamepad2.b) {
                         curScoreState = autoScoring.LANDER;
                     }
                     else{
@@ -277,10 +278,11 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case EXTEND:
-                    if(button){
+                    if(gamepad2.a){
                         curScoreState = autoScoring.INTAKE;
+
                     }
-                    else if(back) {
+                    else if(gamepad2.b) {
                         curScoreState = autoScoring.DRIVE_FORWARD;
                     }
                     else {
@@ -290,29 +292,29 @@ public class SwerveTeleOp extends SwerveCore {
 
                 case INTAKE:
                     intake.setPosition(1);
-                    if(left) {
+                    if(gamepad2.dpad_left) {
                         ourSwerve.driveRobot(0,0, -1, 0);
                     }
-                    else if(right) {
+                    else if(gamepad2.dpad_right) {
                         ourSwerve.driveRobot(0,0, 1, 0);
                     }
-                    else if(button) {
+                    else if(gamepad2.a) {
                         curScoreState = autoScoring.LANDER;
                     }
-                    else if(back) {
+                    else if(gamepad2.b) {
                         curScoreState = autoScoring.EXTEND;
                     }
                     break;
 
                 case LANDER:
-                    if(button) {
+                    if(gamepad2.a) {
                         vSlide();
                         final double t = getRuntime();
                         if(t + 3000 == getRuntime()) {
                             curScoreState = autoScoring.DRIVE_FORWARD;
                         }
                     }
-                    else if(back) {
+                    else if(gamepad2.b) {
                         curScoreState = autoScoring.INTAKE;
                     }
                     break;
