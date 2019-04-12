@@ -27,7 +27,6 @@ public class SwerveTeleOp extends SwerveCore {
         LANDER
     }
     private autoScoring curScoreState;
-
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -141,6 +140,7 @@ public class SwerveTeleOp extends SwerveCore {
     // ***********************************************************************
     // Performs any actions that are necessary when the OpMode is disabled.
     // The system calls this member once when the OpMode is disabled.
+
     @Override
     public void stop() {
         swerveDebug(500, "SwerveTeleOp::stop", "START");
