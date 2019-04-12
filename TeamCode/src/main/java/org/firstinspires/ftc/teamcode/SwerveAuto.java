@@ -403,18 +403,24 @@ public class SwerveAuto extends SwerveCore {
                 // motor has 383.6 ticks per rev
                 climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                climber.setTargetPosition(12);
-
-                climber.setPower(.8);
+                climber.setTargetPosition(9000);
+                if(climber.getCurrentPosition() < 8750) {
+                    climber.setPower(1);
+                }
+                else {
+                    climber.setPower(.6);
+                }
                 setState(autoStates.SWERVE_GROUND_ALIGN, 3200);
                 break;
 
-            // delays in order to give the lit time to finish
+            // This checks gravity and does a small adjustment.
+
             case SWERVE_GROUND_ALIGN:
-                if(ourSwerve.isRobotLevel()==false){
+                if(!ourSwerve.isRobotLevel()){
                     ourSwerve.autoDrive(.4,270,0,10);
                 }
                 setState(autoStates.SWERVE_DELAY,1000);
+                // delays in order to give the lit time to finish
 
             case SWERVE_DELAY:
 //                                customizable delay adjusts for teammates

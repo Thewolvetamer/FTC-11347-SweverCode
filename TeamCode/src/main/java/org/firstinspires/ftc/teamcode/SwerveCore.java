@@ -206,7 +206,6 @@ public class SwerveCore extends OpMode {
         swerveDebugDevice(500, "Right Rear Motor", motorRightRear);
 
 
-
         climber = hardwareMap.dcMotor.get("climber");
         climber.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "climber", climber);
@@ -363,6 +362,7 @@ public class SwerveCore extends OpMode {
     }
 
 
+
     // ***********************************************************************
     // loopEndReporting
     // ***********************************************************************
@@ -381,7 +381,7 @@ public class SwerveCore extends OpMode {
         swerveLog("  CTL 2", controllerTelemetry(gamepad2));
 
         // Swerve status
-        swerveLog( "X S1", ourSwerve.getGravXYZAccel());
+        swerveLog( "X S1", String.valueOf(climber.getCurrentPosition()));
         swerveLog( "X S2", ourSwerve.getMoveLog());
         swerveLog( "X S3", ourSwerve.getMoveAdjustLog());
         swerveLog( "X S4", ourSwerve.getAngleLog());
@@ -396,6 +396,8 @@ public class SwerveCore extends OpMode {
     // controllerTelemetry
     // ***********************************************************************
     // String of all the current controller values
+
+
     public String controllerTelemetry(Gamepad myPad) {
         String leftTrigger;
         String leftBumper;
