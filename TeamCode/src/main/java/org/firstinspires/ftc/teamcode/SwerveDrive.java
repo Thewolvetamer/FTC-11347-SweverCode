@@ -645,7 +645,6 @@ public class SwerveDrive {
             if ( forceStop ) {
                 stopRobot();
             }
-
             return( Boolean.TRUE );
         }
 

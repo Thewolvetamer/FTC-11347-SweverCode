@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
-    int toggleVar;
+    boolean debounce;
     enum autoScoring {
         DRIVE_FORWARD,
         EXTEND,
@@ -262,14 +262,13 @@ public class SwerveTeleOp extends SwerveCore {
 
     public void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        boolean debouncevar=true;
         if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
             switch(curScoreState) {
                 case DRIVE_FORWARD:
                     if(gamepad2.a) {
                         curScoreState = autoScoring.EXTEND;
 
-                        
+
                     }
                     else if(gamepad2.b) {
                         curScoreState = autoScoring.LANDER;
