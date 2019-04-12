@@ -124,7 +124,8 @@ public class SwerveTeleOp extends SwerveCore {
         intake();
 
         if(gamepad2.b) {
-            hSlide.setMode();
+            hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            hSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
 //        yeet(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
