@@ -361,14 +361,8 @@ public class SwerveCore extends OpMode {
 
         super.stop();
     }
-    public boolean buttonPressedReleased(boolean button){
-        while(true) {
-            if (button)
-                while(true)
-                if (!button)
-                    return true;
-        }
-    }
+
+
 
     // ***********************************************************************
     // loopEndReporting
