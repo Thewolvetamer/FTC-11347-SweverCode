@@ -121,9 +121,12 @@ public class SwerveTeleOp extends SwerveCore {
 
         vSlide();
 
+        intake();
+
         vSlide.setPower(0);
 
-        autoScore(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
+
+        yeet(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
 
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM), heightR.getDistance(DistanceUnit.CM));
 
@@ -166,8 +169,6 @@ public class SwerveTeleOp extends SwerveCore {
         //telemetry.update();
     }
 
-
-
     // makes it easier to go directly sideways
     private void strafeR() {
 
@@ -190,19 +191,25 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void climb() {
-        if(gamepad2.dpad_up ) {
-            climber.setPower(.6);
-        }
-        else if(gamepad2.dpad_left) {
-            while(heightL.getDistance(DistanceUnit.CM) < 25) {
+        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
+            climber.setTargetPosition(4500);
+            climber.setPower(-1);
+            if(gamepad2.start) {
+                climber.setTargetPosition(9000);
                 climber.setPower(1);
             }
+            else if(climber.getCurrentPosition() == climber.getTargetPosition()) {
+//                double check height
+                while(heightL.getDistance(DistanceUnit.CM) < 30) {
+                    climber.setPower(-1);
+                }
+            }
         }
-        else if(gamepad2.dpad_down) {
-            climber.setPower(-1);
+        else if(gamepad2.dpad_down && !(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) ) {
+            climber.setPower(-.7);
         }
-        else {
-            climber.setPower(0);
+        else if(gamepad2.dpad_up) {
+            climber.setPower(.7);
         }
     }
 
@@ -246,8 +253,14 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
+    private void intake() {
+        if(gamepad2.right_stick_button) {
+            intake.setPosition(1);
+        }
+    }
 
-    public void autoScore(boolean button, boolean back, boolean left, boolean right) {
+
+    public void yeet(boolean button, boolean back, boolean left, boolean right) {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
             switch(curScoreState) {
