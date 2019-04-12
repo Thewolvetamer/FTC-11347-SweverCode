@@ -27,7 +27,6 @@ public class SwerveTeleOp extends SwerveCore {
         LANDER
     }
     private autoScoring curScoreState;
-
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -124,7 +123,14 @@ public class SwerveTeleOp extends SwerveCore {
 
         intake();
 
+<<<<<<< HEAD
 //        yeet(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
+=======
+        vSlide.setPower(0);
+
+
+        yeet();
+>>>>>>> bf4d30e5c0ffd425e14bd26009a7bc13e54837f0
 
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM), heightR.getDistance(DistanceUnit.CM));
 
@@ -141,6 +147,7 @@ public class SwerveTeleOp extends SwerveCore {
     // ***********************************************************************
     // Performs any actions that are necessary when the OpMode is disabled.
     // The system calls this member once when the OpMode is disabled.
+
     @Override
     public void stop() {
         swerveDebug(500, "SwerveTeleOp::stop", "START");
@@ -213,9 +220,9 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-    private void vSlide() {
-        if(gamepad2.a) {
-            vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            private void vSlide() {
+                if(gamepad2.a) {
+                    vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //            distance/circumference of spool   * tpr
             vSlide.setTargetPosition(1);
