@@ -459,14 +459,12 @@ public class SwerveDrive {
 //        }
 //    }
 
-    // ***********************************************************************
-    // checkGravity() gets x,y and z accel the imu senses.
-    // ***********************************************************************
+
 
     boolean isRobotLevel() {
 
         gravAngles = imu.getGravity();
-        if (Math.abs(gravAngles.xAccel) < .30+deltaGravity && Math.abs(gravAngles.yAccel) < .30+deltaGravity) {
+        if (Math.abs(gravAngles.zAccel) < .30+deltaGravity && Math.abs(gravAngles.yAccel) < .30+deltaGravity) {
          return true;
         }
         else{
@@ -474,6 +472,10 @@ public class SwerveDrive {
         }
 
     }
+    // ***********************************************************************
+    // getGravXYZAccel() gets x,y and z accel the imu senses.
+    // ***********************************************************************
+
     String getGravXYZAccel(){
         gravAngles=imu.getGravity();
         return("X: "+ gravAngles.xAccel+" Y: "+gravAngles.yAccel+" Z: "+gravAngles.zAccel);
@@ -570,7 +572,6 @@ public class SwerveDrive {
 //    public double normalizeGyroAngle180(double angle){
 //        return (angle - (FastMath.floor( angle / 180) * 180) );
 //    }
-
     // ***********************************************************************
     // stopRobot
     // ***********************************************************************
