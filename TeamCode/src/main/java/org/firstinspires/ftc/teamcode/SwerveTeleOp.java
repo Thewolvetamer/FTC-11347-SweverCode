@@ -267,7 +267,7 @@ public class SwerveTeleOp extends SwerveCore {
                 case DRIVE_FORWARD:
                     if(gamepad2.a) {
                         curScoreState = autoScoring.EXTEND;
-
+                            
                     }
                     else if(gamepad2.b) {
                         curScoreState = autoScoring.LANDER;
