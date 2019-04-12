@@ -361,7 +361,14 @@ public class SwerveCore extends OpMode {
 
         super.stop();
     }
-
+    public boolean buttonPressedReleased(boolean button){
+        while(true) {
+            if (button)
+                while(true)
+                if (!button)
+                    return true;
+        }
+    }
 
     // ***********************************************************************
     // loopEndReporting
@@ -396,6 +403,8 @@ public class SwerveCore extends OpMode {
     // controllerTelemetry
     // ***********************************************************************
     // String of all the current controller values
+
+
     public String controllerTelemetry(Gamepad myPad) {
         String leftTrigger;
         String leftBumper;
