@@ -262,12 +262,13 @@ public class SwerveTeleOp extends SwerveCore {
 
     public void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        boolean debouncevar=true;
         if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
             switch(curScoreState) {
                 case DRIVE_FORWARD:
                     if(gamepad2.a) {
                         curScoreState = autoScoring.EXTEND;
-                            
+
                     }
                     else if(gamepad2.b) {
                         curScoreState = autoScoring.LANDER;
@@ -278,6 +279,7 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case EXTEND:
+
                     if(gamepad2.a){
                         curScoreState = autoScoring.INTAKE;
 

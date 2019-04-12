@@ -21,7 +21,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
@@ -89,11 +88,10 @@ public class SwerveCore extends OpMode {
     // *** Sensors ***
     DistanceSensor heightR;
     DistanceSensor heightL;
-    VoltageSensor   batteryVoltSensor;
-    BNO055IMU ourIMU;
+    private BNO055IMU ourIMU;
 
         // IMU calibration file
-    String imuCalibration = "RevIMUCalibration.json";
+    private String imuCalibration = "RevIMUCalibration.json";
     //
     // Values for autonomous activities
     //
@@ -398,7 +396,7 @@ public class SwerveCore extends OpMode {
     // String of all the current controller values
 
 
-    public String controllerTelemetry(Gamepad myPad) {
+    private String controllerTelemetry(Gamepad myPad) {
         String leftTrigger;
         String leftBumper;
         String rightTrigger;
