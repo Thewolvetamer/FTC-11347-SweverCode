@@ -103,7 +103,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
 
         // Move the robot, flipping y since the joysticks are upside down
-        ourSwerve.driveRobot(-gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
+        ourSwerve.driveRobot(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
 
         // *** use buttons to trigger other actions ***
 
@@ -123,6 +123,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         intake();
 
+//        yeet(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
         vSlide.setPower(0);
 
 
@@ -191,7 +192,7 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void climb() {
-        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
+        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO && gamepad2.dpad_down) {
             climber.setTargetPosition(4500);
             climber.setPower(-1);
             if(gamepad2.start) {
@@ -210,6 +211,9 @@ public class SwerveTeleOp extends SwerveCore {
         }
         else if(gamepad2.dpad_up) {
             climber.setPower(.7);
+        }
+        else {
+            climber.setPower(0);
         }
     }
 
@@ -325,4 +329,63 @@ public class SwerveTeleOp extends SwerveCore {
             }
         }
     }
+//    public void yeet(boolean button, boolean back, boolean left, boolean right) {
+//        hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
+//            switch(curScoreState) {
+//                case DRIVE_FORWARD:
+//                    if(button) {
+//                        curScoreState = autoScoring.EXTEND;
+//                    }
+//                    else if(back) {
+//                        curScoreState = autoScoring.LANDER;
+//                    }
+//                    else{
+//                        ourSwerve.driveRobot(1, 0, 0, 0);
+//                    }
+//                    break;
+//
+//                case EXTEND:
+//                    if(button){
+//                        curScoreState = autoScoring.INTAKE;
+//                    }
+//                    else if(back) {
+//                        curScoreState = autoScoring.DRIVE_FORWARD;
+//                    }
+//                    else {
+//                        hSlide.setPower(.7);
+//                    }
+//                    break;
+//
+//                case INTAKE:
+//                    intake.setPosition(1);
+//                    if(left) {
+//                        ourSwerve.driveRobot(0,0, -1, 0);
+//                    }
+//                    else if(right) {
+//                        ourSwerve.driveRobot(0,0, 1, 0);
+//                    }
+//                    else if(button) {
+//                        curScoreState = autoScoring.LANDER;
+//                    }
+//                    else if(back) {
+//                        curScoreState = autoScoring.EXTEND;
+//                    }
+//                    break;
+//
+//                case LANDER:
+//                    if(button) {
+//                        vSlide();
+//                        final double t = getRuntime();
+//                        if(t + 3000 == getRuntime()) {
+//                            curScoreState = autoScoring.DRIVE_FORWARD;
+//                        }
+//                    }
+//                    else if(back) {
+//                        curScoreState = autoScoring.INTAKE;
+//                    }
+//                    break;
+//            }
+//        }
+//    }
 }

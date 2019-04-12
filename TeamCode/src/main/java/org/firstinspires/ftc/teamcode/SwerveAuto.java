@@ -404,13 +404,20 @@ public class SwerveAuto extends SwerveCore {
                 climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 climber.setTargetPosition(9000);
-                if(climber.getCurrentPosition() < 8750) {
+                if(climber.getCurrentPosition() < 8500) {
                     climber.setPower(1);
                 }
                 else {
                     climber.setPower(.6);
                 }
-                setState(autoStates.SWERVE_GROUND_ALIGN, 3200);
+                int tC = 1000;
+                if(climber.getTargetPosition() > climber.getCurrentPosition()) {
+                    tC = tC + 5;
+                }
+                else {
+                    tC = tC - 15;
+                }
+                setState(autoStates.SWERVE_GROUND_ALIGN, tC);
                 break;
 
             // This checks gravity and does a small adjustment.
