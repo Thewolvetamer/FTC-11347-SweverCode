@@ -379,7 +379,7 @@ public class SwerveCore extends OpMode {
         swerveLog("  CTL 2", controllerTelemetry(gamepad2));
 
         // Swerve status
-        swerveLog( "X S1", String.valueOf(climber.getCurrentPosition()));
+        swerveLog( "X S1", String.valueOf(hSlide.getCurrentPosition()));
         swerveLog( "X S2", ourSwerve.getMoveLog());
         swerveLog( "X S3", ourSwerve.getMoveAdjustLog());
         swerveLog( "X S4", ourSwerve.getAngleLog());
