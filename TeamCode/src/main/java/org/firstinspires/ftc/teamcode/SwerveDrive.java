@@ -755,7 +755,7 @@ public class SwerveDrive {
     }
 
     void distance(double distL, double distR) {
-        heightLog = "My height is " + (distR - 18.6) + " " + (distL - 18.6);
+        heightLog = "My height is " + (distR - 18) + " " + (distL - 18);
     }
 
 }
