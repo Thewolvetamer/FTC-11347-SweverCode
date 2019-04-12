@@ -277,6 +277,7 @@ public class SwerveTeleOp extends SwerveCore {
                         curScoreState = autoScoring.EXTEND;
 
 
+
                     }
                     else if(gamepad2.b) {
                         curScoreState = autoScoring.LANDER;
@@ -288,7 +289,7 @@ public class SwerveTeleOp extends SwerveCore {
 
                 case EXTEND:
 
-                    if(gamepad2.a){
+                    if(!gamepad2.a){
                         curScoreState = autoScoring.INTAKE;
 
                     }
@@ -319,7 +320,7 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case LANDER:
-                    if(gamepad2.a) {
+                    if(!gamepad2.a) {
                         vSlide();
                         final double t = getRuntime();
                         if(t + 3000 == getRuntime()) {
