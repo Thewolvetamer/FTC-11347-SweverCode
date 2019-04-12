@@ -269,6 +269,7 @@ public class SwerveTeleOp extends SwerveCore {
                     if(gamepad2.a) {
                         curScoreState = autoScoring.EXTEND;
 
+                        
                     }
                     else if(gamepad2.b) {
                         curScoreState = autoScoring.LANDER;
@@ -296,9 +297,11 @@ public class SwerveTeleOp extends SwerveCore {
                     intake.setPosition(1);
                     if(gamepad2.dpad_left) {
                         ourSwerve.driveRobot(0,0, -1, 0);
+                        break;
                     }
                     else if(gamepad2.dpad_right) {
                         ourSwerve.driveRobot(0,0, 1, 0);
+                        break;
                     }
                     else if(gamepad2.a) {
                         curScoreState = autoScoring.LANDER;
