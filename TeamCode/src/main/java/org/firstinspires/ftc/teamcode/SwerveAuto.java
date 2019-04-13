@@ -111,7 +111,6 @@ public class SwerveAuto extends SwerveCore {
     private SampleRandomizedPositions goldPosition;
 
     // variables for auto actions
-    private int moveTimePushoff;
 
 
     // ***********************************************************************
