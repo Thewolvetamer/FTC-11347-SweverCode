@@ -320,14 +320,14 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case LANDER:
-                    if(!gamepad2.a) {
+                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
                         vSlide();
                         final double t = getRuntime();
                         if(t + 3000 == getRuntime()) {
                             curScoreState = autoScoring.DRIVE_FORWARD;
                         }
                     }
-                    else if(gamepad2.b) {
+                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.INTAKE;
                     }
                     break;
