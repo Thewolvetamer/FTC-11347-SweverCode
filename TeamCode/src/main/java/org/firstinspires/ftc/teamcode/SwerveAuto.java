@@ -106,7 +106,6 @@ public class SwerveAuto extends SwerveCore {
 //    private float robotOrientation[];
 //    private float robotSpeed[];
 //    private float robotPosition[];
-    private int delaycount;
     // for Vuforia detection
     private MasterVision vision;
     private SampleRandomizedPositions goldPosition;
@@ -133,7 +132,7 @@ public class SwerveAuto extends SwerveCore {
     // getStateName
     // ***********************************************************************
     // Return the name of the current state
-    public String getStateName(autoStates myState) {
+    private String getStateName(autoStates myState) {
         // Set the name for the state we are in
         switch (myState) {
 
@@ -188,7 +187,7 @@ public class SwerveAuto extends SwerveCore {
     // getCurStateName
     // ***********************************************************************
     // Return the name of the current state
-    public String getCurStateName() {
+    private String getCurStateName() {
         return getStateName(revTankState);
     }
 
@@ -373,7 +372,7 @@ public class SwerveAuto extends SwerveCore {
                 // INIT is only used to have some state before we set START in start()
                 swerveDebug(1, "SwerveAuto::loop *ERROR*", "== loop with INIT state");
                 setState(autoStates.SWERVE_START, 0);
-                delaycount = 0;
+
                 break;
 
 //            First state
