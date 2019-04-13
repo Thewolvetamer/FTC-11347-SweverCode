@@ -6,6 +6,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     Boolean inEndGame;
-    boolean debounce;
+    ButtonRebounce buttonToggle=new ButtonRebounce();
     enum autoScoring {
         DRIVE_FORWARD,
         EXTEND,
@@ -245,6 +246,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
+
     private void hSlide() {
         hSlide.setPower(gamepad2.right_stick_y);
     }
@@ -274,12 +276,12 @@ public class SwerveTeleOp extends SwerveCore {
         if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
             switch(curScoreState) {
                 case DRIVE_FORWARD:
-                    if(gamepad2.a) {
+                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.EXTEND;
 
 
                     }
-                    else if(gamepad2.b) {
+                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.LANDER;
                     }
                     else{
@@ -288,11 +290,10 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case EXTEND:
-                    if(!gamepad2.a){
+                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE){
                         curScoreState = autoScoring.INTAKE;
-
                     }
-                    else if(gamepad2.b) {
+                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.DRIVE_FORWARD;
                     }
                     else {
@@ -302,7 +303,7 @@ public class SwerveTeleOp extends SwerveCore {
 
                 case INTAKE:
                     intake.setPosition(1);
-                    if(gamepad2.dpad_left) {
+                    if(buttonToggle.status(gamepad2.dpad_left)==ButtonRebounce.Status.COMPLETE) {
                         ourSwerve.driveRobot(0,0, -1, 0);
                         break;
                     }
@@ -310,10 +311,10 @@ public class SwerveTeleOp extends SwerveCore {
                         ourSwerve.driveRobot(0,0, 1, 0);
                         break;
                     }
-                    else if(gamepad2.a) {
+                    else if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.LANDER;
                     }
-                    else if(gamepad2.b) {
+                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.EXTEND;
                     }
                     break;
