@@ -233,7 +233,6 @@ public class SwerveAuto extends SwerveCore {
         ourSwerve.setFieldOrientation();
 
         // set initial pushoff delay
-        moveTimePushoff = 400;
         autoDriveWait = Boolean.FALSE;
         // force the marker drop servo to hold tight
         gameMarkDrop.setPosition(0);
