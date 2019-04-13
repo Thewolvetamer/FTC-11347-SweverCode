@@ -197,7 +197,7 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void climb() {
-        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO && gamepad2.dpad_down) {
+        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO && gamepad1.dpad_down) {
             climber.setTargetPosition(4500);
             climber.setPower(-1);
             if(gamepad2.start) {
@@ -211,10 +211,10 @@ public class SwerveTeleOp extends SwerveCore {
                 }
             }
         }
-        else if(gamepad2.dpad_down && !(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) ) {
+        else if(gamepad1.dpad_down && !(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) ) {
             climber.setPower(-.7);
         }
-        else if(gamepad2.dpad_up) {
+        else if(gamepad1.dpad_up) {
             climber.setPower(.7);
         }
         else {
