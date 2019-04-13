@@ -17,8 +17,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 //@Disabled
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
-    Boolean inEndGame;
-    ButtonRebounce buttonToggle=new ButtonRebounce();
+    private Boolean inEndGame;
+    private ButtonRebounce buttonToggle=new ButtonRebounce();
     enum autoScoring {
         DRIVE_FORWARD,
         EXTEND,
