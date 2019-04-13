@@ -299,7 +299,7 @@ public class SwerveTeleOp extends SwerveCore {
                 case INTAKE:
                     intakeR.setPower(1);
                     intakeL.setPower(1);
-                    if(gamepad2.dpad_left) {
+                    if(buttonToggle.status(gamepad2.dpad_left)==ButtonRebounce.Status.COMPLETE)
                     intake.setPosition(1);
                     if(buttonToggle.status(gamepad2.dpad_left)==ButtonRebounce.Status.COMPLETE) {
                         ourSwerve.driveRobot(0,0, -1, 0);
@@ -317,7 +317,7 @@ public class SwerveTeleOp extends SwerveCore {
                     }
                     break;
 
-                case LANDER:
+                    case LANDER:
                     if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
                         vSlide();
                         final double t = getRuntime();
@@ -329,7 +329,7 @@ public class SwerveTeleOp extends SwerveCore {
                         curScoreState = autoScoring.INTAKE;
                     }
                     break;
-            }
+
         }
     }
 }
