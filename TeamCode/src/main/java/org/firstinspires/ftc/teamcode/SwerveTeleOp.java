@@ -240,7 +240,7 @@ public class SwerveTeleOp extends SwerveCore {
 
 
     private void hSlide() {
-        hSlide.setPower(gamepad2.right_stick_y);
+        hSlide.setPower(-gamepad2.right_stick_y);
     }
 
     private void wrist() {
