@@ -18,7 +18,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     private Boolean inEndGame;
-    private ButtonRebounce buttonToggle=new ButtonRebounce();
+    private ButtonRebounce buttonToggle = new ButtonRebounce();
+
     enum autoScoring {
         DRIVE_FORWARD,
         EXTEND,
@@ -27,7 +28,9 @@ public class SwerveTeleOp extends SwerveCore {
         TURN_RIGHT,
         LANDER
     }
+
     private autoScoring curScoreState;
+
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -49,7 +52,6 @@ public class SwerveTeleOp extends SwerveCore {
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
         super.init();
-
 
 
         // We are just starting, so not in the end game yet...
@@ -126,7 +128,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         yeet();
 
-        if(gamepad2.b) {
+        if (gamepad2.b) {
             hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             hSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
@@ -194,50 +196,44 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void climb() {
-        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO && gamepad1.dpad_down) {
+        if (ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO && gamepad1.dpad_down) {
             climber.setTargetPosition(4500);
             climber.setPower(-1);
-            if(gamepad2.start) {
+            if (gamepad2.start) {
                 climber.setTargetPosition(9000);
                 climber.setPower(1);
-            }
-            else if(climber.getCurrentPosition() == climber.getTargetPosition()) {
+            } else if (climber.getCurrentPosition() == climber.getTargetPosition()) {
 //                double check height
-                while(heightL.getDistance(DistanceUnit.CM) < 30) {
+                while (heightL.getDistance(DistanceUnit.CM) < 30) {
                     climber.setPower(-1);
                 }
             }
-        }
-        else if(gamepad1.dpad_down && !(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) ) {
+        } else if (gamepad1.dpad_down && !(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO)) {
             climber.setPower(-.7);
-        }
-        else if(gamepad1.dpad_up) {
+        } else if (gamepad1.dpad_up) {
             climber.setPower(.7);
-        }
-        else {
+        } else {
             climber.setPower(0);
         }
     }
 
-            private void vSlide() {
-                if(gamepad2.a) {
-                    vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    private void vSlide() {
+        if (gamepad2.a) {
+            vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //            distance/circumference of spool   * tpr
             vSlide.setTargetPosition(1);
 
             vSlide.setPower(1);
-        }
-        else if(vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
+        } else if (vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
             dump.setPosition(1);
             final double t = getRuntime();
-            if(getRuntime() == t + 1000) {
+            if (getRuntime() == t + 1000) {
                 dump.setPosition(0);
                 vSlide.setTargetPosition(0);
                 vSlide.setPower(-1);
             }
-        }
-        else {
+        } else {
             vSlide.setPower(0);
         }
     }
@@ -248,50 +244,46 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void wrist() {
-        if(intakeL.getPower() == 1) {
+        if (intakeL.getPower() == 1) {
             wristR.setPosition(1);
             wristL.setPosition(1);
         }
-        if(intakeL.getPower() == 0){
+        if (intakeL.getPower() == 0) {
             wristL.setPosition(0);
             wristR.setPosition(0);
         }
     }
 
     private void intake() {
-        if(gamepad2.right_stick_button) {
+        if (gamepad2.right_stick_button) {
             intakeR.setPower(1);
             intakeL.setPower(1);
         }
     }
 
-// @TODO Rework yeet(), make functions clearer and add button debouncing.
+    // @TODO Rework yeet(), make functions clearer and add button debouncing.
     public void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
-            switch(curScoreState) {
+        if (ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
+            switch (curScoreState) {
                 case DRIVE_FORWARD:
-                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
+                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.EXTEND;
 
 
-                    }
-                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.LANDER;
-                    }
-                    else{
+                    } else {
                         ourSwerve.driveRobot(1, 0, 0, 0);
                     }
                     break;
 
                 case EXTEND:
-                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE){
+                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.INTAKE;
-                    }
-                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.DRIVE_FORWARD;
-                    }
-                    else {
+                    } else {
                         hSlide.setPower(.7);
                     }
                     break;
@@ -299,37 +291,34 @@ public class SwerveTeleOp extends SwerveCore {
                 case INTAKE:
                     intakeR.setPower(1);
                     intakeL.setPower(1);
-                    if(buttonToggle.status(gamepad2.dpad_left)==ButtonRebounce.Status.COMPLETE)
-                    intake.setPosition(1);
-                    if(buttonToggle.status(gamepad2.dpad_left)==ButtonRebounce.Status.COMPLETE) {
-                        ourSwerve.driveRobot(0,0, -1, 0);
+                    if (buttonToggle.status(gamepad2.dpad_left) == ButtonRebounce.Status.COMPLETE)
+                        intake.setPosition(1);
+                    if (buttonToggle.status(gamepad2.dpad_left) == ButtonRebounce.Status.COMPLETE) {
+                        ourSwerve.driveRobot(0, 0, -1, 0);
                         break;
-                    }
-                    else if(gamepad2.dpad_right) {
-                        ourSwerve.driveRobot(0,0, 1, 0);
+                    } else if (gamepad2.dpad_right) {
+                        ourSwerve.driveRobot(0, 0, 1, 0);
                         break;
-                    }
-                    else if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.LANDER;
-                    }
-                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.EXTEND;
                     }
                     break;
 
-                    case LANDER:
-                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
+                case LANDER:
+                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
                         vSlide();
                         final double t = getRuntime();
-                        if(t + 3000 == getRuntime()) {
+                        if (t + 3000 == getRuntime()) {
                             curScoreState = autoScoring.DRIVE_FORWARD;
                         }
-                    }
-                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
                         curScoreState = autoScoring.INTAKE;
                     }
                     break;
 
+            }
         }
     }
 }
