@@ -292,7 +292,7 @@ public class SwerveTeleOp extends SwerveCore {
                     intakeR.setPower(1);
                     intakeL.setPower(1);
                     if (buttonToggle.status(gamepad2.dpad_left) == ButtonRebounce.Status.COMPLETE)
-                        intake.setPosition(1);
+//                        intakeL.setPower(.5);
                     if (buttonToggle.status(gamepad2.dpad_left) == ButtonRebounce.Status.COMPLETE) {
                         ourSwerve.driveRobot(0, 0, -1, 0);
                         break;
