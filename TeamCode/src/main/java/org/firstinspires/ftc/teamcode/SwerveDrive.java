@@ -83,7 +83,7 @@ public class SwerveDrive {
         SWERVE_DEMO
     }
     // mode we are operating in
-    public swerveModes curSwerveMode;
+    swerveModes curSwerveMode;
 
     // Our 4 swerve drive wheels (servo and motor)
     private SwerveWheel[] swerveWheels;
@@ -93,7 +93,7 @@ public class SwerveDrive {
     private double[] speeds;
     // Max speed is useful for several reasons
     private double maxSpeed;
-
+    private final int ROBOT_HEIGHT=18;
 
     // auto drive speed
     private double autoSpeed;
@@ -754,7 +754,7 @@ public class SwerveDrive {
     }
 
     void distance(double distL, double distR) {
-        heightLog = "My height is " + (distR - 18) + " " + (distL - 18);
+        heightLog = "My height is " + (distR - ROBOT_HEIGHT) + " " + (distL - ROBOT_HEIGHT);
     }
 
 }
