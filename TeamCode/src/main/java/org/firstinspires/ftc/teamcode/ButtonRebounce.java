@@ -7,19 +7,20 @@ public class ButtonRebounce {
      * 2. In progress
      * 3. Complete
      *
+     *
      * If you're checking a button press using a conventional on/off check and using it to
      * flip a boolean, then you'll flip once for every time the button is held and the
      * loop iterates.
      */
     enum Status
     {
-        NOT_BEGUN ,
-        IN_PROGRESS ,
-        COMPLETE
+        UNPRESSED ,
+        PRESSED,
+        RELEASED
     }
 
 
-    private Status _status = Status.NOT_BEGUN;      // Current status of the toggle
+    private Status _status = Status.UNPRESSED;      // Current status of the toggle
 
 
     /**
@@ -29,16 +30,16 @@ public class ButtonRebounce {
     final public Status status(boolean buttonStatus)
     {
         // If the button is being held
-        if(buttonStatus && _status == Status.NOT_BEGUN)
-            _status = Status.IN_PROGRESS;
+        if(buttonStatus && _status == Status.UNPRESSED)
+            _status = Status.PRESSED;
 
             // If the button is not being pressed and the toggle was in progress
-        else if(!buttonStatus && _status == Status.IN_PROGRESS)
-            _status = Status.COMPLETE;
+        else if(!buttonStatus && _status == Status.PRESSED)
+            _status = Status.RELEASED;
 
             // If the toggle is finished
-        else if(_status == Status.COMPLETE)
-            _status = Status.NOT_BEGUN;
+        else if(_status == Status.RELEASED)
+            _status = Status.UNPRESSED;
 
         return _status;
     }
@@ -47,6 +48,6 @@ public class ButtonRebounce {
 //
 //        ButtonRebounce slowToggle = new ButtonRebounce();
 //
-//        if(slowToggle.status(gamepad1.a) == ButtonRebounce.Status.COMPLETE)
+//        if(slowToggle.status(gamepad1.a) == ButtonRebounce.Status.RELEASED)
 //        power.toggleSlow();
 

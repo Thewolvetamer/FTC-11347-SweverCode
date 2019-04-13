@@ -348,7 +348,6 @@ public class SwerveDrive {
 
         // if driving with field orietation automation, adjust for the robot orientation
         if (( curSwerveMode == swerveModes.SWERVE_DRIVER ) || ( curSwerveMode == swerveModes.SWERVE_DRIVE_ORIENT || ( curSwerveMode == swerveModes.SWERVE_DRIVE_TURN ) )) {
-
             // shift the input angles based on robot rotation
 
             angle = FastMath.atan2( moveY, moveX ) - curHeading * DEG2BASE;

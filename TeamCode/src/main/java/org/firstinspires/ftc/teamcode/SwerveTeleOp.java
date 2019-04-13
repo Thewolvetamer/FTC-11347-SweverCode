@@ -6,7 +6,6 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -268,11 +267,11 @@ public class SwerveTeleOp extends SwerveCore {
         if (ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
             switch (curScoreState) {
                 case DRIVE_FORWARD:
-                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.RELEASED) {
                         curScoreState = autoScoring.EXTEND;
 
 
-                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.RELEASED) {
                         curScoreState = autoScoring.LANDER;
                     } else {
                         ourSwerve.driveRobot(1, 0, 0, 0);
@@ -280,9 +279,9 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case EXTEND:
-                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.RELEASED) {
                         curScoreState = autoScoring.INTAKE;
-                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.RELEASED) {
                         curScoreState = autoScoring.DRIVE_FORWARD;
                     } else {
                         hSlide.setPower(.7);
@@ -290,31 +289,34 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case INTAKE:
-                    intakeR.setPower(1);
-                    intakeL.setPower(1);
-                    if (buttonToggle.status(gamepad2.dpad_left) == ButtonRebounce.Status.COMPLETE)
+                    intake(1);
+                    if (buttonToggle.status(gamepad2.dpad_left) == ButtonRebounce.Status.RELEASED)
 //                        intakeL.setPower(.5);
-                    if (buttonToggle.status(gamepad2.dpad_left) == ButtonRebounce.Status.COMPLETE) {
+                    if (buttonToggle.status(gamepad2.dpad_left) == ButtonRebounce.Status.RELEASED) {
                         ourSwerve.driveRobot(0, 0, -1, 0);
                         break;
                     } else if (gamepad2.dpad_right) {
                         ourSwerve.driveRobot(0, 0, 1, 0);
                         break;
-                    } else if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.RELEASED) {
                         curScoreState = autoScoring.LANDER;
-                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.RELEASED) {
                         curScoreState = autoScoring.EXTEND;
                     }
                     break;
 
+                case TURN_LEFT:
+                    break;
+                case TURN_RIGHT:
+                    break;
                 case LANDER:
-                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                    if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.RELEASED) {
                         vSlide();
                         final double t = getRuntime();
                         if (t + 3000 == getRuntime()) {
                             curScoreState = autoScoring.DRIVE_FORWARD;
                         }
-                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
+                    } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.RELEASED) {
                         curScoreState = autoScoring.INTAKE;
                     }
                     break;
