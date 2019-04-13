@@ -25,7 +25,6 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -387,6 +386,7 @@ public class SwerveCore extends OpMode {
         swerveLog( "X S6", ourSwerve.getOrientLog());
         swerveLog( "X S7", ourSwerve.getAutoDriveLog());
         swerveLog( "X S8", ourSwerve.getHeightLog());
+
     }
 
 
