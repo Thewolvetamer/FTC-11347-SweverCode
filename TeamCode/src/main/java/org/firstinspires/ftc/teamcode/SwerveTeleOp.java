@@ -103,7 +103,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
 
         // Move the robot, flipping y since the joysticks are upside down
-        ourSwerve.driveRobot(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
+        ourSwerve.driveRobot(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
 
         // *** use buttons to trigger other actions ***
 
@@ -123,16 +123,12 @@ public class SwerveTeleOp extends SwerveCore {
 
         intake();
 
+        yeet();
+
         if(gamepad2.b) {
             hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             hSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-
-//        yeet(gamepad2.a, gamepad2.b, gamepad2.dpad_left, gamepad2.dpad_right);
-        vSlide.setPower(0);
-
-
-        yeet();
 
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM), heightR.getDistance(DistanceUnit.CM));
 
@@ -250,21 +246,20 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void wrist() {
-        if(intake.getPosition() == 1) {
+        if(intakeL.getPower() == 1) {
             wristR.setPosition(1);
             wristL.setPosition(1);
         }
-        if(intake.getPosition() == 0){
-            if(intake.getPosition() == 0) {
-                wristL.setPosition(0);
-                wristR.setPosition(0);
-            }
+        if(intakeL.getPower() == 0){
+            wristL.setPosition(0);
+            wristR.setPosition(0);
         }
     }
 
     private void intake() {
         if(gamepad2.right_stick_button) {
-            intake.setPosition(1);
+            intakeR.setPower(1);
+            intakeL.setPower(1);
         }
     }
 
@@ -303,7 +298,8 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case INTAKE:
-                    intake.setPosition(1);
+                    intakeR.setPower(1);
+                    intakeL.setPower(1);
                     if(gamepad2.dpad_left) {
                         ourSwerve.driveRobot(0,0, -1, 0);
                         break;

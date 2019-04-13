@@ -653,7 +653,7 @@ public class SwerveDrive {
 
         // move based on angles
         // - get wheel target in degrees
-        tAngle = autoAngle - curHeading + baseOrientationAngle - 90;
+        tAngle = autoAngle - curHeading + baseOrientationAngle;
         // - normalize and convert to radians
         mAngle = normalizeGyroAngle360( tAngle ) * DEG2BASE;
 

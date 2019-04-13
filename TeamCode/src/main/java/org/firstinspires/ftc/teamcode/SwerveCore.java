@@ -20,7 +20,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
@@ -80,7 +82,8 @@ public class SwerveCore extends OpMode {
     Servo gameMarkDrop;
     Servo wristL;
     Servo wristR;
-    Servo intake;
+    CRServo intakeR;
+    CRServo intakeL;
     Servo dump;
 
 
@@ -188,19 +191,15 @@ public class SwerveCore extends OpMode {
         // Motors for the wheels
         motorLeftFront = hardwareMap.dcMotor.get("LeftFrontM");
         motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "Left Front Motor", motorLeftFront);
         motorRightFront = hardwareMap.dcMotor.get("RightFrontM");
         motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRightFront.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "Right Front Motor", motorRightFront);
         motorLeftRear = hardwareMap.dcMotor.get("LeftRearM");
         motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLeftRear.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "Left Rear Motor", motorLeftRear);
         motorRightRear = hardwareMap.dcMotor.get("RightRearM");
         motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRightRear.setDirection(DcMotor.Direction.REVERSE);
         swerveDebugDevice(500, "Right Rear Motor", motorRightRear);
 
 
@@ -209,6 +208,7 @@ public class SwerveCore extends OpMode {
         swerveDebugDevice(500, "climber", climber);
         vSlide = hardwareMap.dcMotor.get("vSlide");
         swerveDebugDevice(500, "Vertical Slide", vSlide);
+        vSlide.setDirection(DcMotor.Direction.REVERSE);
         hSlide = hardwareMap.dcMotor.get("hSlide");
         swerveDebugDevice(500, "Horizontal Slide", hSlide);
 
@@ -239,8 +239,10 @@ public class SwerveCore extends OpMode {
         swerveDebugDevice( 500, "Left Wrist", wristL);
         wristR = hardwareMap.servo.get("wristR");
         swerveDebugDevice(500, "Right Wrist", wristR);
-        intake = hardwareMap.servo.get("intake");
-        swerveDebugDevice(500, "Intake", intake);
+        intakeL = hardwareMap.crservo.get("intakeL");
+        swerveDebugDevice(500, "Intake Left", intakeL);
+        intakeR = hardwareMap.crservo.get("intakeR");
+        swerveDebugDevice(500, "Intake Right", intakeR);
         dump = hardwareMap.servo.get("dump");
         swerveDebugDevice(500, "Dumper", dump);
 
