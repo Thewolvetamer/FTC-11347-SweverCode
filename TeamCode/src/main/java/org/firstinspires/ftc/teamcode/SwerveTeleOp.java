@@ -268,7 +268,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-// @TODO Rework yeet()
+// @TODO Rework yeet(), make functions clearer and add button debouncing.
     public void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {

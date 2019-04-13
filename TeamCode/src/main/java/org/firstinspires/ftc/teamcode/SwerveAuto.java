@@ -119,7 +119,7 @@ public class SwerveAuto extends SwerveCore {
     // ***********************************************************************
     // Constructs the class.
     // The system calls this member when the class is instantiated.
-    public SwerveAuto() {
+    SwerveAuto() {
         // Initialize base classes.
         // All via self-construction.
 
@@ -679,25 +679,18 @@ public class SwerveAuto extends SwerveCore {
 
         // Report change of state
         if (myTarget != revTankState) {
-            swerveDebug(500, "SwerveAuto::setState", "STATE CHANGE--from '" +
-                    getCurStateName() + "'  to '" +
-                    getStateName(myTarget));
+            swerveDebug(500, "SwerveAuto::setState", "STATE CHANGE--from '" + getCurStateName() + "'  to '" + getStateName(myTarget));
         }
-
         // Record the starting time for the new state
         stateStartTime = getRuntime();
         // Recored the intended delay
         stateWaitTime = myDelay;
-
         // set the state...
         revTankState = myTarget;
-
         // Send telemetry data to the driver station.
         swerveLog("State", "Autonomous State: " + getCurStateName() +
                 ", state time = " + swerveNumberFormat.format(getRuntime() - stateStartTime));
     }
-
-
     // ***********************************************************************
     // checkStateReady
     // ***********************************************************************
@@ -708,13 +701,9 @@ public class SwerveAuto extends SwerveCore {
         if (!checkStateElapsed(stateWaitTime)) {
             return Boolean.FALSE;
         }
-
         // Add waits for motor positions or anything else here...
-
         return Boolean.TRUE;
     }
-
-
     // ***********************************************************************
     // checkStateElapsed
     // ***********************************************************************
@@ -722,52 +711,39 @@ public class SwerveAuto extends SwerveCore {
     private Boolean checkStateElapsed(double myDelay) {
         double curTime;
         double curDelay;
-
         curTime = getRuntime();
         curDelay = (curTime - stateStartTime) * 1000;
-
         // Check current time and requested delay
         if (curDelay < myDelay) {
             checkReport = "== current (" +
                     swerveNumberFormat.format(curDelay) + "' less than '" +
                     swerveNumberFormat.format(myDelay);
-
             // ONLY show this for very high debug levels, or it will overflow the logs
             swerveDebug(5000, "SwerveAuto::checkStateElapsed", "**Delaying** " + checkReport);
 
             if (debugLevel < 5000) {
                 telemetry.addData("CheckElapsed", checkReport);
             }
-
             return Boolean.FALSE;
         } else if (debugLevel < 5000) {
             telemetry.addData("CheckElapsed", "--DONE--");
         }
-
         // Add waits for motor positions or anything else here...
-
         return Boolean.TRUE;
     }
-
-
     // ***********************************************************************
     // orientRobot
     // ***********************************************************************
     // turn the robot to a specific orientation
     private Boolean orientRobot(double newOrientationDegrees) {
-
         double newOrienation = newOrientationDegrees;
         double turnSpeed;
-
         // be sure we are not using automation
         ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DRIVER);
-
         // check robot orientation
         ourSwerve.checkOrientation();
-
         // turn until within ~10 degrees
         while (Math.abs(newOrienation - ourSwerve.curHeading) > 5.0) {
-
             // never take longer than 1.5 seconds
             if (checkStateElapsed(10000)) {
                 // stop the robot
