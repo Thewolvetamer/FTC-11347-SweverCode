@@ -1,3 +1,4 @@
+
 // ***********************************************************************
 // SwerveCore
 // ***********************************************************************
@@ -453,7 +454,16 @@ public class SwerveCore extends OpMode {
 
         return answer;
     }
-
+    public int intake(double power){
+        if(Math.abs(power)>1){
+            return -1;
+        }
+        else{
+            intakeL.setPower(power);
+            intakeR.setPower(power);
+            return 1;
+        }
+    }
 
     // ***********************************************************************
     // showAutonomousGoals
