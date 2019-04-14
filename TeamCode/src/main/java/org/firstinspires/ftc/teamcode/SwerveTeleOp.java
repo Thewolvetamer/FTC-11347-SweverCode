@@ -250,6 +250,7 @@ public class SwerveTeleOp extends SwerveCore {
                             
                             curScoreState = autoScoring.EXTEND;
                         }
+
                     case EXTEND:
 
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
