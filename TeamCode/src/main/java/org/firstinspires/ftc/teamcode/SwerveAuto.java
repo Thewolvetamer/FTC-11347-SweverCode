@@ -148,7 +148,7 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_DELAY:
                 return "DELAY";
             case SWERVE_TURN_TO_PARTICLE:
-                return "ALIGN ON GROUND";
+                return "TURN_TO_PARTICLE";
             case SWERVE_SLIDE:
                 return "SLIDE";
             case SWERVE_GRAB:
@@ -275,7 +275,7 @@ public class SwerveAuto extends SwerveCore {
         // Call the super/base class start method.
         super.start();
 
-        // turn off tensorFlow, get particle position
+        // turn off tensorFlow, get pa  rticle position
 
         vision.disable();
         goldPosition = vision.getTfLite().getLastKnownSampleOrder();

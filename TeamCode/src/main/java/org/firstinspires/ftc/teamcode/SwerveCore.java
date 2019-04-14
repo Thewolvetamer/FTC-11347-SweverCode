@@ -130,7 +130,16 @@ public class SwerveCore extends OpMode {
 
     // Files where we store settings
     private String swerveFileAutoSettings;
-
+    //enum for teleop
+    enum autoScoring {
+        DRIVE_FORWARD,
+        EXTEND,
+        INTAKE,
+        TURN_LEFT,
+        TURN_RIGHT,
+        LANDER
+    }
+    autoScoring curScoreState;
     // ***********************************************************************
     // SwerveCore
     // ***********************************************************************
@@ -321,6 +330,10 @@ public class SwerveCore extends OpMode {
     // ***********************************************************************
     // Performs any actions that are necessary while the OpMode is running.
     // The system calls this member repeatedly while the OpMode is running.
+
+    public String getCurScoreState(){
+        return "Current mode of yeet(): "+curScoreState.name();
+    }
     @Override
     public void loop() {
         // Only actions that are common to all OpModes (i.e. both auto and\
@@ -371,7 +384,7 @@ public class SwerveCore extends OpMode {
         swerveLog( "X S1", String.valueOf(hSlide.getCurrentPosition()));
         swerveLog( "X S2", ourSwerve.getMoveLog());
         swerveLog( "X S3", ourSwerve.getMoveAdjustLog());
-        swerveLog( "X S4", ourSwerve.getAngleLog());
+        swerveLog( "X S4", getCurScoreState());
         swerveLog( "X S5", ourSwerve.getSpeedLog());
         swerveLog( "X S6", ourSwerve.getOrientLog());
         swerveLog( "X S8", ourSwerve.getHeightLog());
