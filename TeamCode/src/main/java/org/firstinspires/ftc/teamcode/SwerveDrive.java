@@ -152,7 +152,7 @@ public class SwerveDrive {
     // ***** TODO **** testing at 1:1 scale for now
 //    private double SWERVE_SCALE = ( 0.66667 / Math.PI );
     private double SWERVE_SCALE = ( 1.0 / Math.PI );
-    public double DEG2BASE = ( Math.PI / 180 );
+    public final double DEG2BASE = ( Math.PI / 180 );
 
 
 
