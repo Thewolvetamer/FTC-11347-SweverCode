@@ -239,24 +239,24 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-    public void yeet(){
+    public void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        curScoreState= DRIVE_FORWARD;
-        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
-        switch(curScoreState) {
 
-            case DRIVE_FORWARD:
-                if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+        if (ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
+                switch (curScoreState) {
 
-                    curScoreState = autoScoring.EXTEND;
+                    case DRIVE_FORWARD:
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                            
+                            curScoreState = autoScoring.EXTEND;
+                        }
+                    case EXTEND:
+
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                            curScoreState = DRIVE_FORWARD;
+                        }
                 }
-            case EXTEND:
-
-                if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
-                    curScoreState = DRIVE_FORWARD;
-                }
-        }
-        }
+            }
     }
 // @TODO Rework yeet(), make functions clearer and add button debouncing.
 //    public void yeet() {
