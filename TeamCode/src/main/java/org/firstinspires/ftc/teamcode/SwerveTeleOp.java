@@ -88,9 +88,9 @@ public class SwerveTeleOp extends SwerveCore {
         swerveDebug(2000, "SwerveTeleOp::loop", "START");
 
         // set swerve drive orientation automation level based on driver request
-//        if (gamepad1.a) {
-//            ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_AUTO);
-//        }
+        if (gamepad1.a) {
+            ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_AUTO);
+        }
         if (gamepad1.b) {
             ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DRIVER);
         }
@@ -112,16 +112,17 @@ public class SwerveTeleOp extends SwerveCore {
 
         climb();
 
-        wrist();
-
         hSlide();
 
         vSlide();
 
         intake();
 
-        if(getRuntime()>1) {
-            yeet();
+        wrist();
+
+        if(gamepad2.b) {
+            hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            hSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM));
 
@@ -226,19 +227,22 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void wrist() {
-        if(intake.getPower() == 1) {
-            wristR.setPosition(0);
-            wristL.setPosition(0);
+        if(gamepad2.right_bumper) {
+            wristR.setPosition(1);
+            wristL.setPosition(1);
         }
-        if(intake.getPower() == 0){
+        else {
             wristL.setPosition(-1);
             wristR.setPosition(-1);
         }
     }
 
     private void intake() {
-        if(gamepad2.right_bumper) {
+        if(wristR.getPosition() == 1) {
             intake.setPower(1);
+        }
+        else {
+            intake.setPower(0);
         }
     }
 
