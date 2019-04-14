@@ -236,8 +236,6 @@ public class SwerveAuto extends SwerveCore {
         // set initial pushoff delay
         moveTimePushoff = 400;
         autoDriveWait = Boolean.FALSE;
-        // force the marker drop servo to hold tight
-        gameMarkDrop.setPosition(0);
 
         // cause all the wheels to turn to the initialization position - 45 degrees
         swerveLeftFront.updateWheel(initWheelPower, -initWheelAngle);
@@ -411,15 +409,15 @@ public class SwerveAuto extends SwerveCore {
 //            turn towards the particle
 //            TODO add triangle math
             case SWERVE_HIT_PARTICLE:
-                ourSwerve.autoDrive(.6, -93, 0, 28);
+                ourSwerve.autoDrive(.8, -93, 0, 28);
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
                 setState(autoStates.SWERVE_CENTER, 2000);
                 break;
 
             case SWERVE_CENTER:
-                orientRobot(-78);
-                setState(autoStates.SWERVE_TURN_TO_PARTICLE, 1000);
+                orientRobot(-84);
+                setState(autoStates.SWERVE_TURN_TO_PARTICLE, 575);
                 break;
 
             case SWERVE_TURN_TO_PARTICLE:
@@ -432,7 +430,8 @@ public class SwerveAuto extends SwerveCore {
                     setState(autoStates.SWERVE_GRAB, 1250);
                 }
                 else if(parPosition == particlePosition.partCenter || parPosition == particlePosition.partUnknown) {
-                    setState(autoStates.SWERVE_GRAB, 0);
+                    orientRobot(-90);
+                    setState(autoStates.SWERVE_GRAB, 500);
                 }
                 break;
 
@@ -467,21 +466,21 @@ public class SwerveAuto extends SwerveCore {
                     setState(autoStates.SWERVE_TO_WALL, 1500);
                 }
                 else {
-                    orientRobot(105);
-                    setState(autoStates.SWERVE_TO_WALL, 1200);
+                    orientRobot(125);
+                    setState(autoStates.SWERVE_TO_WALL, 500);
                 }
                 break;
 
 //            Move to the wall
             case SWERVE_TO_WALL:
                 if(crater) {
-                    ourSwerve.autoDrive(.5, -174, -45, 115);
+                    ourSwerve.autoDrive(1, -174, -45, 115);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_TO_DEPOT, 3000);
                 }
                 else {
-                    ourSwerve.autoDrive(.5, 190, 135, 160);
+                    ourSwerve.autoDrive(1, 195, 135, 105);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_TO_DEPOT, 3000);
@@ -490,12 +489,12 @@ public class SwerveAuto extends SwerveCore {
 
             case SWERVE_TO_DEPOT:
                 if(crater) {
-                    ourSwerve.autoDrive(.5, 138, -45, 100);
+                    ourSwerve.autoDrive(1, 138, -45, 100);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
                 else {
-                    ourSwerve.autoDrive(.5, -45, 135, 150);
+                    ourSwerve.autoDrive(1, -43, 135, 80);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
@@ -504,7 +503,14 @@ public class SwerveAuto extends SwerveCore {
 
             case SWERVE_GM_EXTEND:
                 // gets vSlide out of the way
-                vSlide.setTargetPosition(2000);
+                vSlide.setTargetPosition(3000);
+                hSlide.setTargetPosition(5500);
+                if(hSlide.getTargetPosition() < hSlide.getCurrentPosition()) {
+                    hSlide.setPower(-1);
+                }
+                else {
+                    hSlide.setPower(1);
+                }
                 vSlide.setPower(1);
                 setState(autoStates.SWERVE_MARKER, 2000);
                 break;
@@ -522,28 +528,17 @@ public class SwerveAuto extends SwerveCore {
             // Move to the crater
             case SWERVE_TO_CRATER:
                 if(crater) {
-                    ourSwerve.autoDrive(0.4, -45, -45, 60);
+                    ourSwerve.autoDrive(1, -45, -45, 60);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_EXTEND_CRATER, 3000);
                 }
                 else {
-                    ourSwerve.autoDrive(0.4, 135, 135, 65);
+                    ourSwerve.autoDrive(1, 135, 135, 65);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_EXTEND_CRATER, 3000);
+                    setState(autoStates.SWERVE_LAST_MOVE, 3000);
                 }
-                break;
-
-            case SWERVE_EXTEND_CRATER:
-                hSlide.setTargetPosition(6500);
-                if(hSlide.getTargetPosition() < hSlide.getCurrentPosition()) {
-                    hSlide.setPower(-1);
-                }
-                else {
-                    hSlide.setPower(1);
-                }
-                setState(autoStates.SWERVE_LAST_MOVE, 2000);
                 break;
 
             // Waiting for final move to complete before done
@@ -643,6 +638,7 @@ public class SwerveAuto extends SwerveCore {
         stateWaitTime = myDelay;
         // set the state...
         revTankState = myTarget;
+        ourSwerve.stopRobot();
         // Send telemetry data to the driver station.
         swerveLog("State", "Autonomous State: " + getCurStateName() +
                 ", state time = " + swerveNumberFormat.format(getRuntime() - stateStartTime));
@@ -697,7 +693,7 @@ public class SwerveAuto extends SwerveCore {
         // be sure we are not using automation
         ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DRIVER);
         // turn until within ~10 degrees
-        while (Math.abs(newOrienation - ourSwerve.curHeading) > 5.0) {
+        while (Math.abs(newOrienation - ourSwerve.curHeading) > 3.0) {
             // never take longer than 1.5 seconds
             if (checkStateElapsed(10000)) {
                 // stop the robot

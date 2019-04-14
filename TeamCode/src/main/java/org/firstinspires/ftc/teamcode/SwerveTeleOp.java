@@ -112,8 +112,6 @@ public class SwerveTeleOp extends SwerveCore {
 
         strafeL();
 
-        dropTeamIcon();
-
         climb();
 
         wrist();
@@ -124,8 +122,9 @@ public class SwerveTeleOp extends SwerveCore {
 
         intake();
 
-        yeet();
-
+        if(getRuntime()>1) {
+            yeet();
+        }
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM));
 
 
@@ -150,21 +149,6 @@ public class SwerveTeleOp extends SwerveCore {
         super.stop();
 
         swerveDebug(500, "SwerveTeleOp::stop", "DONE");
-    }
-
-    //lifrArm,dropTeamIcon,ballshooter created and tested on 10/8/18
-    private void dropTeamIcon() {
-
-        if (gamepad2.b) {
-            // move to 180 degrees
-            gameMarkDrop.setPosition(1);
-        } else {
-            gameMarkDrop.setPosition(0);
-        }
-
-        //telemetry.addData("Servo Position", gameMarkDrop.getPosition());
-        //telemetry.addData("Status", "Running");
-        //telemetry.update();
     }
 
     // makes it easier to go directly sideways
@@ -215,28 +199,29 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void vSlide() {
-                if(gamepad2.a) {
-                    vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            distance/circumference of spool   * tpr
-            vSlide.setTargetPosition(1);
-
-            vSlide.setPower(1);
-        }
-        else if(vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
-            dump.setPosition(1);
-            final double t = getRuntime();
-            if(getRuntime() == t + 1000) {
-                dump.setPosition(0);
-                vSlide.setTargetPosition(0);
-                vSlide.setPower(-1);
+        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
+            if (gamepad2.a) {
+                vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                //            distance/circumference of spool   * tpr
+                vSlide.setTargetPosition(3500);
+                vSlide.setPower(1);
+            } else if (vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
+                dump.setPosition(1);
+                final double t = getRuntime();
+                if (getRuntime() == t + 1000) {
+                    dump.setPosition(0);
+                    vSlide.setTargetPosition(0);
+                    vSlide.setPower(-1);
+                }
+            } else {
+                vSlide.setPower(0);
             }
         }
         else {
-            vSlide.setPower(0);
+            vSlide.setPower(gamepad2.left_stick_y);
         }
     }
-
 
     private void hSlide() {
         hSlide.setPower(gamepad2.right_stick_y);
