@@ -139,7 +139,7 @@ public class SwerveCore extends OpMode {
         TURN_RIGHT,
         LANDER
     }
-    autoScoring curScoreState;
+    autoScoring curScoreState=autoScoring.DRIVE_FORWARD;
     // ***********************************************************************
     // SwerveCore
     // ***********************************************************************
