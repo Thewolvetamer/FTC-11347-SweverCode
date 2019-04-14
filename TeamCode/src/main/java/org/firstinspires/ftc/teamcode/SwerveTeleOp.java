@@ -11,6 +11,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.DRIVE_FORWARD;
+import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.EXTEND;
+import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.INTAKE;
+import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.LANDER;
 
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
@@ -247,14 +250,32 @@ public class SwerveTeleOp extends SwerveCore {
 
                     case DRIVE_FORWARD:
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
-                            
-                            curScoreState = autoScoring.EXTEND;
+                            curScoreState = EXTEND;
                         }
-
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                            curScoreState= LANDER;
+                        }
                     case EXTEND:
 
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
-                            curScoreState = DRIVE_FORWARD;
+                            curScoreState = INTAKE;
+                        }
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                            curScoreState= DRIVE_FORWARD;
+                        }
+                    case INTAKE:
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                            curScoreState = LANDER;
+                        }
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                            curScoreState= EXTEND;
+                        }
+                    case LANDER:
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE){
+                        curScoreState= DRIVE_FORWARD;
+                    }
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                            curScoreState= INTAKE;
                         }
                 }
             }
