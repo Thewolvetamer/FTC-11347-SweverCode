@@ -120,10 +120,8 @@ public class SwerveTeleOp extends SwerveCore {
 
         wrist();
 
-        if(gamepad2.b) {
-            hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            hSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
+        yeet();
+
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM));
 
 
