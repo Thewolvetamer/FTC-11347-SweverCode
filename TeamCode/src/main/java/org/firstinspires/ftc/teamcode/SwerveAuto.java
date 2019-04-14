@@ -110,6 +110,7 @@ public class SwerveAuto extends SwerveCore {
     private SampleRandomizedPositions goldPosition;
 
     // variables for auto actions
+    private int moveTimePushoff;
 
 
     // ***********************************************************************
@@ -228,10 +229,12 @@ public class SwerveAuto extends SwerveCore {
         swerveDebug(500, "SwerveAuto::init", "TensorFlow Ready");
 
 
+
         // orient to the field now and save our angle for use in teleOp
         ourSwerve.setFieldOrientation();
 
         // set initial pushoff delay
+        moveTimePushoff = 400;
         autoDriveWait = Boolean.FALSE;
         // force the marker drop servo to hold tight
         gameMarkDrop.setPosition(0);
@@ -320,8 +323,8 @@ public class SwerveAuto extends SwerveCore {
 
         // check for auto drive
 
-        if (autoDriveWait) {
-            if (ourSwerve.autoDriveCheck(autoDriveStop)) {
+        if ( autoDriveWait ) {
+            if ( ourSwerve.autoDriveCheck( autoDriveStop )) {
                 autoDriveWait = Boolean.FALSE;
 
                 // auto finished in time, so no more waiting
@@ -419,7 +422,6 @@ public class SwerveAuto extends SwerveCore {
                 setState(autoStates.SWERVE_TURN_TO_PARTICLE, 1000);
                 break;
 
-<<<<<<< HEAD
             case SWERVE_TURN_TO_PARTICLE:
                 if(parPosition == particlePosition.partLeft) {
                     orientRobot(-103);
@@ -431,19 +433,6 @@ public class SwerveAuto extends SwerveCore {
                 }
                 else if(parPosition == particlePosition.partCenter || parPosition == particlePosition.partUnknown) {
                     setState(autoStates.SWERVE_GRAB, 0);
-=======
-            case SWERVE_GM_BACK:
-                wristL.setPosition(0);
-                wristR.setPosition(0);
-                intakeL.setPower(0);
-                intakeR.setPower(0);
-                hSlide.setTargetPosition(900);
-                hSlide.setPower(-1);
-                if (crater) {
-                    setState(autoStates.SWERVE_TURN_TO_PARTICLE, 1500);
-                } else {
-                    setState(autoStates.SWERVE_TURN_TO_PARTICLE, 1500);
->>>>>>> 7f0a7f4c275bcb430f09b48e08afe7ddf8b92510
                 }
                 break;
 
@@ -485,7 +474,6 @@ public class SwerveAuto extends SwerveCore {
 
 //            Move to the wall
             case SWERVE_TO_WALL:
-<<<<<<< HEAD
                 if(crater) {
                     ourSwerve.autoDrive(.5, -174, -45, 115);
                     autoDriveWait = Boolean.TRUE;
@@ -508,15 +496,6 @@ public class SwerveAuto extends SwerveCore {
                 }
                 else {
                     ourSwerve.autoDrive(.5, -45, 135, 150);
-=======
-                if (crater) {
-                    ourSwerve.autoDrive(.4, -170, 45, 110);
-                    autoDriveWait = Boolean.TRUE;
-                    autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_TO_DEPOT, 3000);
-                } else {
-                    ourSwerve.autoDrive(.4, -170, 135, 110);
->>>>>>> 7f0a7f4c275bcb430f09b48e08afe7ddf8b92510
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
@@ -542,7 +521,6 @@ public class SwerveAuto extends SwerveCore {
 
             // Move to the crater
             case SWERVE_TO_CRATER:
-<<<<<<< HEAD
                 if(crater) {
                     ourSwerve.autoDrive(0.4, -45, -45, 60);
                     autoDriveWait = Boolean.TRUE;
@@ -551,15 +529,6 @@ public class SwerveAuto extends SwerveCore {
                 }
                 else {
                     ourSwerve.autoDrive(0.4, 135, 135, 65);
-=======
-                if (crater) {
-                    ourSwerve.autoDrive(0.8, 43, 45.0, 30);
-                    autoDriveWait = Boolean.TRUE;
-                    autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_LAST_MOVE, 5000);
-                } else {
-                    ourSwerve.autoDrive(0.4, 135, 135, 66);
->>>>>>> 7f0a7f4c275bcb430f09b48e08afe7ddf8b92510
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_EXTEND_CRATER, 3000);
@@ -599,6 +568,8 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
 
+
+
             // **** TEST cases **** //
             // make sure robot is calibrated properly: run a test auton
             case SWERVE_AUTO_TESTING_TURN_BACK:
@@ -621,7 +592,7 @@ public class SwerveAuto extends SwerveCore {
 
         // Report changes if not done
 
-        if (debugActive || (revTankState != autoStates.SWERVE_DONE)) {
+        if ( debugActive || ( revTankState != autoStates.SWERVE_DONE )) {
             loopEndReporting();
         }
 
@@ -676,7 +647,6 @@ public class SwerveAuto extends SwerveCore {
         swerveLog("State", "Autonomous State: " + getCurStateName() +
                 ", state time = " + swerveNumberFormat.format(getRuntime() - stateStartTime));
     }
-
     // ***********************************************************************
     // checkStateReady
     // ***********************************************************************
@@ -690,7 +660,6 @@ public class SwerveAuto extends SwerveCore {
         // Add waits for motor positions or anything else here...
         return Boolean.TRUE;
     }
-
     // ***********************************************************************
     // checkStateElapsed
     // ***********************************************************************
@@ -718,7 +687,6 @@ public class SwerveAuto extends SwerveCore {
         // Add waits for motor positions or anything else here...
         return Boolean.TRUE;
     }
-
     // ***********************************************************************
     // orientRobot
     // ***********************************************************************
@@ -729,7 +697,6 @@ public class SwerveAuto extends SwerveCore {
         // be sure we are not using automation
         ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DRIVER);
         // turn until within ~10 degrees
-<<<<<<< HEAD
         while (Math.abs(newOrienation - ourSwerve.curHeading) > 5.0) {
             // never take longer than 1.5 seconds
             if (checkStateElapsed(10000)) {
@@ -754,53 +721,15 @@ public class SwerveAuto extends SwerveCore {
             if (newOrienation > ourSwerve.curHeading) {
                 turnSpeed = -turnSpeed;
             }
-=======
-        while (Math.abs(newOrienation - ourSwerve.curHeading) > 1.0) {
 
-            while (Math.abs(newOrienation - ourSwerve.curHeading) > 5.0) {
-                // never take longer than 1.5 seconds
-                if (checkStateElapsed(10000)) {
-                    // stop the robot
-                    ourSwerve.stopRobot();
-
-                    return (Boolean.FALSE);
-                }
-
-                // turn faster if we need to turn more
-                if (Math.abs(newOrienation - ourSwerve.curHeading) > 90.0) {
-                    turnSpeed = 0.40;
-                } else if (Math.abs(newOrienation - ourSwerve.curHeading) > 25.0) {
-                    turnSpeed = 0.15;
-                } else {
-                    motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    turnSpeed = 0.10;
-                }
-                if (newOrienation > ourSwerve.curHeading) {
-                    turnSpeed = -turnSpeed;
-                }
->>>>>>> 7f0a7f4c275bcb430f09b48e08afe7ddf8b92510
-
-                // turn the robot
-                ourSwerve.driveRobot(0.0, 0.0, turnSpeed, 0.0);
-            }
-
-            // stop the robot
-            ourSwerve.stopRobot();
-
-<<<<<<< HEAD
-        return (Boolean.TRUE);
-=======
-            motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
-            return (Boolean.TRUE);
+            // turn the robot
+            ourSwerve.driveRobot(0.0, 0.0, turnSpeed, 0.0);
         }
-        return false;
->>>>>>> 7f0a7f4c275bcb430f09b48e08afe7ddf8b92510
+
+        // stop the robot
+        ourSwerve.stopRobot();
+
+        return (Boolean.TRUE);
     }
+
 }
