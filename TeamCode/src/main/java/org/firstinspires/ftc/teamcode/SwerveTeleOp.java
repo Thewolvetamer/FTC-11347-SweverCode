@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.DRIVE_FORWARD;
+
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
@@ -19,6 +21,7 @@ public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     private Boolean inEndGame;
     private ButtonRebounce buttonToggle=new ButtonRebounce();
+    private int scoreCaseTracker=0;
 
     // ***********************************************************************
     // SwerveTeleOp
@@ -239,24 +242,26 @@ public class SwerveTeleOp extends SwerveCore {
             intake.setPower(0);
         }
     }
-    public String getCurScoreState(){
-        return curScoreState.toString();
-    }
-    public void yeet(){
+
+    public void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        curScoreState=autoScoring.DRIVE_FORWARD;
-        switch(curScoreState){
-            case DRIVE_FORWARD:
-                if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE){
 
-                    curScoreState=autoScoring.EXTEND;
-                }
-            case EXTEND:
-                if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE){
-                    curScoreState=autoScoring.DRIVE_FORWARD;
-                }
+        if (ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
+                switch (curScoreState) {
 
-        }
+                    case DRIVE_FORWARD:
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                            
+                            curScoreState = autoScoring.EXTEND;
+                        }
+
+                    case EXTEND:
+
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                            curScoreState = DRIVE_FORWARD;
+                        }
+                }
+            }
     }
 // @TODO Rework yeet(), make functions clearer and add button debouncing.
 //    public void yeet() {
