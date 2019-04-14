@@ -77,18 +77,16 @@ public class SwerveCore extends OpMode {
     DcMotor climber;
     DcMotor vSlide;
     DcMotor hSlide;
+    DcMotor intake;
 
     Servo gameMarkDrop;
     Servo wristL;
     Servo wristR;
-    CRServo intakeR;
-    CRServo intakeL;
     Servo dump;
 
 
 
     // *** Sensors ***
-    DistanceSensor heightR;
     DistanceSensor heightL;
     private BNO055IMU ourIMU;
 
@@ -207,9 +205,10 @@ public class SwerveCore extends OpMode {
         swerveDebugDevice(500, "climber", climber);
         vSlide = hardwareMap.dcMotor.get("vSlide");
         swerveDebugDevice(500, "Vertical Slide", vSlide);
-        vSlide.setDirection(DcMotor.Direction.REVERSE);
         hSlide = hardwareMap.dcMotor.get("hSlide");
         swerveDebugDevice(500, "Horizontal Slide", hSlide);
+        intake = hardwareMap.dcMotor.get("intake");
+        swerveDebugDevice(500, "Intake", intake);
 
 
 
@@ -238,10 +237,7 @@ public class SwerveCore extends OpMode {
         swerveDebugDevice( 500, "Left Wrist", wristL);
         wristR = hardwareMap.servo.get("wristR");
         swerveDebugDevice(500, "Right Wrist", wristR);
-        intakeL = hardwareMap.crservo.get("intakeL");
-        swerveDebugDevice(500, "Intake Left", intakeL);
-        intakeR = hardwareMap.crservo.get("intakeR");
-        swerveDebugDevice(500, "Intake Right", intakeR);
+        wristR.setDirection(Servo.Direction.REVERSE);
         dump = hardwareMap.servo.get("dump");
         swerveDebugDevice(500, "Dumper", dump);
 
@@ -259,10 +255,6 @@ public class SwerveCore extends OpMode {
         //    https://www.reddit.com/r/FTC/comments/3odx26/is_it_possible_to_get_the_battery_voltage/
         //batteryVoltSensor = hardwareMap.voltageSensor.get("Expansion Hub 4");
         //swerveDebugDevice(500,"Battery Voltage Sensor", batteryVoltSensor);
-
-
-        heightR = hardwareMap.get(DistanceSensor.class, "HeightR");
-        swerveDebugDevice(500, "Height Sensor Right", heightR);
 
         heightL = hardwareMap.get(DistanceSensor.class, "HeightL");
         swerveDebugDevice(500, "Height Sensor Left", heightL);

@@ -126,12 +126,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         yeet();
 
-        if(gamepad2.b) {
-            hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            hSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-
-        ourSwerve.distance(heightL.getDistance(DistanceUnit.CM), heightR.getDistance(DistanceUnit.CM));
+        ourSwerve.distance(heightL.getDistance(DistanceUnit.CM));
 
 
         // Any loop background updates happen now....
@@ -194,7 +189,7 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void climb() {
-        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO && gamepad1.dpad_down) {
+        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO && gamepad2.dpad_down) {
             climber.setTargetPosition(4500);
             climber.setPower(-1);
             if(gamepad2.start) {
@@ -208,10 +203,10 @@ public class SwerveTeleOp extends SwerveCore {
                 }
             }
         }
-        else if(gamepad1.dpad_down && !(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) ) {
+        else if(gamepad2.dpad_down && !(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) ) {
             climber.setPower(-.7);
         }
-        else if(gamepad1.dpad_up) {
+        else if(gamepad2.dpad_up) {
             climber.setPower(.7);
         }
         else {
@@ -219,7 +214,7 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
-            private void vSlide() {
+    private void vSlide() {
                 if(gamepad2.a) {
                     vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -248,20 +243,19 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void wrist() {
-        if(intakeL.getPower() == 1) {
-            wristR.setPosition(1);
-            wristL.setPosition(1);
-        }
-        if(intakeL.getPower() == 0){
-            wristL.setPosition(0);
+        if(intake.getPower() == 1) {
             wristR.setPosition(0);
+            wristL.setPosition(0);
+        }
+        if(intake.getPower() == 0){
+            wristL.setPosition(-1);
+            wristR.setPosition(-1);
         }
     }
 
     private void intake() {
-        if(gamepad2.right_stick_button) {
-            intakeR.setPower(1);
-            intakeL.setPower(1);
+        if(gamepad2.right_bumper) {
+            intake.setPower(1);
         }
     }
 
@@ -297,10 +291,10 @@ public class SwerveTeleOp extends SwerveCore {
                     break;
 
                 case INTAKE:
-                    intakeR.setPower(1);
-                    intakeL.setPower(1);
+                    intake.setPower(1);
                     if(gamepad2.dpad_left) {
-                    intake.setPosition(1);
+                        intake.setPower(1);
+                    }
                     if(buttonToggle.status(gamepad2.dpad_left)==ButtonRebounce.Status.COMPLETE) {
                         ourSwerve.driveRobot(0,0, -1, 0);
                         break;

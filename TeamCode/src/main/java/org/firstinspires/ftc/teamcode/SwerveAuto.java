@@ -18,7 +18,6 @@
 
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.vision.MasterVision;
@@ -49,7 +48,7 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_SLIDE,
         SWERVE_GRAB,
         SWERVE_PARTICLE_TO_DEPOT,
-        SWERVE_SCORE,
+        SWERVE_CENTER,
         SWERVE_TURN,
         SWERVE_GM_BACK,
         SWERVE_HIT_PARTICLE,
@@ -57,10 +56,10 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_TO_WALL,
         SWERVE_AVOID_PARTICLE,
         SWERVE_TO_DEPOT,
-        SWERVE_PLACE_MARKER,
+        SWERVE_TURN2,
         SWERVE_TO_CRATER,
         SWERVE_CRATER_PARTICLES,
-        SWERVE_PARTICLE_TO_LANDER,
+        SWERVE_EXTEND_CRATER,
         SWERVE_RETRACT,
         SWERVE_MARKER,
         SWERVE_LAST_MOVE,
@@ -162,13 +161,13 @@ public class SwerveAuto extends SwerveCore {
                 return "TO WALL";
             case SWERVE_TO_DEPOT:
                 return "TO DEPOT";
-            case SWERVE_PLACE_MARKER:
+            case SWERVE_TURN2:
                 return "PLACE MARKER";
             case SWERVE_TO_CRATER:
                 return "TO CRATER";
             case SWERVE_CRATER_PARTICLES:
                 return "CRATER PARTICLES";
-            case SWERVE_PARTICLE_TO_LANDER:
+            case SWERVE_EXTEND_CRATER:
                 return "PARTICLE TO LANDER";
             case SWERVE_RETRACT:
                 return "SCORE BALLS";
@@ -223,9 +222,9 @@ public class SwerveAuto extends SwerveCore {
         parameters.vuforiaLicenseKey = "AXALhZf/////AAABmeL06CuSFUvSihBEZtVB9MllwYAol1njgG9CAEcNIyohat03TdAACXdYBpbS6M0BCHZAnGChIMBGm0BP2MHKV7IHPsfti2ZwLEf0bZgd/oNwpq+h/YnIhrm4qARe/3sKUsJZo4tlHK+FkFU10vWg0uBHqgfSf1zW/lJbyVhh+h4u8/3y6B6tXG+3yb9zQZECGgJyqifA5sQNyqCP/Wy0O1AY9hgCnbCHeOMChhpaKiGpXM4PNPsDbKo59yEb6QSF8KNciYUQmR7vviirGKFj4TetMNHrgKVPYCQGzmWdKvmCB5sikQ6lelNGHU9Je6sKMScefU0s8Vn5WyToDfddPoNejyrmLkq9jH3ccZ/7Q+gA";
 
 //        infer tells tensor flow which side  it doesnt have in relation to the robot
-//        vision = new MasterVision(parameters, hardwareMap, false, MasterVision.TFLiteAlgorithm.INFER_RIGHT);
-//        vision.init();// enables the camera overlay
-//        vision.enable();// enables the tracking algorithms
+        vision = new MasterVision(parameters, hardwareMap, false, MasterVision.TFLiteAlgorithm.INFER_RIGHT);
+        vision.init();// enables the camera overlay
+        vision.enable();// enables the tracking algorithms
 
         swerveDebug(500, "SwerveAuto::init", "TensorFlow Ready");
 
@@ -280,16 +279,16 @@ public class SwerveAuto extends SwerveCore {
 
         // turn off tensorFlow, get particle position
 
-//        vision.disable();
-//        goldPosition = vision.getTfLite().getLastKnownSampleOrder();
+        vision.disable();
+        goldPosition = vision.getTfLite().getLastKnownSampleOrder();
 
-//        if ( goldPosition == SampleRandomizedPositions.RIGHT) {
-//            parPosition = particlePosition.partRight;
-//        } else if ( goldPosition == SampleRandomizedPositions.LEFT ) {
-//            parPosition = particlePosition.partLeft;
-//        } else {
-//            parPosition = particlePosition.partCenter;
-//        }
+        if ( goldPosition == SampleRandomizedPositions.RIGHT) {
+            parPosition = particlePosition.partRight;
+        } else if ( goldPosition == SampleRandomizedPositions.LEFT ) {
+            parPosition = particlePosition.partLeft;
+        } else {
+            parPosition = particlePosition.partCenter;
+        }
 
         // nothing sensed yet
 //        loopSenseStatus = "No sensing yet";
@@ -372,23 +371,25 @@ public class SwerveAuto extends SwerveCore {
 
 //            align the wheels before the drop
             case SWERVE_ALIGN:
-                ourSwerve.autoDrive(0.2, 85, 0.0, .01);
+                ourSwerve.autoDrive(0.2, -15, 0.0, .01);
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
                 setState(autoStates.SWERVE_DROP, 250);
                 break;
 //            Drop down from the lander
             case SWERVE_DROP:
+                hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                hSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
                 // motor has 383.6 ticks per rev
                 climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                climber.setTargetPosition(6750);
-                if (climber.getCurrentPosition() < 5750) {
-                    climber.setPower(1);
-                } else {
-                    climber.setPower(.6);
-                }
-                setState(autoStates.SWERVE_DELAY, 2400);
+                climber.setTargetPosition(7200);
+                climber.setPower(1);
+                setState(autoStates.SWERVE_DELAY, 2200);
                 break;
 
             case SWERVE_DELAY:
@@ -398,7 +399,7 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             case SWERVE_SLIDE:
-                ourSwerve.autoDrive(.6, -15, 0, 7);
+                ourSwerve.autoDrive(.4, -15, 0, 8);
                 autoDriveStop = Boolean.TRUE;
                 autoDriveWait = Boolean.TRUE;
                 if (debugActive) {
@@ -410,123 +411,139 @@ public class SwerveAuto extends SwerveCore {
 //            turn towards the particle
 //            TODO add triangle math
             case SWERVE_HIT_PARTICLE:
-                ourSwerve.autoDrive(.4, -100, 0, 27);
+                ourSwerve.autoDrive(.6, -93, 0, 28);
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
-                setState(autoStates.SWERVE_TURN, 5000);
+                setState(autoStates.SWERVE_CENTER, 2000);
                 break;
 
-            case SWERVE_TURN:
-                // gets vSlide out of the way
-                vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                vSlide.setTargetPosition(1000);
-                vSlide.setPower(1);
-
-                orientRobot(-86);
-                if (crater) {
-                    setState(autoStates.SWERVE_TURN_TO_PARTICLE, 1700);
-                }
-                setState(autoStates.SWERVE_GM_EXTEND, 1700);
-                break;
-
-            case SWERVE_GM_EXTEND:
-                hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                hSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                hSlide.setTargetPosition(1900);
-                hSlide.setPower(.6);
-                setState(autoStates.SWERVE_MARKER, 2000);
-                break;
-
-            case SWERVE_MARKER:
-                wristL.setPosition(1);
-                wristR.setPosition(1);
-                intakeL.setPower(-1);
-                intakeR.setPower(-1);
-                setState(autoStates.SWERVE_GM_BACK, 1000);
-                break;
-
-            case SWERVE_GM_BACK:
-                wristL.setPosition(0);
-                wristR.setPosition(0);
-                intakeL.setPower(0);
-                intakeR.setPower(0);
-                hSlide.setTargetPosition(900);
-                hSlide.setPower(-1);
-                if (crater) {
-                    setState(autoStates.SWERVE_TURN_TO_PARTICLE, 1500);
-                }
-                else {
-                    setState(autoStates.SWERVE_TURN_TO_PARTICLE, 1500);
-                }
+            case SWERVE_CENTER:
+                orientRobot(-78);
+                setState(autoStates.SWERVE_TURN_TO_PARTICLE, 1000);
                 break;
 
             case SWERVE_TURN_TO_PARTICLE:
-                setState(autoStates.SWERVE_GRAB, 1500);
+                if(parPosition == particlePosition.partLeft) {
+                    orientRobot(-103);
+                    setState(autoStates.SWERVE_GRAB, 1250);
+                }
+                else if(parPosition == particlePosition.partRight) {
+                    orientRobot(-67);
+                    setState(autoStates.SWERVE_GRAB, 1250);
+                }
+                else if(parPosition == particlePosition.partCenter || parPosition == particlePosition.partUnknown) {
+                    setState(autoStates.SWERVE_GRAB, 0);
+                }
                 break;
 
             case SWERVE_GRAB:
+                hSlide.setTargetPosition(1000);
+                if(hSlide.getTargetPosition() < hSlide.getCurrentPosition()) {
+                    hSlide.setPower(-1);
+                }
+                else {
+                    hSlide.setPower(1);
+                }
                 wristL.setPosition(1);
                 wristR.setPosition(1);
-                intakeR.setPower(1);
-                intakeL.setPower(1);
+                intake.setPower(1);
                 setState(autoStates.SWERVE_RETRACT, 2000);
                 break;
 
             case SWERVE_RETRACT:
-                hSlide.setTargetPosition(300);
-                hSlide.setPower(-.6);
-                setState(autoStates.SWERVE_TO_WALL, 5000);
+                hSlide.setTargetPosition(500);
+                if(hSlide.getTargetPosition() < hSlide.getCurrentPosition()) {
+                    hSlide.setPower(-1);
+                }
+                else {
+                    hSlide.setPower(1);
+                }
+                setState(autoStates.SWERVE_TURN, 1250);
                 break;
 
-//            case SWERVE_SCORE:
-//                wristR.setPosition(-1);
-//                wristL.setPosition(-1);
-//                vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//                vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                vSlide.setTargetPosition(1);
-//
-//                vSlide.setPower(1);
-//                if(vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
-//                    dump.setPosition(1);
-//                }
-//                break;
+            case SWERVE_TURN:
+                if(crater) {
+                    orientRobot(-40);
+                    setState(autoStates.SWERVE_TO_WALL, 1500);
+                }
+                else {
+                    orientRobot(105);
+                    setState(autoStates.SWERVE_TO_WALL, 1200);
+                }
+                break;
 
 //            Move to the wall
             case SWERVE_TO_WALL:
                 if(crater) {
-                    ourSwerve.autoDrive(.4, -170, 45, 110);
+                    ourSwerve.autoDrive(.5, -174, -45, 115);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_TO_DEPOT, 3000);
                 }
                 else {
-                    ourSwerve.autoDrive(.4, -170, 135, 110);
+                    ourSwerve.autoDrive(.5, 190, 135, 160);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_TO_CRATER, 3000);
+                    setState(autoStates.SWERVE_TO_DEPOT, 3000);
                 }
+                break;
+
+            case SWERVE_TO_DEPOT:
+                if(crater) {
+                    ourSwerve.autoDrive(.5, 138, -45, 100);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                }
+                else {
+                    ourSwerve.autoDrive(.5, -45, 135, 150);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                }
+                setState(autoStates.SWERVE_GM_EXTEND, 3000);
+                break;
+
+            case SWERVE_GM_EXTEND:
+                // gets vSlide out of the way
+                vSlide.setTargetPosition(2000);
+                vSlide.setPower(1);
+                setState(autoStates.SWERVE_MARKER, 2000);
+                break;
+
+            case SWERVE_MARKER:
+                dump.setPosition(1);
+                setState(autoStates.SWERVE_GM_BACK, 1000);
+                break;
+
+            case SWERVE_GM_BACK:
+                dump.setPosition(0);
+                setState(autoStates.SWERVE_TO_CRATER, 500);
                 break;
 
             // Move to the crater
             case SWERVE_TO_CRATER:
                 if(crater) {
-                    ourSwerve.autoDrive(0.8, 43, 45.0, 30);
+                    ourSwerve.autoDrive(0.4, -45, -45, 60);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_LAST_MOVE, 5000);
+                    setState(autoStates.SWERVE_EXTEND_CRATER, 3000);
                 }
                 else {
-                    ourSwerve.autoDrive(0.4, 135, 135, 66);
+                    ourSwerve.autoDrive(0.4, 135, 135, 65);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_LAST_MOVE, 5000);
+                    setState(autoStates.SWERVE_EXTEND_CRATER, 3000);
                 }
                 break;
 
-//            grab two balls from the crater
-            case SWERVE_CRATER_PARTICLES:
-                setState(autoStates.SWERVE_LAST_MOVE, 5000);
+            case SWERVE_EXTEND_CRATER:
+                hSlide.setTargetPosition(6500);
+                if(hSlide.getTargetPosition() < hSlide.getCurrentPosition()) {
+                    hSlide.setPower(-1);
+                }
+                else {
+                    hSlide.setPower(1);
+                }
+                setState(autoStates.SWERVE_LAST_MOVE, 2000);
                 break;
 
             // Waiting for final move to complete before done
@@ -535,6 +552,7 @@ public class SwerveAuto extends SwerveCore {
             case SWERVE_LAST_MOVE:
                 // stop moving
                 ourSwerve.stopRobot();
+                hSlide.setPower(0);
 
                 setState(autoStates.SWERVE_DONE, 10);
                 break;
@@ -678,11 +696,7 @@ public class SwerveAuto extends SwerveCore {
         double turnSpeed;
         // be sure we are not using automation
         ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DRIVER);
-        // check robot orientation
-        ourSwerve.checkOrientation();
         // turn until within ~10 degrees
-        while (Math.abs(newOrienation - ourSwerve.curHeading) > 1.0) {
-
         while (Math.abs(newOrienation - ourSwerve.curHeading) > 5.0) {
             // never take longer than 1.5 seconds
             if (checkStateElapsed(10000)) {
@@ -691,19 +705,18 @@ public class SwerveAuto extends SwerveCore {
 
                 return (Boolean.FALSE);
             }
+            // check robot orientation
+            ourSwerve.checkOrientation();
 
             // turn faster if we need to turn more
             if (Math.abs(newOrienation - ourSwerve.curHeading) > 90.0) {
                 turnSpeed = 0.40;
-            } else if(Math.abs(newOrienation - ourSwerve.curHeading) > 25.0) {
-                turnSpeed = 0.15;
+            }
+            else if (Math.abs(newOrienation - ourSwerve.curHeading) > 15.0) {
+                turnSpeed = .20;
             }
             else {
-                motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                turnSpeed = 0.10;
+                turnSpeed = .10;
             }
             if (newOrienation > ourSwerve.curHeading) {
                 turnSpeed = -turnSpeed;
@@ -715,11 +728,6 @@ public class SwerveAuto extends SwerveCore {
 
         // stop the robot
         ourSwerve.stopRobot();
-
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         return (Boolean.TRUE);
     }
