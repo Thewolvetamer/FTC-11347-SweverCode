@@ -10,10 +10,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.DRIVE_FORWARD;
-import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.EXTEND;
-import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.INTAKE;
-import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.LANDER;
+import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.*;
 
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
@@ -199,7 +196,7 @@ public class SwerveTeleOp extends SwerveCore {
 
     private void vSlide() {
         if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
-            if (gamepad2.a) {
+            if (gamepad2.x) {
                 vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 //            distance/circumference of spool   * tpr
