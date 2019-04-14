@@ -79,7 +79,6 @@ public class SwerveCore extends OpMode {
     DcMotor hSlide;
     DcMotor intake;
 
-    Servo gameMarkDrop;
     Servo wristL;
     Servo wristR;
     Servo dump;
@@ -140,7 +139,7 @@ public class SwerveCore extends OpMode {
         TURN_RIGHT,
         LANDER
     }
-    autoScoring curScoreState;
+    autoScoring curScoreState=autoScoring.DRIVE_FORWARD;
     // ***********************************************************************
     // SwerveCore
     // ***********************************************************************
@@ -239,9 +238,6 @@ public class SwerveCore extends OpMode {
 
 
 
-        //Game Mark Drop Servo Port 1 Hub 4
-        gameMarkDrop = hardwareMap.servo.get("gameMarkDrop");
-        swerveDebugDevice(500, "Game Marker Drop", gameMarkDrop);
         wristL = hardwareMap.servo.get("wristL");
         swerveDebugDevice( 500, "Left Wrist", wristL);
         wristR = hardwareMap.servo.get("wristR");
@@ -391,7 +387,6 @@ public class SwerveCore extends OpMode {
         swerveLog( "X S4", getCurScoreState());
         swerveLog( "X S5", ourSwerve.getSpeedLog());
         swerveLog( "X S6", ourSwerve.getOrientLog());
-        swerveLog( "X S7", ourSwerve.getAutoDriveLog());
         swerveLog( "X S8", ourSwerve.getHeightLog());
         swerveLog( "X S9", ourSwerve.getGravXYZAccel());
     }
