@@ -239,6 +239,7 @@ public class SwerveAuto extends SwerveCore {
 
         wristR.setPosition(-1);
         wristL.setPosition(-1);
+        dump.setPosition(1);
 
         // cause all the wheels to turn to the initialization position - 45 degrees
         swerveLeftFront.updateWheel(initWheelPower, -initWheelAngle);
@@ -434,8 +435,8 @@ public class SwerveAuto extends SwerveCore {
                     setState(autoStates.SWERVE_GRAB, 1000);
                 }
                 else if(parPosition == particlePosition.partRight) {
-                    orientRobot(-46);
-                    hSlide.setTargetPosition(1000);
+                    orientRobot(-45);
+                    hSlide.setTargetPosition(1200);
                     setState(autoStates.SWERVE_GRAB, 1000);
                 }
                 else if(parPosition == particlePosition.partCenter || parPosition == particlePosition.partUnknown) {
@@ -462,7 +463,7 @@ public class SwerveAuto extends SwerveCore {
                     angle = -123;
                 }
                 else if(particlePosition.partRight == parPosition) {
-                    angle = -45;
+                    angle = -44;
                 }
                 else {
                     angle = -90;
@@ -500,7 +501,7 @@ public class SwerveAuto extends SwerveCore {
 //            Move to the wall
             case SWERVE_TO_WALL:
                 if(crater) {
-                    ourSwerve.autoDrive(1, 195, -45, 100);
+                    ourSwerve.autoDrive(1, 195, -45, 105);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
@@ -514,7 +515,7 @@ public class SwerveAuto extends SwerveCore {
 
             case SWERVE_TO_DEPOT:
                 if(crater) {
-                    ourSwerve.autoDrive(1, 138, -45, 80);
+                    ourSwerve.autoDrive(1, 140, -45, 80);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
@@ -536,28 +537,28 @@ public class SwerveAuto extends SwerveCore {
                     hSlide.setPower(1);
                 }
                 vSlide.setPower(1);
-                setState(autoStates.SWERVE_MARKER, 1750);
-                break;
-
-            case SWERVE_MARKER:
-                dump.setPosition(1);
-                setState(autoStates.SWERVE_GM_BACK, 1000);
+                dump.setPosition(0);
+                setState(autoStates.SWERVE_MARKER, 2250);
                 break;
 
             case SWERVE_GM_BACK:
-                dump.setPosition(0);
-                setState(autoStates.SWERVE_TO_CRATER, 100);
+                dump.setPosition(1);
+                setState(autoStates.SWERVE_TO_CRATER, 10);
                 break;
 
             // Move to the crater
             case SWERVE_TO_CRATER:
                 if(crater) {
-                    ourSwerve.autoDrive(1, -45, -45, 70);
+                    wristL.setPosition(0);
+                    wristR.setPosition(0);
+                    ourSwerve.autoDrive(1, -45, -45, 80);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_EXTEND_CRATER, 3000);
                 }
                 else {
+                    wristL.setPosition(0);
+                    wristR.setPosition(0);
                     ourSwerve.autoDrive(1, 135, 135, 70);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
