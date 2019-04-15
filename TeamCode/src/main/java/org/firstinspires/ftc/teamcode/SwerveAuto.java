@@ -56,7 +56,7 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_TO_WALL,
         SWERVE_AVOID_PARTICLE,
         SWERVE_TO_DEPOT,
-        SWERVE_TURN2,
+        SWERVE_PICKUP,
         SWERVE_TO_CRATER,
         SWERVE_CRATER_PARTICLES,
         SWERVE_EXTEND_CRATER,
@@ -161,7 +161,7 @@ public class SwerveAuto extends SwerveCore {
                 return "TO WALL";
             case SWERVE_TO_DEPOT:
                 return "TO DEPOT";
-            case SWERVE_TURN2:
+            case SWERVE_PICKUP:
                 return "PLACE MARKER";
             case SWERVE_TO_CRATER:
                 return "TO CRATER";
@@ -420,18 +420,22 @@ public class SwerveAuto extends SwerveCore {
 
             case SWERVE_CENTER:
                 orientRobot(-84);
+                hSlide.setTargetPosition(300);
                 setState(autoStates.SWERVE_TURN_TO_PARTICLE, 575);
                 break;
 
             case SWERVE_TURN_TO_PARTICLE:
+                hSlide.setPower(1);
+                wristL.setPosition(.9);
+                wristR.setPosition(.9);
                 if(parPosition == particlePosition.partLeft) {
-                    orientRobot(-125);
-                    hSlide.setTargetPosition(600);
+                    orientRobot(-123);
+                    hSlide.setTargetPosition(1000);
                     setState(autoStates.SWERVE_GRAB, 1000);
                 }
                 else if(parPosition == particlePosition.partRight) {
-                    orientRobot(-44);
-                    hSlide.setTargetPosition(600);
+                    orientRobot(-46);
+                    hSlide.setTargetPosition(1000);
                     setState(autoStates.SWERVE_GRAB, 1000);
                 }
                 else if(parPosition == particlePosition.partCenter || parPosition == particlePosition.partUnknown) {
@@ -448,10 +452,25 @@ public class SwerveAuto extends SwerveCore {
                 else {
                     hSlide.setPower(1);
                 }
-                wristL.setPosition(1);
-                wristR.setPosition(1);
                 intake.setPower(1);
-                setState(autoStates.SWERVE_RETRACT, 2000);
+                setState(autoStates.SWERVE_PICKUP, 2000);
+                break;
+
+            case SWERVE_PICKUP:
+                int angle;
+                if(particlePosition.partLeft == parPosition) {
+                    angle = -123;
+                }
+                else if(particlePosition.partRight == parPosition) {
+                    angle = -45;
+                }
+                else {
+                    angle = -90;
+                }
+                ourSwerve.autoDrive(.8, angle, 0, 5);
+                autoDriveWait = Boolean.TRUE;
+                autoDriveStop = Boolean.TRUE;
+                setState(autoStates.SWERVE_RETRACT, 1000);
                 break;
 
             case SWERVE_RETRACT:
@@ -468,6 +487,7 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             case SWERVE_TURN:
+                intake.setPower(0);
                 if(crater) {
                     orientRobot(-43);
                 }
@@ -485,7 +505,7 @@ public class SwerveAuto extends SwerveCore {
                     autoDriveStop = Boolean.TRUE;
                 }
                 else {
-                    ourSwerve.autoDrive(1, 200, 135, 100);
+                    ourSwerve.autoDrive(1, 205, 135, 100);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
