@@ -26,6 +26,11 @@ public class ButtonRebounce {
      *  Monitors and adjusts the toggle value based on previous toggle values and the
      *  state of the boolean passed in.
      */
+    //0 is not begun 1 in progress 2 is complete
+    public void reset_status(){
+        _status=Status.NOT_BEGUN;
+
+    }
     final public Status status(boolean buttonStatus)
     {
         // If the button is being held
