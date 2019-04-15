@@ -217,6 +217,7 @@ public class SwerveCore extends OpMode {
         swerveDebugDevice(500, "Horizontal Slide", hSlide);
         intake = hardwareMap.dcMotor.get("intake");
         swerveDebugDevice(500, "Intake", intake);
+        intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
 
@@ -330,6 +331,7 @@ public class SwerveCore extends OpMode {
     // ***********************************************************************
     // Performs any actions that are necessary while the OpMode is running.
     // The system calls this member repeatedly while the OpMode is running.
+
 
     public String getCurScoreState(){
         return "Current mode of yeet(): "+curScoreState.name();
