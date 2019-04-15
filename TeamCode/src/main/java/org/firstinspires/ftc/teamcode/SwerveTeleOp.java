@@ -27,9 +27,7 @@ public class SwerveTeleOp extends SwerveCore {
     // Constructs the class.
     // The system calls this member when the class is instantiated.
     public SwerveTeleOp() {
-
     }
-
     // ***********************************************************************
     // Init
     // ***********************************************************************
@@ -38,19 +36,13 @@ public class SwerveTeleOp extends SwerveCore {
     @Override
     public void init() {
         swerveDebug(500, "SwerveTeleOp::init", "START");
-
         // Run initialization of other parts of the class
         // Note that the class will connect to all of our motors and servos
         super.init();
-
-
-
         // We are just starting, so not in the end game yet...
 
         swerveDebug(500, "SwerveTeleOp::init", "DONE");
     }
-
-
     // ***********************************************************************
     // start
     // ***********************************************************************
@@ -59,10 +51,8 @@ public class SwerveTeleOp extends SwerveCore {
     @Override
     public void start() {
         swerveDebug(500, "SwerveTeleOp::start", "START");
-
         // Call the super/base class start method.
         super.start();
-
         ourSwerve.curSwerveMode = SwerveDrive.swerveModes.SWERVE_DRIVER;
 
         swerveDebug(500, "SwerveTeleOp::start", "DONE");
