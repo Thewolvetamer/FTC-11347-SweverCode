@@ -19,9 +19,7 @@ import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.*;
 //@Disabled
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
-    private Boolean inEndGame;
     private ButtonRebounce buttonToggle=new ButtonRebounce();
-    private int scoreCaseTracker=0;
 
     // ***********************************************************************
     // SwerveTeleOp
@@ -48,7 +46,6 @@ public class SwerveTeleOp extends SwerveCore {
 
 
         // We are just starting, so not in the end game yet...
-        inEndGame = Boolean.FALSE;
 
         swerveDebug(500, "SwerveTeleOp::init", "DONE");
     }
@@ -259,28 +256,28 @@ public class SwerveTeleOp extends SwerveCore {
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
                             curScoreState = INTAKE;
                         }
-                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= DRIVE_FORWARD;
                         }
                     case INTAKE:
-                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = LANDER;
                         }
-                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= EXTEND;
                         }
                     case LANDER:
-                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE){
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS){
                         curScoreState= DRIVE_FORWARD;
                     }
-                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= INTAKE;
                         }
                 }
             }
     }
 
-// @TODO Rework yeet(), make functions clearer and add button debouncing.
+// TODO Rework yeet(), make functions clearer and add button debouncing.
 //    public void yeet() {
 //        hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
