@@ -21,6 +21,7 @@ public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     private ButtonRebounce buttonToggle=new ButtonRebounce();
 
+
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -28,6 +29,7 @@ public class SwerveTeleOp extends SwerveCore {
     // The system calls this member when the class is instantiated.
     public SwerveTeleOp() {
     }
+
     // ***********************************************************************
     // Init
     // ***********************************************************************
@@ -237,31 +239,39 @@ public class SwerveTeleOp extends SwerveCore {
                     case DRIVE_FORWARD:
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = EXTEND;
+                            buttonToggle.reset_status();
                         }
                         else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= LANDER;
+                            buttonToggle.reset_status();
                         }
                     case EXTEND:
 
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = INTAKE;
+                            buttonToggle.reset_status();
                         }
                         else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= DRIVE_FORWARD;
+                            buttonToggle.reset_status();
                         }
                     case INTAKE:
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = LANDER;
+                            buttonToggle.reset_status();
                         }
                         else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= EXTEND;
+                            buttonToggle.reset_status();
                         }
                     case LANDER:
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS){
                         curScoreState= DRIVE_FORWARD;
+                            buttonToggle.reset_status();
                     }
                         else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= INTAKE;
+                            buttonToggle.reset_status();
                         }
                 }
             }
