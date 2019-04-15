@@ -235,15 +235,15 @@ public class SwerveTeleOp extends SwerveCore {
                 switch (curScoreState) {
 
                     case DRIVE_FORWARD:
-                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = EXTEND;
                         }
-                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= LANDER;
                         }
                     case EXTEND:
 
-                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = INTAKE;
                         }
                         else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
