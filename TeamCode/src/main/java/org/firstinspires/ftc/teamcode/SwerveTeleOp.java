@@ -20,7 +20,7 @@ import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.*;
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     private ButtonRebounce buttonToggle=new ButtonRebounce();
-
+    public int resetInt=0;
 
     // ***********************************************************************
     // SwerveTeleOp
