@@ -425,18 +425,18 @@ public class SwerveAuto extends SwerveCore {
 
             case SWERVE_TURN_TO_PARTICLE:
                 if(parPosition == particlePosition.partLeft) {
-                    orientRobot(-118);
-                    hSlide.setTargetPosition(300);
+                    orientRobot(-125);
+                    hSlide.setTargetPosition(600);
                     setState(autoStates.SWERVE_GRAB, 1000);
                 }
                 else if(parPosition == particlePosition.partRight) {
-                    orientRobot(-52);
-                    hSlide.setTargetPosition(275);
+                    orientRobot(-44);
+                    hSlide.setTargetPosition(600);
                     setState(autoStates.SWERVE_GRAB, 1000);
                 }
                 else if(parPosition == particlePosition.partCenter || parPosition == particlePosition.partUnknown) {
                     orientRobot(-88);
-                    hSlide.setTargetPosition(300);
+                    hSlide.setTargetPosition(400);
                     setState(autoStates.SWERVE_GRAB, 500);
                 }
                 break;
@@ -468,21 +468,33 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             case SWERVE_TURN:
-                orientRobot(120);
+                if(crater) {
+                    orientRobot(-43);
+                }
+                else {
+                    orientRobot(120);
+                }
                 setState(autoStates.SWERVE_TO_WALL, 500);
                 break;
 
 //            Move to the wall
             case SWERVE_TO_WALL:
-                ourSwerve.autoDrive(1, 195, 135, 100);
-                autoDriveWait = Boolean.TRUE;
-                autoDriveStop = Boolean.TRUE;
+                if(crater) {
+                    ourSwerve.autoDrive(1, 195, -45, 100);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                }
+                else {
+                    ourSwerve.autoDrive(1, 200, 135, 100);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
+                }
                 setState(autoStates.SWERVE_TO_DEPOT, 3000);
                 break;
 
             case SWERVE_TO_DEPOT:
                 if(crater) {
-                    ourSwerve.autoDrive(1, 138, -45, 85);
+                    ourSwerve.autoDrive(1, 138, -45, 80);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }

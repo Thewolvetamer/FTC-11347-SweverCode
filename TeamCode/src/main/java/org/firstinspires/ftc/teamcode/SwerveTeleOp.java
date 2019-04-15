@@ -167,7 +167,7 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     private void climb() {
-        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO && gamepad2.dpad_down) {
+        if(gamepad2.dpad_left) {
             climber.setTargetPosition(4500);
             climber.setPower(-1);
             if(gamepad2.start) {
@@ -181,7 +181,7 @@ public class SwerveTeleOp extends SwerveCore {
                 }
             }
         }
-        else if(gamepad2.dpad_down && !(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) ) {
+        else if(gamepad2.dpad_down) {
             climber.setPower(-.7);
         }
         else if(gamepad2.dpad_up) {
@@ -213,12 +213,12 @@ public class SwerveTeleOp extends SwerveCore {
             }
         }
         else {
-            vSlide.setPower(gamepad2.left_stick_y);
+            vSlide.setPower(-gamepad2.left_stick_y);
         }
     }
 
     private void hSlide() {
-        hSlide.setPower(gamepad2.right_stick_y);
+        hSlide.setPower(-gamepad2.right_stick_y);
     }
 
     private void wrist() {
@@ -279,6 +279,7 @@ public class SwerveTeleOp extends SwerveCore {
                 }
             }
     }
+
 // @TODO Rework yeet(), make functions clearer and add button debouncing.
 //    public void yeet() {
 //        hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
