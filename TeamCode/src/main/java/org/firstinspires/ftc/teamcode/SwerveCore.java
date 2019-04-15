@@ -482,9 +482,6 @@ public class SwerveCore extends OpMode {
     // swerveReadAutoSettings
     // ***********************************************************************
     // Read file of autonomous goal settings
-    public void buttonReleased(Gamepad a){
-       
-    }
     public int swerveReadAutoSettings() {
         FileInputStream myFile;
         int myValue;                // Becomes a single BYTE that is read....
