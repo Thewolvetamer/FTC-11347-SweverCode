@@ -85,9 +85,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         // *** use buttons to trigger other actions ***
 
-        strafeR();
-
-        strafeL();
+        strafe();
 
         climb();
 
@@ -133,31 +131,28 @@ public class SwerveTeleOp extends SwerveCore {
     // makes it easier to go directly sideways
     private void sorter(){
         if(gamepad2.x){
-            dump.setPosition(05);
+            dump.setPosition(0);
         }
         else{
             dump.setPosition(1);
         }
     }
-    private void strafeR() {
-
+    private void strafe() {
         if (gamepad1.dpad_left) {
             swerveLeftFront.updateWheel(1, -0.50);
             swerveRightFront.updateWheel(1, -0.50);
             swerveLeftRear.updateWheel(1, -0.50);
             swerveRightRear.updateWheel(1, -0.50);
         }
-    }
-
-    private void strafeL() {
-
-        if (gamepad1.dpad_right) {
+        else if (gamepad1.dpad_right) {
             swerveLeftFront.updateWheel(1, 0.50);
             swerveRightFront.updateWheel(1, 0.50);
             swerveLeftRear.updateWheel(1, 0.50);
             swerveRightRear.updateWheel(1, 0.50);
         }
     }
+
+
 
     private void climb() {
         if(gamepad1.right_bumper) {
