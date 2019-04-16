@@ -238,6 +238,7 @@ public class SwerveTeleOp extends SwerveCore {
                             curScoreState= LANDER;
                             buttonToggle.reset_status();
                         }
+                    break;
                     case EXTEND:
 
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
@@ -248,6 +249,7 @@ public class SwerveTeleOp extends SwerveCore {
                             curScoreState= DRIVE_FORWARD;
                             buttonToggle.reset_status();
                         }
+                    break;
                     case INTAKE:
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
                             curScoreState = LANDER;
@@ -257,15 +259,17 @@ public class SwerveTeleOp extends SwerveCore {
                             curScoreState= EXTEND;
                             buttonToggle.reset_status();
                         }
+                    break;
                     case LANDER:
                         if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE){
                         curScoreState= DRIVE_FORWARD;
                             buttonToggle.reset_status();
-                    }
+                        }
                         else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
                             curScoreState= INTAKE;
                             buttonToggle.reset_status();
                         }
+                    break;
                 }
             }
     }
