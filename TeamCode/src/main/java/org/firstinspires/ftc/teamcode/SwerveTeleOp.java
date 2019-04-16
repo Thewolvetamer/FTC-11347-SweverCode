@@ -188,7 +188,7 @@ public class SwerveTeleOp extends SwerveCore {
                 //            distance/circumference of spool   * tpr
                 vSlide.setTargetPosition(3500);
                 vSlide.setPower(1);
-            } else if (vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
+            } else if (vSlide.getTargetPosition() <= vSlide.getCurrentPosition()) {
                 dump.setPosition(1);
                 final double t = getRuntime();
                 if (getRuntime() == t + 1000) {
