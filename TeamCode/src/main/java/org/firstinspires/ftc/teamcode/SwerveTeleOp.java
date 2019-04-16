@@ -99,7 +99,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         wrist();
 
-        yeet();
+        AutoScore();
 
         clear();
 
@@ -237,7 +237,7 @@ public class SwerveTeleOp extends SwerveCore {
         climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void yeet() {
+    public void AutoScore() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         if (ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
                 switch (curScoreState) {
