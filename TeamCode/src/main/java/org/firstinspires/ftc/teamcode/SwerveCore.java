@@ -131,6 +131,8 @@ public class SwerveCore extends OpMode {
     // Files where we store settings
     private String swerveFileAutoSettings;
     //enum for teleop
+    autoScoring curScoreState = autoScoring.DRIVE_FORWARD;
+
     enum autoScoring {
         DRIVE_FORWARD,
         EXTEND,
@@ -138,8 +140,8 @@ public class SwerveCore extends OpMode {
         TURN_LEFT,
         TURN_RIGHT,
         LANDER
-    }
-    autoScoring curScoreState = autoScoring.DRIVE_FORWARD;
+
+        }
     // ***********************************************************************
     // SwerveCore
     // ***********************************************************************
