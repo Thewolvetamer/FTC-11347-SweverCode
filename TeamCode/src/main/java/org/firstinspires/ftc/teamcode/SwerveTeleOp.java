@@ -230,42 +230,42 @@ public class SwerveTeleOp extends SwerveCore {
                 switch (curScoreState) {
 
                     case DRIVE_FORWARD:
-                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = EXTEND;
                             buttonToggle.reset_status();
                         }
-                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= LANDER;
                             buttonToggle.reset_status();
                         }
                     break;
                     case EXTEND:
 
-                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = INTAKE;
                             buttonToggle.reset_status();
                         }
-                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= DRIVE_FORWARD;
                             buttonToggle.reset_status();
                         }
                     break;
                     case INTAKE:
-                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE) {
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS) {
                             curScoreState = LANDER;
                             buttonToggle.reset_status();
                         }
-                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= EXTEND;
                             buttonToggle.reset_status();
                         }
                     break;
                     case LANDER:
-                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.COMPLETE){
+                        if (buttonToggle.status(gamepad2.a) == ButtonRebounce.Status.IN_PROGRESS){
                         curScoreState= DRIVE_FORWARD;
                             buttonToggle.reset_status();
                         }
-                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE){
+                        else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.IN_PROGRESS){
                             curScoreState= INTAKE;
                             buttonToggle.reset_status();
                         }
@@ -280,12 +280,12 @@ public class SwerveTeleOp extends SwerveCore {
 //        if(ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
 //            switch(curScoreState) {
 //                case DRIVE_FORWARD:
-//                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
+//                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.IN_PROGRESS) {
 //                        curScoreState = autoScoring.EXTEND;
 //
 //
 //                    }
-//                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
+//                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.IN_PROGRESS) {
 //                        curScoreState = autoScoring.LANDER;
 //                    }
 //                    else{
@@ -294,10 +294,10 @@ public class SwerveTeleOp extends SwerveCore {
 //                    break;
 //
 //                case EXTEND:
-//                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE){
+//                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.IN_PROGRESS){
 //                        curScoreState = autoScoring.INTAKE;
 //                    }
-//                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
+//                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.IN_PROGRESS) {
 //                        curScoreState = autoScoring.DRIVE_FORWARD;
 //                    }
 //                    else {
@@ -310,7 +310,7 @@ public class SwerveTeleOp extends SwerveCore {
 //                    if(gamepad2.dpad_left) {
 //                        intake.setPower(1);
 //                    }
-//                    if(buttonToggle.status(gamepad2.dpad_left)==ButtonRebounce.Status.COMPLETE) {
+//                    if(buttonToggle.status(gamepad2.dpad_left)==ButtonRebounce.Status.IN_PROGRESS) {
 //                        ourSwerve.driveRobot(0,0, -1, 0);
 //                        break;
 //                    }
@@ -318,23 +318,23 @@ public class SwerveTeleOp extends SwerveCore {
 //                        ourSwerve.driveRobot(0,0, 1, 0);
 //                        break;
 //                    }
-//                    else if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
+//                    else if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.IN_PROGRESS) {
 //                        curScoreState = autoScoring.LANDER;
 //                    }
-//                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
+//                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.IN_PROGRESS) {
 //                        curScoreState = autoScoring.EXTEND;
 //                    }
 //                    break;
 //
 //                case LANDER:
-//                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.COMPLETE) {
+//                    if(buttonToggle.status(gamepad2.a)==ButtonRebounce.Status.IN_PROGRESS) {
 //                       vSlide();
 //                        final double t = getRuntime();
 //                        if(t + 3000 == getRuntime()) {
 //                            curScoreState = autoScoring.DRIVE_FORWARD;
 //                        }
 //                    }
-//                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.COMPLETE) {
+//                    else if(buttonToggle.status(gamepad2.b)==ButtonRebounce.Status.IN_PROGRESS) {
 //                        curScoreState = autoScoring.INTAKE;
 //                    }
 //                    break;
