@@ -100,7 +100,7 @@ public class SwerveTeleOp extends SwerveCore {
         wrist();
 
 //        yeet();
-
+        sorter();
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM));
 
 
@@ -128,6 +128,14 @@ public class SwerveTeleOp extends SwerveCore {
     }
 
     // makes it easier to go directly sideways
+    private void sorter(){
+        if(gamepad2.x){
+            dump.setPosition(05);
+        }
+        else{
+            dump.setPosition(1);
+        }
+    }
     private void strafeR() {
 
         if (gamepad1.dpad_left) {
@@ -195,27 +203,27 @@ public class SwerveTeleOp extends SwerveCore {
             }
         }
         else {
-            vSlide.setPower(-gamepad2.left_stick_y);
+            vSlide.setPower(-gamepad2.right_stick_y);
         }
     }
 
     private void hSlide() {
-        hSlide.setPower(-gamepad2.right_stick_y);
+        hSlide.setPower(-gamepad2.left_stick_y);
     }
 
     private void wrist() {
-        if(gamepad2.right_bumper) {
+        if(gamepad2.right_trigger>.4) {
             wristR.setPosition(1);
             wristL.setPosition(1);
         }
         else {
-            wristL.setPosition(-1);
-            wristR.setPosition(-1);
+            wristL.setPosition(-.75);
+            wristR.setPosition(-.75);
         }
     }
 
     private void intake() {
-        if(wristR.getPosition() == 1) {
+        if(wristR.getPosition() == 1 || gamepad2.left_trigger >.4) {
             intake.setPower(1);
         }
         else {
