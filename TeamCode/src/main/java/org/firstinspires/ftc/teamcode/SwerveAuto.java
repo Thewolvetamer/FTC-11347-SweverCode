@@ -421,7 +421,7 @@ public class SwerveAuto extends SwerveCore {
 
             case SWERVE_CENTER:
                 orientRobot(-84);
-                hSlide.setTargetPosition(300);
+                hSlide.setTargetPosition(100);
                 setState(autoStates.SWERVE_TURN_TO_PARTICLE, 575);
                 break;
 
@@ -538,7 +538,7 @@ public class SwerveAuto extends SwerveCore {
                 }
                 vSlide.setPower(1);
                 dump.setPosition(0);
-                setState(autoStates.SWERVE_MARKER, 2250);
+                setState(autoStates.SWERVE_MARKER, 2000);
                 break;
 
             case SWERVE_GM_BACK:
@@ -549,16 +549,12 @@ public class SwerveAuto extends SwerveCore {
             // Move to the crater
             case SWERVE_TO_CRATER:
                 if(crater) {
-                    wristL.setPosition(0);
-                    wristR.setPosition(0);
                     ourSwerve.autoDrive(1, -45, -45, 80);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_EXTEND_CRATER, 3000);
                 }
                 else {
-                    wristL.setPosition(0);
-                    wristR.setPosition(0);
                     ourSwerve.autoDrive(1, 135, 135, 70);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
