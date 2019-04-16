@@ -6,22 +6,16 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 import static org.firstinspires.ftc.teamcode.SwerveCore.autoScoring.*;
-
 // ***********************************************************************
 // Definitions from Qualcomm code for OpMode recognition
 // ***********************************************************************
 @TeleOp(name="Swerve: 2-TeleOp 1.1", group="Swerve")
-//@Disabled
+
 public class SwerveTeleOp extends SwerveCore {
     // Note when we are approaching the end of the game
     private ButtonRebounce buttonToggle=new ButtonRebounce();
-    public int resetInt=0;
-
     // ***********************************************************************
     // SwerveTeleOp
     // ***********************************************************************
@@ -29,7 +23,6 @@ public class SwerveTeleOp extends SwerveCore {
     // The system calls this member when the class is instantiated.
     public SwerveTeleOp() {
     }
-
     // ***********************************************************************
     // Init
     // ***********************************************************************
