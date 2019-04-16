@@ -222,8 +222,7 @@ public class SwerveTeleOp extends SwerveCore {
             intake.setPower(0);
         }
     }
-
-    public void yeet() {
+    private void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if (ourSwerve.curSwerveMode == SwerveDrive.swerveModes.SWERVE_AUTO) {
