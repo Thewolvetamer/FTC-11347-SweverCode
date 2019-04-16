@@ -336,7 +336,7 @@ public class SwerveCore extends OpMode {
 
 
     public String getCurScoreState(){
-        return "Current mode of yeet(): "+curScoreState.name();
+        return "Current mode of AutoScore(): "+curScoreState.name();
     }
     @Override
     public void loop() {
