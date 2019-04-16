@@ -67,9 +67,9 @@ public class SwerveTeleOp extends SwerveCore {
         swerveDebug(2000, "SwerveTeleOp::loop", "START");
 
         // set swerve drive orientation automation level based on driver request
-        if (gamepad1.a) {
-            ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_AUTO);
-        }
+//        if (gamepad1.a) {
+//            ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_AUTO);
+//        }
         if (gamepad1.b) {
             ourSwerve.setSwerveMode(SwerveDrive.swerveModes.SWERVE_DRIVER);
         }
@@ -99,7 +99,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         wrist();
 
-        yeet();
+//        yeet();
 
         ourSwerve.distance(heightL.getDistance(DistanceUnit.CM));
 
