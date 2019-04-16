@@ -85,9 +85,7 @@ public class SwerveTeleOp extends SwerveCore {
 
         // *** use buttons to trigger other actions ***
 
-        strafeR();
-
-        strafeL();
+        strafe();
 
         climb();
 
@@ -133,31 +131,28 @@ public class SwerveTeleOp extends SwerveCore {
     // makes it easier to go directly sideways
     private void sorter(){
         if(gamepad2.x){
-            dump.setPosition(05);
+            dump.setPosition(0);
         }
         else{
             dump.setPosition(1);
         }
     }
-    private void strafeR() {
-
+    private void strafe() {
         if (gamepad1.dpad_left) {
             swerveLeftFront.updateWheel(1, -0.50);
             swerveRightFront.updateWheel(1, -0.50);
             swerveLeftRear.updateWheel(1, -0.50);
             swerveRightRear.updateWheel(1, -0.50);
         }
-    }
-
-    private void strafeL() {
-
-        if (gamepad1.dpad_right) {
+        else if (gamepad1.dpad_right) {
             swerveLeftFront.updateWheel(1, 0.50);
             swerveRightFront.updateWheel(1, 0.50);
             swerveLeftRear.updateWheel(1, 0.50);
             swerveRightRear.updateWheel(1, 0.50);
         }
     }
+
+
 
     private void climb() {
         if(gamepad1.right_bumper) {
@@ -193,7 +188,7 @@ public class SwerveTeleOp extends SwerveCore {
                 //            distance/circumference of spool   * tpr
                 vSlide.setTargetPosition(3500);
                 vSlide.setPower(1);
-            } else if (vSlide.getTargetPosition() == vSlide.getCurrentPosition()) {
+            } else if (vSlide.getTargetPosition() <= vSlide.getCurrentPosition()) {
                 dump.setPosition(1);
                 final double t = getRuntime();
                 if (getRuntime() == t + 1000) {
@@ -220,8 +215,8 @@ public class SwerveTeleOp extends SwerveCore {
             wristL.setPosition(1);
         }
         else {
-            wristL.setPosition(-.75);
-            wristR.setPosition(-.75);
+            wristL.setPosition(-.85);
+            wristR.setPosition(-.85);
         }
     }
 
