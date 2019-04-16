@@ -231,6 +231,19 @@ public class SwerveTeleOp extends SwerveCore {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+    private void clear() {
+        vSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        hSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        vSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        hSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+>>>>>>> a5d87782f199f390257c804d72897bb59cf51883
     public void yeet() {
         hSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
