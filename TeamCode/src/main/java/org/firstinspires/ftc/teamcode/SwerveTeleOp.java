@@ -220,8 +220,8 @@ public class SwerveTeleOp extends SwerveCore {
             wristL.setPosition(1);
         }
         else {
-            wristL.setPosition(-.75);
-            wristR.setPosition(-.75);
+            wristL.setPosition(-.85);
+            wristR.setPosition(-.85);
         }
     }
 
