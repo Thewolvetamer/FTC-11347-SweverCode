@@ -44,24 +44,19 @@ public class SwerveAuto extends SwerveCore {
         SWERVE_ALIGN,
         SWERVE_DROP,
         SWERVE_DELAY,
-        SWERVE_TURN_TO_PARTICLE,
         SWERVE_SLIDE,
-        SWERVE_GRAB,
-        SWERVE_PARTICLE_TO_DEPOT,
-        SWERVE_CENTER,
-        SWERVE_TURN,
-        SWERVE_GM_BACK,
         SWERVE_HIT_PARTICLE,
-        SWERVE_GM_EXTEND,
-        SWERVE_TO_WALL,
-        SWERVE_AVOID_PARTICLE,
-        SWERVE_TO_DEPOT,
+        SWERVE_CENTER,
+        SWERVE_TURN_TO_PARTICLE,
+        SWERVE_GRAB,
         SWERVE_PICKUP,
-        SWERVE_TO_CRATER,
-        SWERVE_CRATER_PARTICLES,
-        SWERVE_EXTEND_CRATER,
         SWERVE_RETRACT,
-        SWERVE_MARKER,
+        SWERVE_TURN,
+        SWERVE_TO_WALL,
+        SWERVE_TO_DEPOT,
+        SWERVE_GM_EXTEND,
+        SWERVE_GM_BACK,
+        SWERVE_TO_CRATER,
         SWERVE_LAST_MOVE,
         SWERVE_DONE,
 
@@ -136,7 +131,6 @@ public class SwerveAuto extends SwerveCore {
     private String getStateName(autoStates myState) {
         // Set the name for the state we are in
         switch (myState) {
-
             case SWERVE_INIT:
                 return "INITIALIZING";
             case SWERVE_START:
@@ -147,32 +141,32 @@ public class SwerveAuto extends SwerveCore {
                 return "DROP";
             case SWERVE_DELAY:
                 return "DELAY";
-            case SWERVE_TURN_TO_PARTICLE:
-                return "TURN_TO_PARTICLE";
             case SWERVE_SLIDE:
                 return "SLIDE";
+            case SWERVE_HIT_PARTICLE:
+                return "HIT PARTICLE";
+            case SWERVE_CENTER:
+                return "CENTER";
+            case SWERVE_TURN_TO_PARTICLE:
+                return "TURN_TO_PARTICLE";
             case SWERVE_GRAB:
                 return "PULL BACK";
-            case SWERVE_AVOID_PARTICLE:
-                return "CENTER";
+            case SWERVE_PICKUP:
+                return "PICKUP";
+            case SWERVE_RETRACT:
+                return "SCORE BALLS";
             case SWERVE_TURN:
                 return "TURN TO PARTICLES";
             case SWERVE_TO_WALL:
                 return "TO WALL";
             case SWERVE_TO_DEPOT:
                 return "TO DEPOT";
-            case SWERVE_PICKUP:
-                return "PLACE MARKER";
+            case SWERVE_GM_EXTEND:
+                return "GAME MARKER EXTEND";
+            case SWERVE_GM_BACK:
+                return "GAME MARKER BACK";
             case SWERVE_TO_CRATER:
                 return "TO CRATER";
-            case SWERVE_CRATER_PARTICLES:
-                return "CRATER PARTICLES";
-            case SWERVE_EXTEND_CRATER:
-                return "PARTICLE TO LANDER";
-            case SWERVE_RETRACT:
-                return "SCORE BALLS";
-            case SWERVE_MARKER:
-                return "ARM TO CRATER";
             case SWERVE_LAST_MOVE:
                 return "LAST MOVE";
             case SWERVE_DONE:
@@ -389,7 +383,7 @@ public class SwerveAuto extends SwerveCore {
                 // motor has 383.6 ticks per rev
                 climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                climber.setTargetPosition(7200);
+                climber.setTargetPosition(7600);
                 climber.setPower(1);
                 setState(autoStates.SWERVE_DELAY, 2200);
                 break;
@@ -538,7 +532,7 @@ public class SwerveAuto extends SwerveCore {
                 }
                 vSlide.setPower(1);
                 dump.setPosition(0);
-                setState(autoStates.SWERVE_MARKER, 2000);
+                setState(autoStates.SWERVE_GM_BACK, 2000);
                 break;
 
             case SWERVE_GM_BACK:
@@ -552,7 +546,7 @@ public class SwerveAuto extends SwerveCore {
                     ourSwerve.autoDrive(1, -45, -45, 80);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
-                    setState(autoStates.SWERVE_EXTEND_CRATER, 3000);
+                    setState(autoStates.SWERVE_LAST_MOVE, 3000);
                 }
                 else {
                     ourSwerve.autoDrive(1, 135, 135, 70);

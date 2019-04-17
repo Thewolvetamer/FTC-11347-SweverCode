@@ -137,8 +137,7 @@ public class SwerveCore extends OpMode {
         DRIVE_FORWARD,
         EXTEND,
         INTAKE,
-        TURN_LEFT,
-        TURN_RIGHT,
+        DUMP,
         LANDER
 
         }
@@ -393,7 +392,7 @@ public class SwerveCore extends OpMode {
         swerveLog( "X S6", ourSwerve.getOrientLog());
         swerveLog( "X S8", ourSwerve.getHeightLog());
         swerveLog( "X S9", ourSwerve.getGravXYZAccel());
-        swerveLog( "X S9", String.valueOf(vSlide.getCurrentPosition()));
+        swerveLog( "X S10", String.valueOf(hSlide.getCurrentPosition()));
     }
 
 
