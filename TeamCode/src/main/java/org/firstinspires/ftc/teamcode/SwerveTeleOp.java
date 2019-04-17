@@ -304,7 +304,7 @@ public class SwerveTeleOp extends SwerveCore {
                             curScoreState = EXTEND;
                             buttonToggle.reset_status();
                         } else if (buttonToggle.status(gamepad2.b) == ButtonRebounce.Status.COMPLETE) {
-                            curScoreState = LANDER;
+                            curScoreState = INTAKE;
                             buttonToggle.reset_status();
                         }
                         else {
