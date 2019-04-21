@@ -383,7 +383,7 @@ public class SwerveAuto extends SwerveCore {
                 // motor has 383.6 ticks per rev
                 climber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 climber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                climber.setTargetPosition(7600);
+                climber.setTargetPosition(7900);
                 climber.setPower(1);
                 setState(autoStates.SWERVE_DELAY, 2200);
                 break;
@@ -407,7 +407,7 @@ public class SwerveAuto extends SwerveCore {
 //            turn towards the particle
 //            TODO add triangle math
             case SWERVE_HIT_PARTICLE:
-                ourSwerve.autoDrive(.8, -95, 0, 22);
+                ourSwerve.autoDrive(.75, -95, 0, 20);
                 autoDriveWait = Boolean.TRUE;
                 autoDriveStop = Boolean.TRUE;
                 setState(autoStates.SWERVE_CENTER, 2000);
@@ -424,17 +424,18 @@ public class SwerveAuto extends SwerveCore {
                 wristL.setPosition(.9);
                 wristR.setPosition(.9);
                 if(parPosition == particlePosition.partLeft) {
+
                     orientRobot(-123);
-                    hSlide.setTargetPosition(1000);
+                    hSlide.setTargetPosition(1100);
                     setState(autoStates.SWERVE_GRAB, 1000);
                 }
                 else if(parPosition == particlePosition.partRight) {
-                    orientRobot(-45);
-                    hSlide.setTargetPosition(1200);
+                    orientRobot(-52);
+                    hSlide.setTargetPosition(1400);
                     setState(autoStates.SWERVE_GRAB, 1000);
                 }
                 else if(parPosition == particlePosition.partCenter || parPosition == particlePosition.partUnknown) {
-                    orientRobot(-88);
+                    orientRobot(-89);
                     hSlide.setTargetPosition(400);
                     setState(autoStates.SWERVE_GRAB, 500);
                 }
@@ -455,23 +456,27 @@ public class SwerveAuto extends SwerveCore {
                 int angle;
                 if(particlePosition.partLeft == parPosition) {
                     angle = -123;
+                    ourSwerve.autoDrive(.8, angle, 0, 5);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
                 }
                 else if(particlePosition.partRight == parPosition) {
-                    angle = -44;
+                    angle = -49;
+                    ourSwerve.autoDrive(.8, angle, 0, 4);
+                    autoDriveWait = Boolean.TRUE;
+                    autoDriveStop = Boolean.TRUE;
                 }
                 else {
-                    angle = -90;
+                    hSlide.setTargetPosition(1500);
+                    hSlide.setPower(1);
                 }
-                ourSwerve.autoDrive(.8, angle, 0, 5);
-                autoDriveWait = Boolean.TRUE;
-                autoDriveStop = Boolean.TRUE;
                 setState(autoStates.SWERVE_RETRACT, 1000);
                 break;
 
             case SWERVE_RETRACT:
                 hSlide.setTargetPosition(200);
-                wristL.setPosition(-.2);
-                wristR.setPosition(-.2);
+                wristL.setPosition(.25);
+                wristR.setPosition(.25);
                 if(hSlide.getTargetPosition() < hSlide.getCurrentPosition()) {
                     hSlide.setPower(-1);
                 }
@@ -487,7 +492,8 @@ public class SwerveAuto extends SwerveCore {
                     orientRobot(-43);
                 }
                 else {
-                    orientRobot(120);
+                    orientRobot(
+                            120);
                 }
                 setState(autoStates.SWERVE_TO_WALL, 500);
                 break;
@@ -495,12 +501,12 @@ public class SwerveAuto extends SwerveCore {
 //            Move to the wall
             case SWERVE_TO_WALL:
                 if(crater) {
-                    ourSwerve.autoDrive(1, 195, -45, 105);
+                    ourSwerve.autoDrive(1, 193, -45, 110);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
                 else {
-                    ourSwerve.autoDrive(1, 205, 135, 100);
+                    ourSwerve.autoDrive(1, 193, 135, 100);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
@@ -514,7 +520,7 @@ public class SwerveAuto extends SwerveCore {
                     autoDriveStop = Boolean.TRUE;
                 }
                 else {
-                    ourSwerve.autoDrive(1, -43, 135, 85);
+                    ourSwerve.autoDrive(1, -44, 135, 90);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                 }
@@ -522,7 +528,7 @@ public class SwerveAuto extends SwerveCore {
                 break;
 
             case SWERVE_GM_EXTEND:
-                vSlide.setTargetPosition(3000);
+                vSlide.setTargetPosition(2000);
                 hSlide.setTargetPosition(3000);
                 if(hSlide.getTargetPosition() < hSlide.getCurrentPosition()) {
                     hSlide.setPower(-1);
@@ -549,7 +555,7 @@ public class SwerveAuto extends SwerveCore {
                     setState(autoStates.SWERVE_LAST_MOVE, 3000);
                 }
                 else {
-                    ourSwerve.autoDrive(1, 135, 135, 70);
+                    ourSwerve.autoDrive(1, 135, 135, 85);
                     autoDriveWait = Boolean.TRUE;
                     autoDriveStop = Boolean.TRUE;
                     setState(autoStates.SWERVE_LAST_MOVE, 3000);

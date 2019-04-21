@@ -9,14 +9,17 @@
 //          The driver does all the work.
 //          Robot left/right and forward/back are based on the robot position.
 //          Robot turn left/right rotate the robot, while turn forward/back are not used.
+// TODO SWERVE_DRIVE_TURN
 //      SWERVE_DRIVE_TURN
 //          Driving based on heading but not rotation.
 //          Robot left/right and forward/back are derived with the heading.
 //          Robot turn left/right rotate the robot, which turn forward/backward are not used.
+// TODO SWERVE_DRIVE_ORIENT
 //      SWERVE_DRIVE_ORIENT
 //          Driving based on rotation but not heading.
 //          Robot left/right and forward/back are based on the robot position.
 //          Robot turn left/right and forward/backward are relative to field position.
+// TODO SWERVE_AUTO
 //      SWERVE_AUTO
 //          Driving is based on heading for direction and rotation.
 //          Robot left/right and forward/back are derived with the heading.
@@ -740,7 +743,7 @@ public class SwerveDrive {
             myValue = (int)( baseOrientationAngle / 2 );
             myFile.write(myValue);
 
-            // Close out the file
+            // Close out the file[
             myValue = '\n';
             myFile.write(myValue);
 

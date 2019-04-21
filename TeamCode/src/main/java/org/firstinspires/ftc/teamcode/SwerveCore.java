@@ -387,12 +387,11 @@ public class SwerveCore extends OpMode {
         swerveLog( "X S1", ourSwerve.getModeLog());
         swerveLog( "X S2", ourSwerve.getMoveLog());
         swerveLog( "X S3", ourSwerve.getMoveAdjustLog());
-        swerveLog( "X S4", getCurScoreState());
         swerveLog( "X S5", ourSwerve.getSpeedLog());
         swerveLog( "X S6", ourSwerve.getOrientLog());
         swerveLog( "X S8", ourSwerve.getHeightLog());
         swerveLog( "X S9", ourSwerve.getGravXYZAccel());
-        swerveLog( "X S10", String.valueOf(hSlide.getCurrentPosition()));
+        swerveLog( "X S10", String.valueOf(vSlide.getCurrentPosition()));
     }
 
 
